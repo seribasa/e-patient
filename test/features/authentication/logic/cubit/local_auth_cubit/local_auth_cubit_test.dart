@@ -1,11 +1,11 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:eimunisasi/features/authentication/data/models/passcode.dart';
+import 'package:e_patient/features/authentication/data/models/passcode.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
-import 'package:eimunisasi/features/authentication/logic/cubit/local_auth_cubit/local_auth_cubit.dart';
+import 'package:e_patient/features/authentication/logic/cubit/local_auth_cubit/local_auth_cubit.dart';
 
 @GenerateMocks([SharedPreferences])
 import 'local_auth_cubit_test.mocks.dart';
@@ -21,22 +21,14 @@ void main() {
       "passcodeChanged Valid with 4 digit",
       build: () => LocalAuthCubit(sharedPreferences),
       act: (cubit) => cubit.passcodeChanged('1234'),
-      expect: () => [
-        LocalAuthState(
-          passcode: Passcode.dirty('1234'),
-        ),
-      ],
+      expect: () => [LocalAuthState(passcode: Passcode.dirty('1234'))],
     );
 
     blocTest<LocalAuthCubit, LocalAuthState>(
       "passcodeChanged Invalid with 3 digit",
       build: () => LocalAuthCubit(sharedPreferences),
       act: (cubit) => cubit.passcodeChanged('123'),
-      expect: () => [
-        LocalAuthState(
-          passcode: Passcode.dirty('123'),
-        ),
-      ],
+      expect: () => [LocalAuthState(passcode: Passcode.dirty('123'))],
     );
   });
 
@@ -80,9 +72,7 @@ void main() {
       },
       act: (cubit) => cubit.getPasscode(),
       expect: () => [
-        LocalAuthState(
-          statusGet: FormzSubmissionStatus.inProgress,
-        ),
+        LocalAuthState(statusGet: FormzSubmissionStatus.inProgress),
         LocalAuthState(
           savedPasscode: Passcode.dirty('1234'),
           statusGet: FormzSubmissionStatus.success,
@@ -92,15 +82,14 @@ void main() {
     blocTest<LocalAuthCubit, LocalAuthState>(
       'getPasscode failed',
       build: () {
-        when(sharedPreferences.getInt('passCode'))
-            .thenAnswer((_) => throw Exception('error'));
+        when(
+          sharedPreferences.getInt('passCode'),
+        ).thenAnswer((_) => throw Exception('error'));
         return LocalAuthCubit(sharedPreferences);
       },
       act: (cubit) => cubit.getPasscode(),
       expect: () => [
-        LocalAuthState(
-          statusGet: FormzSubmissionStatus.inProgress,
-        ),
+        LocalAuthState(statusGet: FormzSubmissionStatus.inProgress),
         LocalAuthState(
           errorMessage: 'Gagal mendapatkan passcode',
           statusGet: FormzSubmissionStatus.failure,
@@ -149,9 +138,7 @@ void main() {
         cubit.checkPasscode('123');
       },
       expect: () => [
-        LocalAuthState(
-          statusGet: FormzSubmissionStatus.inProgress,
-        ),
+        LocalAuthState(statusGet: FormzSubmissionStatus.inProgress),
         LocalAuthState(
           errorMessage: "Password Salah",
           statusGet: FormzSubmissionStatus.failure,
@@ -161,20 +148,20 @@ void main() {
     blocTest<LocalAuthCubit, LocalAuthState>(
       'checkPasscode failed with get passcode failed',
       build: () {
-        when(sharedPreferences.getInt('passCode'))
-            .thenThrow(Exception('error'));
+        when(
+          sharedPreferences.getInt('passCode'),
+        ).thenThrow(Exception('error'));
         return LocalAuthCubit(sharedPreferences);
       },
       act: (cubit) {
         cubit.checkPasscode('123');
       },
       expect: () => [
+        LocalAuthState(statusGet: FormzSubmissionStatus.inProgress),
         LocalAuthState(
-          statusGet: FormzSubmissionStatus.inProgress,
+          errorMessage: 'Terjadi Kesalahan',
+          statusGet: FormzSubmissionStatus.failure,
         ),
-        LocalAuthState(
-            errorMessage: 'Terjadi Kesalahan',
-            statusGet: FormzSubmissionStatus.failure),
       ],
     );
   });
@@ -183,8 +170,9 @@ void main() {
     blocTest<LocalAuthCubit, LocalAuthState>(
       'confirmPasscode success',
       build: () {
-        when(sharedPreferences.setInt('passCode', 1234))
-            .thenAnswer((_) async => true);
+        when(
+          sharedPreferences.setInt('passCode', 1234),
+        ).thenAnswer((_) async => true);
         return LocalAuthCubit(sharedPreferences);
       },
       seed: () => LocalAuthState(
@@ -232,8 +220,9 @@ void main() {
     blocTest<LocalAuthCubit, LocalAuthState>(
       'confirmPasscode failed with setPasscode throw exception',
       build: () {
-        when(sharedPreferences.setInt('passCode', 1234))
-            .thenThrow(Exception('error'));
+        when(
+          sharedPreferences.setInt('passCode', 1234),
+        ).thenThrow(Exception('error'));
         return LocalAuthCubit(sharedPreferences);
       },
       seed: () => LocalAuthState(
@@ -261,8 +250,9 @@ void main() {
     blocTest<LocalAuthCubit, LocalAuthState>(
       'destroyPasscode success',
       build: () {
-        when(sharedPreferences.remove('passCode'))
-            .thenAnswer((_) async => true);
+        when(
+          sharedPreferences.remove('passCode'),
+        ).thenAnswer((_) async => true);
         return LocalAuthCubit(sharedPreferences);
       },
       act: (cubit) => cubit.destroyPasscode(),
@@ -274,8 +264,9 @@ void main() {
     blocTest<LocalAuthCubit, LocalAuthState>(
       'destroyPasscode failed with exception',
       build: () {
-        when(sharedPreferences.remove('passCode'))
-            .thenThrow(Exception('error'));
+        when(
+          sharedPreferences.remove('passCode'),
+        ).thenThrow(Exception('error'));
         return LocalAuthCubit(sharedPreferences);
       },
       act: (cubit) => cubit.destroyPasscode(),

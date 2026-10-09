@@ -2,9 +2,9 @@ import 'dart:collection';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:eimunisasi/features/calendar/data/models/calendar_model.dart';
-import 'package:eimunisasi/core/utils/datetime_extension.dart';
-import 'package:eimunisasi/core/utils/string_extension.dart';
+import 'package:e_patient/features/calendar/data/models/calendar_model.dart';
+import 'package:e_patient/core/utils/datetime_extension.dart';
+import 'package:e_patient/core/utils/string_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';
@@ -23,10 +23,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   final NotificationService notificationService;
   final CalendarRepository calendarRepository;
 
-  CalendarBloc(
-    this.notificationService,
-    this.calendarRepository,
-  ) : super(CalendarState()) {
+  CalendarBloc(this.notificationService, this.calendarRepository)
+      : super(CalendarState()) {
     on<CalendarEventLoaded>(_onCalendarEventLoaded);
     on<SetSelectedDate>(_onSetSelectedDate);
     on<SetFocusedDate>(_onSetFocusedDate);
@@ -48,11 +46,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       final events = await calendarRepository.getEvents();
       final groupedEvents = events.groupEventsByDate();
 
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.success,
-        events: events,
-        groupedEvents: groupedEvents,
-      ));
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.success,
+          events: events,
+          groupedEvents: groupedEvents,
+        ),
+      );
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: FormzSubmissionStatus.failure));
@@ -81,28 +81,24 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     emit(state.copyWith(currentPageDate: event.currentPageDate));
   }
 
-  void _onSetFormat(
-    SetFormat event,
-    Emitter<CalendarState> emit,
-  ) async {
+  void _onSetFormat(SetFormat event, Emitter<CalendarState> emit) async {
     emit(state.copyWith(format: event.format));
   }
 
-  void _onAddEvent(
-    AddEvent event,
-    Emitter<CalendarState> emit,
-  ) async {
+  void _onAddEvent(AddEvent event, Emitter<CalendarState> emit) async {
     try {
       emit(state.copyWith(statusAddEvent: FormzSubmissionStatus.inProgress));
       final response = await calendarRepository.setEvent(event.event);
       final idNotif = await calendarRepository.setEventLocal(response);
       final currentEvents = (state.events ?? [])..add(response);
 
-      emit(state.copyWith(
-        statusAddEvent: FormzSubmissionStatus.success,
-        events: currentEvents,
-        groupedEvents: currentEvents.groupEventsByDate(),
-      ));
+      emit(
+        state.copyWith(
+          statusAddEvent: FormzSubmissionStatus.success,
+          events: currentEvents,
+          groupedEvents: currentEvents.groupEventsByDate(),
+        ),
+      );
       final validCreateNotification =
           response.date?.isAfter(DateTime.now()) == true &&
               response.createdDate != null;
@@ -114,11 +110,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
           response.date.orNow,
         );
       }
-      emit(state.copyWith(
-        statusAddEvent: FormzSubmissionStatus.initial,
-        dateTimeForm: null,
-        activityForm: emptyString,
-      ));
+      emit(
+        state.copyWith(
+          statusAddEvent: FormzSubmissionStatus.initial,
+          dateTimeForm: null,
+          activityForm: emptyString,
+        ),
+      );
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(statusAddEvent: FormzSubmissionStatus.failure));
@@ -126,10 +124,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     }
   }
 
-  void _onUpdateEvent(
-    UpdateEvent event,
-    Emitter<CalendarState> emit,
-  ) async {
+  void _onUpdateEvent(UpdateEvent event, Emitter<CalendarState> emit) async {
     try {
       emit(state.copyWith(statusUpdateEvent: FormzSubmissionStatus.inProgress));
       final response = await calendarRepository.updateEvent(event.event);
@@ -138,11 +133,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         ..removeWhere((element) => element.documentID == event.event.documentID)
         ..add(response);
 
-      emit(state.copyWith(
-        statusUpdateEvent: FormzSubmissionStatus.success,
-        events: currentEvents,
-        groupedEvents: currentEvents.groupEventsByDate(),
-      ));
+      emit(
+        state.copyWith(
+          statusUpdateEvent: FormzSubmissionStatus.success,
+          events: currentEvents,
+          groupedEvents: currentEvents.groupEventsByDate(),
+        ),
+      );
       final validCreateNotification =
           response.date?.isAfter(DateTime.now()) == true &&
               response.createdDate != null;
@@ -154,11 +151,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
           response.date.orNow,
         );
       }
-      emit(state.copyWith(
-        statusUpdateEvent: FormzSubmissionStatus.initial,
-        dateTimeForm: null,
-        activityForm: emptyString,
-      ));
+      emit(
+        state.copyWith(
+          statusUpdateEvent: FormzSubmissionStatus.initial,
+          dateTimeForm: null,
+          activityForm: emptyString,
+        ),
+      );
     } catch (e) {
       log("error update event: ${e.toString()}");
       emit(state.copyWith(statusUpdateEvent: FormzSubmissionStatus.failure));
@@ -166,10 +165,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     }
   }
 
-  void _onDeleteEvent(
-    DeleteEvent event,
-    Emitter<CalendarState> emit,
-  ) async {
+  void _onDeleteEvent(DeleteEvent event, Emitter<CalendarState> emit) async {
     try {
       emit(state.copyWith(statusDeleteEvent: FormzSubmissionStatus.inProgress));
       await calendarRepository.deleteEvent(event.event.documentID.orEmpty);
@@ -178,19 +174,23 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         ..removeWhere(
           (element) => element.documentID == event.event.documentID,
         );
-      emit(state.copyWith(
-        statusDeleteEvent: FormzSubmissionStatus.success,
-        events: currentEvents,
-        groupedEvents: currentEvents.groupEventsByDate(),
-      ));
+      emit(
+        state.copyWith(
+          statusDeleteEvent: FormzSubmissionStatus.success,
+          events: currentEvents,
+          groupedEvents: currentEvents.groupEventsByDate(),
+        ),
+      );
       await notificationService.cancelNotification(
         event.event.createdDate!.millisecondsSinceEpoch,
       );
-      emit(state.copyWith(
-        statusDeleteEvent: FormzSubmissionStatus.initial,
-        dateTimeForm: null,
-        activityForm: emptyString,
-      ));
+      emit(
+        state.copyWith(
+          statusDeleteEvent: FormzSubmissionStatus.initial,
+          dateTimeForm: null,
+          activityForm: emptyString,
+        ),
+      );
     } catch (e) {
       log("error delete event: ${e.toString()}");
       emit(state.copyWith(statusDeleteEvent: FormzSubmissionStatus.failure));
@@ -198,10 +198,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     }
   }
 
-  void _onSetAddDate(
-    SetDateTimeForm event,
-    Emitter<CalendarState> emit,
-  ) async {
+  void _onSetAddDate(SetDateTimeForm event, Emitter<CalendarState> emit) async {
     emit(state.copyWith(dateTimeForm: event.value));
   }
 

@@ -1,8 +1,8 @@
 # e-Imunisasi to e-Patient Migration Tracker
 
 **Date:** 2026-10-09
-**Branch:** `codex/map-e-imunisasi-to-e-patient`
-**Source baseline:** `/Users/rfaturriza/Documents/development/mobile/e-imunisasi/`
+**Branch:** `codex/map-e-Patient-to-e-patient`
+**Source baseline:** `/Users/rfaturriza/Documents/development/mobile/e-Patient/`
 **Business reference:** `docs/plans/2026-09-30-e-patient-business-requirements.md` section 8.
 
 ## 1. Migration objective

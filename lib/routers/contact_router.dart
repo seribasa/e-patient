@@ -1,4 +1,4 @@
-import 'package:eimunisasi/routers/route_paths/contact_route_paths.dart';
+import 'package:e_patient/routers/route_paths/contact_route_paths.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/contact/presentation/clinic/clinic_list_screen.dart';
@@ -14,9 +14,8 @@ class ContactRouter {
     ),
     GoRoute(
       path: ContactRoutePaths.clinics.path,
-      builder: (_, state) => ClinicListScreen(
-        name: (state.extra as Map<String, dynamic>)['name'],
-      ),
+      builder: (_, state) =>
+          ClinicListScreen(name: (state.extra as Map<String, dynamic>)['name']),
     ),
   ];
 }

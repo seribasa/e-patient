@@ -1,18 +1,18 @@
-import 'package:eimunisasi/core/extension.dart';
-import 'package:eimunisasi/core/loading.dart';
-import 'package:eimunisasi/core/utils/list_constant.dart';
-import 'package:eimunisasi/core/widgets/error.dart';
-import 'package:eimunisasi/core/widgets/picker.dart';
-import 'package:eimunisasi/core/widgets/spacer.dart';
-import 'package:eimunisasi/core/widgets/text.dart';
-import 'package:eimunisasi/core/widgets/top_app_bar.dart';
-import 'package:eimunisasi/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:eimunisasi/injection.dart';
-import 'package:eimunisasi/core/widgets/button_custom.dart';
-import 'package:eimunisasi/core/widgets/image_picker.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
-import 'package:eimunisasi/core/widgets/text_form_custom.dart';
-import 'package:eimunisasi/core/utils/dismiss_keyboard.dart';
+import 'package:e_patient/core/extension.dart';
+import 'package:e_patient/core/loading.dart';
+import 'package:e_patient/core/utils/list_constant.dart';
+import 'package:e_patient/core/widgets/error.dart';
+import 'package:e_patient/core/widgets/picker.dart';
+import 'package:e_patient/core/widgets/spacer.dart';
+import 'package:e_patient/core/widgets/text.dart';
+import 'package:e_patient/core/widgets/top_app_bar.dart';
+import 'package:e_patient/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:e_patient/injection.dart';
+import 'package:e_patient/core/widgets/button_custom.dart';
+import 'package:e_patient/core/widgets/image_picker.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/core/widgets/text_form_custom.dart';
+import 'package:e_patient/core/utils/dismiss_keyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -34,19 +34,21 @@ class ParentProfileScreen extends StatelessWidget {
       child: BlocListener<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state.statusUpdate.isFailure) {
-            snackbarCustom(state.errorMessage ?? 'Gagal menyimpan data')
-                .show(context);
+            snackbarCustom(
+              state.errorMessage ?? 'Gagal menyimpan data',
+            ).show(context);
           } else if (state.statusUpdate.isSuccess) {
             snackbarCustom('Berhasil menyimpan data').show(context);
           } else if (state.statusUpdateAvatar.isFailure) {
-            snackbarCustom(state.errorMessage ?? 'Gagal mengubah foto')
-                .show(context);
+            snackbarCustom(
+              state.errorMessage ?? 'Gagal mengubah foto',
+            ).show(context);
           } else if (state.statusUpdateAvatar.isSuccess) {
             snackbarCustom('Berhasil mengubah foto').show(context);
           }
         },
         child: Scaffold(
-          backgroundColor: Colors.pink[100],
+          backgroundColor: Colors.black,
           appBar: AppBarPeltops(title: AppConstant.APP_BAR_PROFILE),
           body: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
@@ -59,7 +61,8 @@ class ParentProfileScreen extends StatelessWidget {
                   margin: EdgeInsets.all(AppPadding.paddingM),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: AppPadding.paddingM),
+                      horizontal: AppPadding.paddingM,
+                    ),
                     child: ListView(
                       physics: const BouncingScrollPhysics(),
                       children: [
@@ -75,33 +78,37 @@ class ParentProfileScreen extends StatelessWidget {
                             bloc.add(OnChangeNameEvent(val.trim()));
                           },
                         ),
-                        Row(children: [
-                          Expanded(
-                            child: TextFormCustom(
-                              initialValue: state.user?.placeOfBirth,
-                              label: AppConstant.LABEL_PLACE_OF_BIRTH,
-                              onChanged: (val) {
-                                bloc.add(OnChangePlaceOfBirthEvent(val.trim()));
-                              },
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormCustom(
+                                initialValue: state.user?.placeOfBirth,
+                                label: AppConstant.LABEL_PLACE_OF_BIRTH,
+                                onChanged: (val) {
+                                  bloc.add(
+                                    OnChangePlaceOfBirthEvent(val.trim()),
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                          HorizontalSpacer(),
-                          Expanded(
-                            child: TextFormCustom(
-                              onTap: () async {
-                                final date = await Picker.pickDate(context);
-                                if (date != null) {
-                                  bloc.add(OnChangeDateOfBirthEvent(date));
-                                }
-                              },
-                              readOnly: true,
-                              label: AppConstant.LABEL_DATE_OF_BIRTH,
-                              hintText: state.user?.dateOfBirth != null
-                                  ? (state.user?.dateOfBirth).formattedDate()
-                                  : AppConstant.LABEL_CHOICE_DATE_OF_BIRTH,
+                            HorizontalSpacer(),
+                            Expanded(
+                              child: TextFormCustom(
+                                onTap: () async {
+                                  final date = await Picker.pickDate(context);
+                                  if (date != null) {
+                                    bloc.add(OnChangeDateOfBirthEvent(date));
+                                  }
+                                },
+                                readOnly: true,
+                                label: AppConstant.LABEL_DATE_OF_BIRTH,
+                                hintText: state.user?.dateOfBirth != null
+                                    ? (state.user?.dateOfBirth).formattedDate()
+                                    : AppConstant.LABEL_CHOICE_DATE_OF_BIRTH,
+                              ),
                             ),
-                          ),
-                        ]),
+                          ],
+                        ),
                         TextFormCustom(
                           keyboardType: TextInputType.number,
                           initialValue: state.user?.noKTP,
@@ -139,7 +146,8 @@ class ParentProfileScreen extends StatelessWidget {
                               .toList(),
                           onChanged: (val) {
                             bloc.add(
-                                OnChangeBloodTypeEvent(val ?? emptyString));
+                              OnChangeBloodTypeEvent(val ?? emptyString),
+                            );
                           },
                         ),
                         VerticalSpacer(),
@@ -205,9 +213,10 @@ class _PhotoProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _currentUser = (context.read<AuthenticationBloc>().state is Authenticated)
-        ? (context.read<AuthenticationBloc>().state as Authenticated).user
-        : null;
+    final _currentUser =
+        (context.read<AuthenticationBloc>().state is Authenticated)
+            ? (context.read<AuthenticationBloc>().state as Authenticated).user
+            : null;
     final bloc = context.read<ProfileBloc>();
     final url = _currentUser?.avatarURL ?? this.url;
     final isVerified =
@@ -238,9 +247,7 @@ class _PhotoProfile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (isVerified) ...[
-                LabelText(text: AppConstant.VERIFIED),
-              ],
+              if (isVerified) ...[LabelText(text: AppConstant.VERIFIED)],
               if (!isVerified) ...[
                 GestureDetector(
                   onTap: () {
@@ -248,7 +255,7 @@ class _PhotoProfile extends StatelessWidget {
                   },
                   child: LabelText(text: AppConstant.NOT_VERIFIED),
                 ),
-              ]
+              ],
             ],
           ),
         ],

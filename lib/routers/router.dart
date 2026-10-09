@@ -1,25 +1,25 @@
-import 'package:eimunisasi/core/loading.dart';
-import 'package:eimunisasi/core/widgets/error.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
-import 'package:eimunisasi/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:eimunisasi/features/authentication/presentation/screens/auth/login_seribase_oauth_screen.dart';
-import 'package:eimunisasi/features/authentication/presentation/screens/local_auth/passcode_screen.dart';
-import 'package:eimunisasi/features/authentication/presentation/screens/splash/splash_screen.dart';
-import 'package:eimunisasi/features/bottom_navbar/presentation/screens/bottom_navbar.dart';
-import 'package:eimunisasi/features/calendar/presentation/screens/calendar_screen.dart';
-import 'package:eimunisasi/features/contact/presentation/contact_screen.dart';
-import 'package:eimunisasi/features/healthy_book/presentation/screens/healthy_book_screen.dart';
-import 'package:eimunisasi/features/onboarding/presentation/screens/onboarding.dart';
-import 'package:eimunisasi/features/profile/presentation/screens/parent_profile_screen.dart';
-import 'package:eimunisasi/features/vaccination/presentation/screens/vaccination_screen.dart';
-import 'package:eimunisasi/routers/auth_local_router.dart';
-import 'package:eimunisasi/routers/auth_router.dart';
-import 'package:eimunisasi/routers/contact_router.dart';
-import 'package:eimunisasi/routers/profile_router.dart';
-import 'package:eimunisasi/routers/route_paths/auth_route_paths.dart';
-import 'package:eimunisasi/routers/route_paths/root_route_paths.dart';
-import 'package:eimunisasi/routers/route_paths/route_paths.dart';
-import 'package:eimunisasi/routers/vaccination_router.dart';
+import 'package:e_patient/core/loading.dart';
+import 'package:e_patient/core/widgets/error.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:e_patient/features/authentication/presentation/screens/auth/login_seribase_oauth_screen.dart';
+import 'package:e_patient/features/authentication/presentation/screens/local_auth/passcode_screen.dart';
+import 'package:e_patient/features/authentication/presentation/screens/splash/splash_screen.dart';
+import 'package:e_patient/features/bottom_navbar/presentation/screens/bottom_navbar.dart';
+import 'package:e_patient/features/calendar/presentation/screens/calendar_screen.dart';
+import 'package:e_patient/features/contact/presentation/contact_screen.dart';
+import 'package:e_patient/features/healthy_book/presentation/screens/healthy_book_screen.dart';
+import 'package:e_patient/features/onboarding/presentation/screens/onboarding.dart';
+import 'package:e_patient/features/profile/presentation/screens/parent_profile_screen.dart';
+import 'package:e_patient/features/vaccination/presentation/screens/vaccination_screen.dart';
+import 'package:e_patient/routers/auth_local_router.dart';
+import 'package:e_patient/routers/auth_router.dart';
+import 'package:e_patient/routers/contact_router.dart';
+import 'package:e_patient/routers/profile_router.dart';
+import 'package:e_patient/routers/route_paths/auth_route_paths.dart';
+import 'package:e_patient/routers/route_paths/root_route_paths.dart';
+import 'package:e_patient/routers/route_paths/route_paths.dart';
+import 'package:e_patient/routers/vaccination_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -39,11 +39,9 @@ final router = GoRouter(
         final errorDescription = state.uri.queryParameters['error_description'];
 
         if (error != null && errorCode != null && errorDescription != null) {
-          WidgetsBinding.instance.addPostFrameCallback(
-            (_) {
-              snackbarCustom(errorDescription).show(context);
-            },
-          );
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            snackbarCustom(errorDescription).show(context);
+          });
         }
 
         return BlocConsumer<AuthenticationBloc, AuthenticationState>(
@@ -138,22 +136,15 @@ final router = GoRouter(
         final desc = state.uri.queryParameters['error_description'];
 
         return Scaffold(
-          appBar: AppBar(
-            leading: BackButton(),
-          ),
-          body: ErrorContainer(
-            title: title,
-            message: desc,
-          ),
+          appBar: AppBar(leading: BackButton()),
+          body: ErrorContainer(title: title, message: desc),
         );
       },
     ),
   ],
   errorBuilder: (context, state) {
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(),
-      ),
+      appBar: AppBar(leading: BackButton()),
       body: ErrorContainer(
         title: 'Oops! Something went wrong',
         message: state.error?.message,

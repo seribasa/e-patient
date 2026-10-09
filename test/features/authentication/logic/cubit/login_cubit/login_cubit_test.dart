@@ -1,12 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:eimunisasi/features/authentication/data/models/email.dart';
-import 'package:eimunisasi/features/authentication/data/models/password.dart';
-import 'package:eimunisasi/features/authentication/data/repositories/auth_repository.dart';
+import 'package:e_patient/features/authentication/data/models/email.dart';
+import 'package:e_patient/features/authentication/data/models/password.dart';
+import 'package:e_patient/features/authentication/data/repositories/auth_repository.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:eimunisasi/features/authentication/logic/cubit/login_cubit/login_cubit.dart';
+import 'package:e_patient/features/authentication/logic/cubit/login_cubit/login_cubit.dart';
 
 @GenerateMocks([AuthRepository])
 import 'login_cubit_test.mocks.dart';
@@ -21,11 +21,7 @@ void main() {
       'emailChanged and password invalid',
       build: () => LoginCubit(authRepository),
       act: (cubit) => cubit.emailChanged('example@example.com'),
-      expect: () => [
-        LoginState(
-          email: Email.dirty('example@example.com'),
-        )
-      ],
+      expect: () => [LoginState(email: Email.dirty('example@example.com'))],
     );
     blocTest<LoginCubit, LoginState>(
       'emailChanged and password valid',
@@ -36,7 +32,7 @@ void main() {
         LoginState(
           email: Email.dirty('example@example.com'),
           password: Password.dirty('Admin123'),
-        )
+        ),
       ],
     );
   });
@@ -45,11 +41,7 @@ void main() {
       'passwordChanged and email invalid',
       build: () => LoginCubit(authRepository),
       act: (cubit) => cubit.passwordChanged('Admin123'),
-      expect: () => [
-        LoginState(
-          password: Password.dirty('Admin123'),
-        )
-      ],
+      expect: () => [LoginState(password: Password.dirty('Admin123'))],
     );
     blocTest<LoginCubit, LoginState>(
       'passwordChanged and email valid',
@@ -60,7 +52,7 @@ void main() {
         LoginState(
           email: Email.dirty('example@example.com'),
           password: Password.dirty('Admin123'),
-        )
+        ),
       ],
     );
   });
@@ -69,11 +61,7 @@ void main() {
       'showHidePassword default value is false',
       build: () => LoginCubit(authRepository),
       act: (cubit) => cubit.showHidePassword(),
-      expect: () => [
-        LoginState(
-          isShowPassword: true,
-        )
-      ],
+      expect: () => [LoginState(isShowPassword: true)],
     );
 
     blocTest<LoginCubit, LoginState>(
@@ -95,12 +83,8 @@ void main() {
       },
       act: (cubit) => cubit.logInWithSeribaseOauth(),
       expect: () => [
-        LoginState(
-          status: FormzSubmissionStatus.inProgress,
-        ),
-        LoginState(
-          status: FormzSubmissionStatus.success,
-        ),
+        LoginState(status: FormzSubmissionStatus.inProgress),
+        LoginState(status: FormzSubmissionStatus.success),
       ],
     );
     blocTest<LoginCubit, LoginState>(
@@ -113,9 +97,7 @@ void main() {
       },
       act: (cubit) => cubit.logInWithSeribaseOauth(),
       expect: () => [
-        LoginState(
-          status: FormzSubmissionStatus.inProgress,
-        ),
+        LoginState(status: FormzSubmissionStatus.inProgress),
         LoginState(
           status: FormzSubmissionStatus.failure,
           errorMessage: 'Failed to login with Seribase Oauth',
@@ -132,9 +114,7 @@ void main() {
       },
       act: (cubit) => cubit.logInWithSeribaseOauth(),
       expect: () => [
-        LoginState(
-          status: FormzSubmissionStatus.inProgress,
-        ),
+        LoginState(status: FormzSubmissionStatus.inProgress),
         LoginState(
           status: FormzSubmissionStatus.failure,
           errorMessage: 'Failed to login with Seribase Oauth',

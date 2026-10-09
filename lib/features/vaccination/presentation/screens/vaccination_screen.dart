@@ -1,5 +1,5 @@
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/routers/route_paths/vaccination_route_paths.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/routers/route_paths/vaccination_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +10,7 @@ class VaccinationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.pink[300],
+        backgroundColor: Colors.black,
         elevation: 0.0,
         title: Text(
           AppConstant.VACCINATION,
@@ -19,7 +19,7 @@ class VaccinationScreen extends StatelessWidget {
       ),
       body: SizedBox.expand(
         child: Container(
-          color: Colors.pink[100],
+          color: Colors.black,
           child: Card(
             margin: EdgeInsets.all(20),
             elevation: 0,
@@ -34,9 +34,7 @@ class VaccinationScreen extends StatelessWidget {
                       semanticsLabel: 'A red up arrow',
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Card(
                     child: ListTile(
                       onTap: () {

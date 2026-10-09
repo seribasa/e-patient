@@ -1,7 +1,7 @@
-import 'package:eimunisasi/core/extension.dart';
-import 'package:eimunisasi/core/widgets/error.dart';
-import 'package:eimunisasi/features/profile/presentation/screens/child_profile_screen.dart';
-import 'package:eimunisasi/routers/route_paths/profile_route_paths.dart';
+import 'package:e_patient/core/extension.dart';
+import 'package:e_patient/core/widgets/error.dart';
+import 'package:e_patient/features/profile/presentation/screens/child_profile_screen.dart';
+import 'package:e_patient/routers/route_paths/profile_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -16,10 +16,7 @@ import '../../logic/blocs/childBloc/child_profile_bloc.dart';
 class ListChildrenScreen extends StatelessWidget {
   final Function(ChildModel?)? onSelected;
 
-  const ListChildrenScreen({
-    Key? key,
-    this.onSelected,
-  }) : super(key: key);
+  const ListChildrenScreen({Key? key, this.onSelected}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +24,7 @@ class ListChildrenScreen extends StatelessWidget {
       value: getIt<ChildProfileBloc>()..add(OnGetChildrenEvent()),
       child: Scaffold(
         appBar: AppBarPeltops(title: AppConstant.APP_BAR_CHILD_PROFILE),
-        backgroundColor: Colors.pink[100],
+        backgroundColor: Colors.black,
         body: Padding(
           padding: EdgeInsets.all(20),
           child: Card(
@@ -37,9 +34,9 @@ class ListChildrenScreen extends StatelessWidget {
                 if (state.statusGetChildren == FormzSubmissionStatus.failure) {
                   return ErrorContainer(
                     onRefresh: () {
-                      context
-                          .read<ChildProfileBloc>()
-                          .add(OnGetChildrenEvent());
+                      context.read<ChildProfileBloc>().add(
+                            OnGetChildrenEvent(),
+                          );
                     },
                   );
                 } else if (state.statusGetChildren ==
@@ -47,9 +44,7 @@ class ListChildrenScreen extends StatelessWidget {
                   return Center(child: CircularProgressIndicator());
                 } else if (state.children == null || state.children!.isEmpty) {
                   return Center(
-                    child: Text(
-                      'Data anak kosong, silahkan tambahkan anak',
-                    ),
+                    child: Text('Data anak kosong, silahkan tambahkan anak'),
                   );
                 }
                 final data = state.children;
@@ -74,14 +69,10 @@ class ListChildrenScreen extends StatelessWidget {
                         },
                         title: Text(
                           data?[index].nama ?? emptyString,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.w700),
                         ),
                         subtitle: Text(data?[index].umurAnak ?? emptyString),
-                        trailing: Icon(
-                          Icons.keyboard_arrow_right_rounded,
-                        ),
+                        trailing: Icon(Icons.keyboard_arrow_right_rounded),
                       ),
                     );
                   },
@@ -97,9 +88,7 @@ class ListChildrenScreen extends StatelessWidget {
               onPressed: () {
                 context.push(
                   ProfileRoutePaths.addChildren.fullPath,
-                  extra: {
-                    'bloc': context.read<ChildProfileBloc>(),
-                  },
+                  extra: {'bloc': context.read<ChildProfileBloc>()},
                 );
               },
             );

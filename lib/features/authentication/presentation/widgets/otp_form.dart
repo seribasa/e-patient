@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/core/widgets/button_custom.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
-import 'package:eimunisasi/routers/route_paths/route_paths.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/core/widgets/button_custom.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/routers/route_paths/route_paths.dart';
 import 'package:go_router/go_router.dart';
-
 
 import '../../logic/bloc/authentication_bloc/authentication_bloc.dart';
 import '../../logic/cubit/login_phone_cubit/login_phone_cubit.dart';
@@ -60,18 +59,15 @@ class _OTPFormState extends State<OTPForm> {
       // context.read<LoginPhoneCubit>().sendOTPCode();
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            content: Text('Code sent to $phone'),
-          ),
-        );
+        ..showSnackBar(SnackBar(content: Text('Code sent to $phone')));
     }
 
     return BlocListener<LoginPhoneCubit, LoginPhoneState>(
       listener: (context, state) {
         if (state.status.isFailure) {
-          snackbarCustom(state.errorMessage ?? 'Otentikasi gagal!')
-              .show(context);
+          snackbarCustom(
+            state.errorMessage ?? 'Otentikasi gagal!',
+          ).show(context);
         } else if (state.status.isSuccess) {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
           context.pushReplacement(RoutePaths.root);
@@ -82,18 +78,20 @@ class _OTPFormState extends State<OTPForm> {
           const Text(
             AppConstant.ENTER_OTP,
             style: TextStyle(
-                fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+              fontSize: 20,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(
-            height: 50.0,
-          ),
+          const SizedBox(height: 50.0),
           Align(
             alignment: Alignment.topLeft,
             child: BlocBuilder<LoginPhoneCubit, LoginPhoneState>(
               builder: (context, state) {
                 return Text(
-                    "${AppConstant.HANDPHONE_LABEL}: ${state.countryCode.value + state.phone.value}",
-                    style: const TextStyle(fontSize: 15, color: Colors.black));
+                  "${AppConstant.HANDPHONE_LABEL}: ${state.countryCode.value + state.phone.value}",
+                  style: const TextStyle(fontSize: 15, color: Colors.black),
+                );
               },
             ),
           ),
@@ -112,17 +110,17 @@ class _OTPFormState extends State<OTPForm> {
                       width: 18,
                       child: CircularProgressIndicator(),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     Text("${AppConstant.WAIT} $seconds ..."),
                   ],
                 )
               : BlocBuilder<LoginPhoneCubit, LoginPhoneState>(
                   builder: (context, state) {
                     return InkWell(
-                      child: const Text(AppConstant.ASK_NEW_CODE,
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        AppConstant.ASK_NEW_CODE,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       onTap: () {
                         reloadCodeSent(state.phone.value);
                         setState(() {
@@ -133,7 +131,7 @@ class _OTPFormState extends State<OTPForm> {
                       },
                     );
                   },
-                )
+                ),
         ],
       ),
     );

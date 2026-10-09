@@ -4,10 +4,7 @@ class BasePagination<T> extends Equatable {
   final List<T>? data;
   final MetadataPaginationModel? metadata;
 
-  const BasePagination({
-    this.data,
-    this.metadata,
-  });
+  const BasePagination({this.data, this.metadata});
 
   BasePagination<T> copyWith({
     List<T>? data,
@@ -20,10 +17,7 @@ class BasePagination<T> extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-    data,
-    metadata,
-  ];
+  List<Object?> get props => [data, metadata];
 }
 
 class MetadataPaginationModel extends Equatable {
@@ -37,11 +31,7 @@ class MetadataPaginationModel extends Equatable {
     this.perPage = 20,
   });
 
-  MetadataPaginationModel copyWith({
-    int? total,
-    int? page,
-    int? perPage,
-  }) {
+  MetadataPaginationModel copyWith({int? total, int? page, int? perPage}) {
     return MetadataPaginationModel(
       total: total ?? this.total,
       page: page ?? this.page,
@@ -58,9 +48,5 @@ class MetadataPaginationModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-    total,
-    page,
-    perPage,
-  ];
+  List<Object?> get props => [total, page, perPage];
 }

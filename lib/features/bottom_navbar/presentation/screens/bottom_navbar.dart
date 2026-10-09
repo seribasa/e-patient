@@ -1,4 +1,4 @@
-import 'package:eimunisasi/routers/route_paths/root_route_paths.dart';
+import 'package:e_patient/routers/route_paths/root_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,9 +20,7 @@ class BottomNavbarWrapper extends StatelessWidget {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
         if (state is Unauthenticated) {
-          context.pushReplacement(
-            RootRoutePaths.root.fullPath,
-          );
+          context.pushReplacement(RootRoutePaths.root.fullPath);
           snackbarCustom(AppConstant.LOGOUT_SUCCEED);
         }
       },
@@ -47,9 +45,7 @@ class BottomNavbarWrapper extends StatelessWidget {
                   },
                 );
               }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             },
           ),
           bottomNavigationBar:
@@ -71,17 +67,11 @@ class BottomNavbarWrapper extends StatelessWidget {
                     label: 'Home',
                   ),
                   BottomNavigationBarItem(
-                    icon: FaIcon(
-                      FontAwesomeIcons.userDoctor,
-                      size: 20,
-                    ),
+                    icon: FaIcon(FontAwesomeIcons.userDoctor, size: 20),
                     label: 'Profile',
                   ),
                   BottomNavigationBarItem(
-                    icon: FaIcon(
-                      FontAwesomeIcons.solidBell,
-                      size: 20,
-                    ),
+                    icon: FaIcon(FontAwesomeIcons.solidBell, size: 20),
                     label: 'Message',
                   ),
                 ],

@@ -1,20 +1,17 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:eimunisasi/core/extension.dart';
-import 'package:eimunisasi/features/calendar/data/models/calendar_model.dart';
-import 'package:eimunisasi/features/calendar/data/repositories/calendar_repository.dart';
-import 'package:eimunisasi/features/calendar/logic/bloc/calendar_bloc/calendar_bloc.dart';
-import 'package:eimunisasi/services/notifications.dart';
-import 'package:eimunisasi/core/utils/string_extension.dart';
+import 'package:e_patient/core/extension.dart';
+import 'package:e_patient/features/calendar/data/models/calendar_model.dart';
+import 'package:e_patient/features/calendar/data/repositories/calendar_repository.dart';
+import 'package:e_patient/features/calendar/logic/bloc/calendar_bloc/calendar_bloc.dart';
+import 'package:e_patient/services/notifications.dart';
+import 'package:e_patient/core/utils/string_extension.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-@GenerateMocks([
-  CalendarRepository,
-  NotificationService,
-])
+@GenerateMocks([CalendarRepository, NotificationService])
 import 'calendar_bloc_test.mocks.dart';
 
 void main() {
@@ -29,10 +26,7 @@ void main() {
   group('CalendarBloc', () {
     blocTest<CalendarBloc, CalendarState>(
       'emits [] when nothing is added',
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      ),
+      build: () => CalendarBloc(notificationService, calendarRepository),
       expect: () => [],
     );
   });
@@ -44,34 +38,25 @@ void main() {
       'emits status success when CalendarEventLoaded is called',
       setUp: () {
         response = [
-          CalendarModel(
-            uid: 'uid',
-            activity: 'activity',
-            date: DateTime.now(),
-          ),
+          CalendarModel(uid: 'uid', activity: 'activity', date: DateTime.now()),
           CalendarModel(
             uid: 'uid2',
             activity: 'activity2',
             date: DateTime.now(),
           ),
         ];
-        when(calendarRepository.deleteAllEventLocal())
-            .thenAnswer((_) async => 1);
+        when(
+          calendarRepository.deleteAllEventLocal(),
+        ).thenAnswer((_) async => 1);
         when(calendarRepository.getEvents()).thenAnswer((_) async => response);
       },
       tearDown: () {
         reset(calendarRepository);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          CalendarEventLoaded(),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(CalendarEventLoaded()),
       expect: () => [
-        CalendarState(
-          status: FormzSubmissionStatus.inProgress,
-        ),
+        CalendarState(status: FormzSubmissionStatus.inProgress),
         CalendarState(
           status: FormzSubmissionStatus.success,
           events: response,
@@ -83,29 +68,20 @@ void main() {
     blocTest<CalendarBloc, CalendarState>(
       'emits status failure when getEvents() throws',
       setUp: () {
-        when(calendarRepository.deleteAllEventLocal())
-            .thenAnswer((_) async => 1);
+        when(
+          calendarRepository.deleteAllEventLocal(),
+        ).thenAnswer((_) async => 1);
         when(calendarRepository.getEvents()).thenThrow(Exception('error'));
       },
       tearDown: () {
         reset(calendarRepository);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          CalendarEventLoaded(),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(CalendarEventLoaded()),
       expect: () => [
-        CalendarState(
-          status: FormzSubmissionStatus.inProgress,
-        ),
-        CalendarState(
-          status: FormzSubmissionStatus.failure,
-        ),
-        CalendarState(
-          status: FormzSubmissionStatus.initial,
-        ),
+        CalendarState(status: FormzSubmissionStatus.inProgress),
+        CalendarState(status: FormzSubmissionStatus.failure),
+        CalendarState(status: FormzSubmissionStatus.initial),
       ],
     );
   });
@@ -117,19 +93,9 @@ void main() {
       setUp: () {
         selectedDate = DateTime.now();
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          SetSelectedDate(
-            selectedDate: selectedDate,
-          ),
-        ),
-      expect: () => [
-        CalendarState(
-          selectedDate: selectedDate,
-        ),
-      ],
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(SetSelectedDate(selectedDate: selectedDate)),
+      expect: () => [CalendarState(selectedDate: selectedDate)],
     );
   });
 
@@ -140,19 +106,9 @@ void main() {
       setUp: () {
         focusedDate = DateTime.now();
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          SetFocusedDate(
-            focusedDate: focusedDate,
-          ),
-        ),
-      expect: () => [
-        CalendarState(
-          focusedDate: focusedDate,
-        ),
-      ],
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(SetFocusedDate(focusedDate: focusedDate)),
+      expect: () => [CalendarState(focusedDate: focusedDate)],
     );
   });
 
@@ -163,38 +119,18 @@ void main() {
       setUp: () {
         currentPageDate = DateTime.now();
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          SetCurrentPageDate(
-            currentPageDate: currentPageDate,
-          ),
-        ),
-      expect: () => [
-        CalendarState(
-          currentPageDate: currentPageDate,
-        ),
-      ],
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(SetCurrentPageDate(currentPageDate: currentPageDate)),
+      expect: () => [CalendarState(currentPageDate: currentPageDate)],
     );
   });
 
   group('SetFormat', () {
     blocTest<CalendarBloc, CalendarState>(
       'emits format when SetFormat is called',
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          SetFormat(
-            format: CalendarFormat.week,
-          ),
-        ),
-      expect: () => [
-        CalendarState(
-          format: CalendarFormat.week,
-        ),
-      ],
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(SetFormat(format: CalendarFormat.week)),
+      expect: () => [CalendarState(format: CalendarFormat.week)],
     );
   });
 
@@ -209,24 +145,17 @@ void main() {
           date: DateTime.now(),
         );
         when(calendarRepository.setEvent(event)).thenAnswer((_) async => event);
-        when(calendarRepository.setEventLocal(event))
-            .thenAnswer((_) async => 1);
+        when(
+          calendarRepository.setEventLocal(event),
+        ).thenAnswer((_) async => 1);
       },
       tearDown: () {
         reset(calendarRepository);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          AddEvent(
-            event: event,
-          ),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(AddEvent(event: event)),
       expect: () => [
-        CalendarState(
-          statusAddEvent: FormzSubmissionStatus.inProgress,
-        ),
+        CalendarState(statusAddEvent: FormzSubmissionStatus.inProgress),
         CalendarState(
           statusAddEvent: FormzSubmissionStatus.success,
           events: [event],
@@ -238,7 +167,7 @@ void main() {
           activityForm: emptyString,
           events: [event],
           groupedEvents: [event].groupEventsByDate(),
-        )
+        ),
       ],
     );
 
@@ -250,31 +179,19 @@ void main() {
           activity: 'activity',
           date: DateTime.now(),
         );
-        when(calendarRepository.setEventLocal(
-          event,
-        )).thenThrow(Exception('error'));
+        when(
+          calendarRepository.setEventLocal(event),
+        ).thenThrow(Exception('error'));
       },
       tearDown: () {
         reset(calendarRepository);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          AddEvent(
-            event: event,
-          ),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(AddEvent(event: event)),
       expect: () => [
-        CalendarState(
-          statusAddEvent: FormzSubmissionStatus.inProgress,
-        ),
-        CalendarState(
-          statusAddEvent: FormzSubmissionStatus.failure,
-        ),
-        CalendarState(
-          statusAddEvent: FormzSubmissionStatus.initial,
-        ),
+        CalendarState(statusAddEvent: FormzSubmissionStatus.inProgress),
+        CalendarState(statusAddEvent: FormzSubmissionStatus.failure),
+        CalendarState(statusAddEvent: FormzSubmissionStatus.initial),
       ],
     );
 
@@ -286,32 +203,20 @@ void main() {
           activity: 'activity',
           date: DateTime.now(),
         );
-        when(calendarRepository.setEventLocal(
-          event,
-        )).thenAnswer((_) async => 1);
+        when(
+          calendarRepository.setEventLocal(event),
+        ).thenAnswer((_) async => 1);
         when(calendarRepository.setEvent(event)).thenThrow(Exception('error'));
       },
       tearDown: () {
         reset(calendarRepository);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          AddEvent(
-            event: event,
-          ),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(AddEvent(event: event)),
       expect: () => [
-        CalendarState(
-          statusAddEvent: FormzSubmissionStatus.inProgress,
-        ),
-        CalendarState(
-          statusAddEvent: FormzSubmissionStatus.failure,
-        ),
-        CalendarState(
-          statusAddEvent: FormzSubmissionStatus.initial,
-        ),
+        CalendarState(statusAddEvent: FormzSubmissionStatus.inProgress),
+        CalendarState(statusAddEvent: FormzSubmissionStatus.failure),
+        CalendarState(statusAddEvent: FormzSubmissionStatus.initial),
       ],
     );
   });
@@ -326,26 +231,20 @@ void main() {
           activity: 'activity',
           date: DateTime.now(),
         );
-        when(calendarRepository.updateEvent(event))
-            .thenAnswer((_) async => event);
-        when(calendarRepository.setEventLocal(event))
-            .thenAnswer((_) async => 1);
+        when(
+          calendarRepository.updateEvent(event),
+        ).thenAnswer((_) async => event);
+        when(
+          calendarRepository.setEventLocal(event),
+        ).thenAnswer((_) async => 1);
       },
       tearDown: () {
         reset(calendarRepository);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          UpdateEvent(
-            event: event,
-          ),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(UpdateEvent(event: event)),
       expect: () => [
-        CalendarState(
-          statusUpdateEvent: FormzSubmissionStatus.inProgress,
-        ),
+        CalendarState(statusUpdateEvent: FormzSubmissionStatus.inProgress),
         CalendarState(
           statusUpdateEvent: FormzSubmissionStatus.success,
           events: [event],
@@ -357,7 +256,7 @@ void main() {
           activityForm: emptyString,
           events: [event],
           groupedEvents: [event].groupEventsByDate(),
-        )
+        ),
       ],
     );
 
@@ -369,31 +268,19 @@ void main() {
           activity: 'activity',
           date: DateTime.now(),
         );
-        when(calendarRepository.setEventLocal(
-          event,
-        )).thenThrow(Exception('error'));
+        when(
+          calendarRepository.setEventLocal(event),
+        ).thenThrow(Exception('error'));
       },
       tearDown: () {
         reset(calendarRepository);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          UpdateEvent(
-            event: event,
-          ),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(UpdateEvent(event: event)),
       expect: () => [
-        CalendarState(
-          statusUpdateEvent: FormzSubmissionStatus.inProgress,
-        ),
-        CalendarState(
-          statusUpdateEvent: FormzSubmissionStatus.failure,
-        ),
-        CalendarState(
-          statusUpdateEvent: FormzSubmissionStatus.initial,
-        ),
+        CalendarState(statusUpdateEvent: FormzSubmissionStatus.inProgress),
+        CalendarState(statusUpdateEvent: FormzSubmissionStatus.failure),
+        CalendarState(statusUpdateEvent: FormzSubmissionStatus.initial),
       ],
     );
 
@@ -405,33 +292,22 @@ void main() {
           activity: 'activity',
           date: DateTime.now(),
         );
-        when(calendarRepository.setEventLocal(
-          event,
-        )).thenAnswer((_) async => 1);
-        when(calendarRepository.updateEvent(event))
-            .thenThrow(Exception('error'));
+        when(
+          calendarRepository.setEventLocal(event),
+        ).thenAnswer((_) async => 1);
+        when(
+          calendarRepository.updateEvent(event),
+        ).thenThrow(Exception('error'));
       },
       tearDown: () {
         reset(calendarRepository);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          UpdateEvent(
-            event: event,
-          ),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(UpdateEvent(event: event)),
       expect: () => [
-        CalendarState(
-          statusUpdateEvent: FormzSubmissionStatus.inProgress,
-        ),
-        CalendarState(
-          statusUpdateEvent: FormzSubmissionStatus.failure,
-        ),
-        CalendarState(
-          statusUpdateEvent: FormzSubmissionStatus.initial,
-        ),
+        CalendarState(statusUpdateEvent: FormzSubmissionStatus.inProgress),
+        CalendarState(statusUpdateEvent: FormzSubmissionStatus.failure),
+        CalendarState(statusUpdateEvent: FormzSubmissionStatus.initial),
       ],
     );
   });
@@ -448,30 +324,26 @@ void main() {
           date: date,
           createdDate: DateTime.now(),
         );
-        when(calendarRepository.deleteEvent(event.documentID.orEmpty))
-            .thenAnswer((_) async => event);
-        when(calendarRepository.deleteEventLocal(event))
-            .thenAnswer((_) async => 1);
-        when(notificationService
-                .cancelNotification(event.createdDate!.millisecondsSinceEpoch))
-            .thenAnswer((_) async => 1);
+        when(
+          calendarRepository.deleteEvent(event.documentID.orEmpty),
+        ).thenAnswer((_) async => event);
+        when(
+          calendarRepository.deleteEventLocal(event),
+        ).thenAnswer((_) async => 1);
+        when(
+          notificationService.cancelNotification(
+            event.createdDate!.millisecondsSinceEpoch,
+          ),
+        ).thenAnswer((_) async => 1);
       },
       tearDown: () {
         reset(calendarRepository);
         reset(notificationService);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          DeleteEvent(
-            event: event,
-          ),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(DeleteEvent(event: event)),
       expect: () => [
-        CalendarState(
-          statusDeleteEvent: FormzSubmissionStatus.inProgress,
-        ),
+        CalendarState(statusDeleteEvent: FormzSubmissionStatus.inProgress),
         CalendarState(
           statusDeleteEvent: FormzSubmissionStatus.success,
           events: [],
@@ -506,14 +378,13 @@ void main() {
     blocTest<CalendarBloc, CalendarState>(
       'emits status success when DeleteEvent is called with state.events is not empty',
       setUp: () {
-        mockEvents = [
-          mockEvent1,
-          mockEvent2,
-        ];
-        when(calendarRepository.deleteEvent(mockEvents[1].documentID.orEmpty))
-            .thenAnswer((_) async => Future.value());
-        when(calendarRepository.deleteEventLocal(mockEvents[1]))
-            .thenAnswer((_) async => 1);
+        mockEvents = [mockEvent1, mockEvent2];
+        when(
+          calendarRepository.deleteEvent(mockEvents[1].documentID.orEmpty),
+        ).thenAnswer((_) async => Future.value());
+        when(
+          calendarRepository.deleteEventLocal(mockEvents[1]),
+        ).thenAnswer((_) async => 1);
         when(
           notificationService.cancelNotification(
             mockEvents[1].createdDate!.millisecondsSinceEpoch,
@@ -530,21 +401,13 @@ void main() {
           groupedEvents: mockEvents.groupEventsByDate(),
         );
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      ),
-      act: (bloc) => bloc.add(
-        DeleteEvent(event: mockEvents[1]),
-      ),
+      build: () => CalendarBloc(notificationService, calendarRepository),
+      act: (bloc) => bloc.add(DeleteEvent(event: mockEvents[1])),
       expect: () => [
         CalendarState(
           statusDeleteEvent: FormzSubmissionStatus.inProgress,
           events: [mockEvent1],
-          groupedEvents: [
-            mockEvent1,
-            mockEvent2,
-          ].groupEventsByDate(),
+          groupedEvents: [mockEvent1, mockEvent2].groupEventsByDate(),
         ),
         CalendarState(
           statusDeleteEvent: FormzSubmissionStatus.success,
@@ -568,31 +431,19 @@ void main() {
           activity: 'activity',
           date: DateTime.now(),
         );
-        when(calendarRepository.deleteEventLocal(
-          event,
-        )).thenThrow(Exception('error'));
+        when(
+          calendarRepository.deleteEventLocal(event),
+        ).thenThrow(Exception('error'));
       },
       tearDown: () {
         reset(calendarRepository);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          DeleteEvent(
-            event: event,
-          ),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(DeleteEvent(event: event)),
       expect: () => [
-        CalendarState(
-          statusDeleteEvent: FormzSubmissionStatus.inProgress,
-        ),
-        CalendarState(
-          statusDeleteEvent: FormzSubmissionStatus.failure,
-        ),
-        CalendarState(
-          statusDeleteEvent: FormzSubmissionStatus.initial,
-        ),
+        CalendarState(statusDeleteEvent: FormzSubmissionStatus.inProgress),
+        CalendarState(statusDeleteEvent: FormzSubmissionStatus.failure),
+        CalendarState(statusDeleteEvent: FormzSubmissionStatus.initial),
       ],
     );
 
@@ -604,33 +455,22 @@ void main() {
           activity: 'activity',
           date: DateTime.now(),
         );
-        when(calendarRepository.deleteEventLocal(
-          event,
-        )).thenAnswer((_) async => 1);
-        when(calendarRepository.deleteEvent(event.documentID.orEmpty))
-            .thenThrow(Exception('error'));
+        when(
+          calendarRepository.deleteEventLocal(event),
+        ).thenAnswer((_) async => 1);
+        when(
+          calendarRepository.deleteEvent(event.documentID.orEmpty),
+        ).thenThrow(Exception('error'));
       },
       tearDown: () {
         reset(calendarRepository);
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          DeleteEvent(
-            event: event,
-          ),
-        ),
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(DeleteEvent(event: event)),
       expect: () => [
-        CalendarState(
-          statusDeleteEvent: FormzSubmissionStatus.inProgress,
-        ),
-        CalendarState(
-          statusDeleteEvent: FormzSubmissionStatus.failure,
-        ),
-        CalendarState(
-          statusDeleteEvent: FormzSubmissionStatus.initial,
-        ),
+        CalendarState(statusDeleteEvent: FormzSubmissionStatus.inProgress),
+        CalendarState(statusDeleteEvent: FormzSubmissionStatus.failure),
+        CalendarState(statusDeleteEvent: FormzSubmissionStatus.initial),
       ],
     );
   });
@@ -642,19 +482,9 @@ void main() {
       setUp: () {
         dateTime = DateTime.now();
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          SetDateTimeForm(
-            value: dateTime,
-          ),
-        ),
-      expect: () => [
-        CalendarState(
-          dateTimeForm: dateTime,
-        ),
-      ],
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(SetDateTimeForm(value: dateTime)),
+      expect: () => [CalendarState(dateTimeForm: dateTime)],
     );
   });
 
@@ -665,19 +495,9 @@ void main() {
       setUp: () {
         activity = 'activity';
       },
-      build: () => CalendarBloc(
-        notificationService,
-        calendarRepository,
-      )..add(
-          SetActivityForm(
-            value: activity,
-          ),
-        ),
-      expect: () => [
-        CalendarState(
-          activityForm: activity,
-        ),
-      ],
+      build: () => CalendarBloc(notificationService, calendarRepository)
+        ..add(SetActivityForm(value: activity)),
+      expect: () => [CalendarState(activityForm: activity)],
     );
   });
 }

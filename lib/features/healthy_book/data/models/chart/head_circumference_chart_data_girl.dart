@@ -1,4 +1,4 @@
-import 'package:eimunisasi/features/healthy_book/data/models/checkup_model.dart';
+import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:math_expressions/math_expressions.dart';
 
@@ -182,8 +182,9 @@ class HeadCircumferenceChartDataGirl {
   List<FlSpot> listDataPasienLine(List<CheckupModel> listData) {
     List<FlSpot> list = [];
     for (int i = 1; i <= listData.length; i++) {
-      list.add(FlSpot(
-          i.toDouble(), listData[i - 1].lingkarKepala?.toDouble() ?? 0.0));
+      list.add(
+        FlSpot(i.toDouble(), listData[i - 1].lingkarKepala?.toDouble() ?? 0.0),
+      );
     }
     return list;
   }

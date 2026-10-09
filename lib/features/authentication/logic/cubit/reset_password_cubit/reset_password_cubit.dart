@@ -14,9 +14,7 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
   final AuthRepository _authRepository;
   void emailChanged(String value) {
     final email = Email.dirty(value);
-    emit(state.copyWith(
-      email: email,
-    ));
+    emit(state.copyWith(email: email));
   }
 
   Future<void> resetPasswordFormSubmitted() async {

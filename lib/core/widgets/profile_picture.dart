@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eimunisasi/core/extension.dart';
+import 'package:e_patient/core/extension.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePictureFromUrl extends StatelessWidget {
@@ -22,24 +22,21 @@ class ProfilePictureFromUrl extends StatelessWidget {
               alignment: Alignment.center,
               child: CachedNetworkImage(
                 imageUrl: url ?? emptyString,
-                placeholder: (context, url) => CircularProgressIndicator.adaptive(),
+                placeholder: (context, url) =>
+                    CircularProgressIndicator.adaptive(),
                 errorWidget: (context, url, error) => Icon(Icons.error),
                 imageBuilder: (context, imageProvider) => CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.transparent,
                   backgroundImage: imageProvider,
-                )
+                ),
               ),
             ),
           ],
           if (!isUrlSafe) ...[
             Align(
               alignment: Alignment.center,
-              child: Icon(
-                Icons.photo_outlined,
-                size: 50,
-                color: Colors.grey,
-              ),
+              child: Icon(Icons.photo_outlined, size: 50, color: Colors.grey),
             ),
           ],
           Align(
@@ -48,10 +45,7 @@ class ProfilePictureFromUrl extends StatelessWidget {
               radius: 15,
               child: IconButton(
                 alignment: Alignment.center,
-                icon: Icon(
-                  Icons.photo_camera,
-                  size: 15.0,
-                ),
+                icon: Icon(Icons.photo_camera, size: 15.0),
                 onPressed: onPressedCamera,
               ),
             ),

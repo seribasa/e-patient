@@ -1,6 +1,6 @@
-import 'package:eimunisasi/features/healthy_book/data/models/chart/weight_chart_data_boy.dart';
-import 'package:eimunisasi/features/healthy_book/data/models/chart/weight_chart_data_girl.dart.dart';
-import 'package:eimunisasi/features/healthy_book/data/models/checkup_model.dart';
+import 'package:e_patient/features/healthy_book/data/models/chart/weight_chart_data_boy.dart';
+import 'package:e_patient/features/healthy_book/data/models/chart/weight_chart_data_girl.dart.dart';
+import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -25,10 +25,7 @@ class _LineChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LineChart(
-      sampleData2,
-      duration: const Duration(milliseconds: 250),
-    );
+    return LineChart(sampleData2, duration: const Duration(milliseconds: 250));
   }
 
   LineChartData get sampleData2 => LineChartData(
@@ -46,16 +43,14 @@ class _LineChart extends StatelessWidget {
   LineTouchData get lineTouchData2 => LineTouchData(
         getTouchedSpotIndicator:
             (LineChartBarData barData, List<int> indicators) {
-          return indicators.map(
-            (int index) {
-              final line = FlLine(
-                  color: Colors.black, strokeWidth: 1, dashArray: [4, 2]);
-              return TouchedSpotIndicatorData(
-                line,
-                FlDotData(show: false),
-              );
-            },
-          ).toList();
+          return indicators.map((int index) {
+            final line = FlLine(
+              color: Colors.black,
+              strokeWidth: 1,
+              dashArray: [4, 2],
+            );
+            return TouchedSpotIndicatorData(line, FlDotData(show: false));
+          }).toList();
         },
         handleBuiltInTouches: true,
         touchTooltipData: LineTouchTooltipData(
@@ -83,33 +78,17 @@ class _LineChart extends StatelessWidget {
       );
 
   FlTitlesData get titlesData1 => FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: bottomTitles,
-        ),
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: leftTitles(),
-        ),
+        bottomTitles: AxisTitles(sideTitles: bottomTitles),
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        leftTitles: AxisTitles(sideTitles: leftTitles()),
       );
 
   FlTitlesData get titlesData2 => FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: bottomTitles,
-        ),
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: leftTitles(),
-        ),
+        bottomTitles: AxisTitles(sideTitles: bottomTitles),
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        leftTitles: AxisTitles(sideTitles: leftTitles()),
       );
 
   List<LineChartBarData> get lineBarsData2 => [
@@ -130,8 +109,11 @@ class _LineChart extends StatelessWidget {
       fontSize: 12,
     );
 
-    return Text(value.toInt().toString(),
-        style: style, textAlign: TextAlign.center);
+    return Text(
+      value.toInt().toString(),
+      style: style,
+      textAlign: TextAlign.center,
+    );
   }
 
   SideTitles leftTitles() => SideTitles(
@@ -148,8 +130,9 @@ class _LineChart extends StatelessWidget {
     );
 
     return Padding(
-        child: Text(value.toInt().toString(), style: style),
-        padding: const EdgeInsets.only(top: 10.0));
+      child: Text(value.toInt().toString(), style: style),
+      padding: const EdgeInsets.only(top: 10.0),
+    );
   }
 
   SideTitles get bottomTitles => SideTitles(
@@ -305,9 +288,7 @@ class GrafikBeratBadanState extends State<GrafikBeratBadan> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(18)),
-      ),
+      decoration: const BoxDecoration(borderRadius: BorderRadius.zero),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: GestureDetector(

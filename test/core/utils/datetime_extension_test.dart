@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:eimunisasi/core/utils/datetime_extension.dart';
+import 'package:e_patient/core/utils/datetime_extension.dart';
 
 void main() {
   group('DateTimeExtension', () {
@@ -31,7 +31,10 @@ void main() {
 
       test('returns current DateTime when the DateTime is null', () {
         final now = DateTime.now();
-        expect((null as DateTime?).orNow.isAfter(now.subtract(Duration(seconds: 1))), true);
+        expect(
+          (null as DateTime?).orNow.isAfter(now.subtract(Duration(seconds: 1))),
+          true,
+        );
       });
     });
   });

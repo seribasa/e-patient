@@ -1,4 +1,4 @@
-import 'package:eimunisasi/features/payment/data/models/payment_initiate_response_model.dart';
+import 'package:e_patient/features/payment/data/models/payment_initiate_response_model.dart';
 import 'package:equatable/equatable.dart';
 
 import 'product_model.dart';
@@ -51,7 +51,8 @@ class OrderModel extends Equatable {
         }
         try {
           return List<OrderItemModel>.from(
-              data['order_items'].map((x) => OrderItemModel.fromSeribase(x)));
+            data['order_items'].map((x) => OrderItemModel.fromSeribase(x)),
+          );
         } catch (e) {
           return null;
         }

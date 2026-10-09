@@ -16,16 +16,12 @@ class LoginCubit extends Cubit<LoginState> {
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
-    emit(state.copyWith(
-      email: email,
-    ));
+    emit(state.copyWith(email: email));
   }
 
   void passwordChanged(String value) {
     final password = Password.dirty(value);
-    emit(state.copyWith(
-      password: password,
-    ));
+    emit(state.copyWith(password: password));
   }
 
   void showHidePassword() {
@@ -49,10 +45,12 @@ class LoginCubit extends Cubit<LoginState> {
       );
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: 'Failed to login with email and password',
-      ));
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: 'Failed to login with email and password',
+        ),
+      );
     }
   }
 
@@ -71,10 +69,12 @@ class LoginCubit extends Cubit<LoginState> {
       }
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: 'Failed to login with Seribase Oauth',
-      ));
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: 'Failed to login with Seribase Oauth',
+        ),
+      );
     }
   }
 }

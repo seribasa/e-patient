@@ -1,5 +1,5 @@
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
-import 'package:eimunisasi/routers/route_paths/root_route_paths.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/routers/route_paths/root_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

@@ -1,6 +1,6 @@
-import 'package:eimunisasi/features/payment/data/models/order_model.dart';
-import 'package:eimunisasi/features/vaccination/data/models/appointment_model.dart';
-import 'package:eimunisasi/features/vaccination/data/models/appointment_payment_entity.dart';
+import 'package:e_patient/features/payment/data/models/order_model.dart';
+import 'package:e_patient/features/vaccination/data/models/appointment_model.dart';
+import 'package:e_patient/features/vaccination/data/models/appointment_payment_entity.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,9 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AppointmentRepository {
   final SupabaseClient supabaseClient;
 
-  AppointmentRepository(
-    this.supabaseClient,
-  );
+  AppointmentRepository(this.supabaseClient);
 
   Future<List<AppointmentModel>> getAppointments({
     required String userId,
@@ -29,24 +27,16 @@ class AppointmentRepository {
       }();
       final result = await supabaseClient
           .from(AppointmentModel.tableName)
-          .select(
-            '''
+          .select('''
               *,
               profiles:parent_id ( * ),
               children ( * )
-            ''',
-          )
+            ''')
           .eq('parent_id', userId)
-          .order(
-            orderBy,
-            ascending: true,
-          )
+          .order(orderBy, ascending: true)
           .withConverter(
-            (json) => json
-                .map(
-                  (e) => AppointmentModel.fromSeribase(e),
-                )
-                .toList(),
+            (json) =>
+                json.map((e) => AppointmentModel.fromSeribase(e)).toList(),
           );
       return result;
     } catch (e) {
@@ -54,9 +44,7 @@ class AppointmentRepository {
     }
   }
 
-  Future<AppointmentOrderEntity> getAppointment({
-    required String id,
-  }) async {
+  Future<AppointmentOrderEntity> getAppointment({required String id}) async {
     try {
       final fetch = await supabaseClient.functions.invoke(
         'api/appointments/$id',
@@ -78,10 +66,7 @@ class AppointmentRepository {
       final result = AppointmentModel.fromSeribase(data);
       final order =
           data['order'] != null ? OrderModel.fromSeribase(data['order']) : null;
-      return AppointmentOrderEntity(
-        appointment: result,
-        order: order,
-      );
+      return AppointmentOrderEntity(appointment: result, order: order);
     } catch (e) {
       rethrow;
     }
@@ -113,10 +98,7 @@ class AppointmentRepository {
       final appointment = AppointmentModel.fromSeribase(data);
       final orderById =
           data['order'] != null ? OrderModel.fromSeribase(data['order']) : null;
-      return AppointmentOrderEntity(
-        appointment: appointment,
-        order: orderById,
-      );
+      return AppointmentOrderEntity(appointment: appointment, order: orderById);
     } catch (e) {
       rethrow;
     }
@@ -127,9 +109,7 @@ class AppointmentRepository {
       assert(model.id != null, 'ID appointment tidak ditemukan');
       await supabaseClient
           .from(AppointmentModel.tableName)
-          .update(
-            model.toSeribase(),
-          )
+          .update(model.toSeribase())
           .eq('id', model.id!);
 
       return model;

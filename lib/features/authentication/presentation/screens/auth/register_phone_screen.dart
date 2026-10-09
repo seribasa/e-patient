@@ -1,6 +1,6 @@
-import 'package:eimunisasi/features/authentication/logic/cubit/signup_cubit/signup_cubit.dart';
-import 'package:eimunisasi/features/authentication/presentation/widgets/signup_phone_form.dart';
-import 'package:eimunisasi/injection.dart';
+import 'package:e_patient/features/authentication/logic/cubit/signup_cubit/signup_cubit.dart';
+import 'package:e_patient/features/authentication/presentation/widgets/signup_phone_form.dart';
+import 'package:e_patient/injection.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

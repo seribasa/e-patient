@@ -1,6 +1,6 @@
-import 'package:eimunisasi/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:eimunisasi/features/vaccination/data/models/appointment_model.dart';
-import 'package:eimunisasi/injection.dart';
+import 'package:e_patient/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:e_patient/features/vaccination/data/models/appointment_model.dart';
+import 'package:e_patient/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -22,10 +22,8 @@ class AppointmentsScreen extends StatelessWidget {
         ? (context.read<AuthenticationBloc>().state as Authenticated).user.uid
         : '';
     return BlocProvider(
-      create: (context) => getIt<AppointmentBloc>()
-        ..add(
-          LoadAppointmentsEvent(userId ?? ''),
-        ),
+      create: (context) =>
+          getIt<AppointmentBloc>()..add(LoadAppointmentsEvent(userId ?? '')),
       child: _AppointmentsScaffold(),
     );
   }
@@ -38,7 +36,7 @@ class _AppointmentsScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink[300],
+        backgroundColor: Colors.black,
         elevation: 0,
         title: Text(
           'Pilih Janji',
@@ -49,21 +47,20 @@ class _AppointmentsScaffold extends StatelessWidget {
       body: Container(
         height: double.infinity,
         padding: EdgeInsets.all(20),
-        color: Colors.pink[100],
+        color: Colors.black,
         child: Column(
           children: [
             BlocConsumer<AppointmentBloc, AppointmentState>(
               listenWhen: (previous, current) =>
                   previous.sortCriteria != current.sortCriteria,
               listener: (context, state) {
-                final userId = (context.read<AuthenticationBloc>().state
-                        as Authenticated)
-                    .user
-                    .uid ?? '';
+                final userId =
+                    (context.read<AuthenticationBloc>().state as Authenticated)
+                            .user
+                            .uid ??
+                        '';
                 context.read<AppointmentBloc>().add(
-                      LoadAppointmentsEvent(
-                        userId,
-                      ),
+                      LoadAppointmentsEvent(userId),
                     );
               },
               builder: (context, state) {
@@ -72,8 +69,10 @@ class _AppointmentsScaffold extends StatelessWidget {
                   children: [
                     Text(
                       'Urutkan berdasarkan',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     DropdownButton<String>(
                       value: state.sortCriteria,
@@ -83,14 +82,8 @@ class _AppointmentsScaffold extends StatelessWidget {
                             );
                       },
                       items: [
-                        DropdownMenuItem(
-                          value: 'date',
-                          child: Text('Tanggal'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'name',
-                          child: Text('Nama'),
-                        ),
+                        DropdownMenuItem(value: 'date', child: Text('Tanggal')),
+                        DropdownMenuItem(value: 'name', child: Text('Nama')),
                       ],
                     ),
                   ],
@@ -111,9 +104,7 @@ class _AppointmentsScaffold extends StatelessWidget {
                       itemCount: data.length,
                       itemBuilder: (context, index) {
                         final appointment = data[index];
-                        return _ListAppointment(
-                          appointment,
-                        );
+                        return _ListAppointment(appointment);
                       },
                     );
                   },
@@ -152,19 +143,10 @@ class _ListAppointment extends StatelessWidget {
         },
         title: Text(
           "$name ($age)",
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w700),
         ),
-        subtitle: Text(
-          date,
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        trailing: Icon(
-          Icons.keyboard_arrow_right_rounded,
-        ),
+        subtitle: Text(date, style: TextStyle(fontWeight: FontWeight.w700)),
+        trailing: Icon(Icons.keyboard_arrow_right_rounded),
       ),
     );
   }

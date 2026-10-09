@@ -1,4 +1,4 @@
-import 'package:eimunisasi/features/payment/data/models/payment_initiate_request_model.dart';
+import 'package:e_patient/features/payment/data/models/payment_initiate_request_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -6,23 +6,15 @@ void main() {
     final tPaymentModel = PaymentInitiateRequestModel(
       gateway: 'test_gateway',
       currency: 'idr',
-      items: [
-        ItemModel(
-          id: 'test_product',
-          quantity: 1,
-        )
-      ],
+      items: [ItemModel(id: 'test_product', quantity: 1)],
     );
 
     final tMap = {
       'gateway': 'test_gateway',
       'currency': 'idr',
       'items': [
-        {
-          'name': 'test_product',
-          'quantity': 1,
-        }
-      ]
+        {'name': 'test_product', 'quantity': 1},
+      ],
     };
 
     test('should create PaymentInitiateRequestModel from map', () {
@@ -84,10 +76,7 @@ void main() {
       );
 
       // act
-      final result = model.copyWith(
-        gateway: 'new_gateway',
-        currency: 'USD',
-      );
+      final result = model.copyWith(gateway: 'new_gateway', currency: 'USD');
 
       // assert
       expect(result.gateway, 'new_gateway');
@@ -97,15 +86,9 @@ void main() {
   });
 
   group('ItemModel', () {
-    final tItemModel = ItemModel(
-      id: 'test_id',
-      quantity: 1,
-    );
+    final tItemModel = ItemModel(id: 'test_id', quantity: 1);
 
-    final tMap = {
-      'id': 'test_id',
-      'quantity': 1,
-    };
+    final tMap = {'id': 'test_id', 'quantity': 1};
 
     test('should create ItemModel from map', () {
       // act
@@ -129,14 +112,8 @@ void main() {
 
     test('should implement Equatable', () {
       // arrange
-      final model1 = ItemModel(
-        id: 'test',
-        quantity: 1,
-      );
-      final model2 = ItemModel(
-        id: 'test',
-        quantity: 1,
-      );
+      final model1 = ItemModel(id: 'test', quantity: 1);
+      final model2 = ItemModel(id: 'test', quantity: 1);
 
       // assert
       expect(model1, model2);

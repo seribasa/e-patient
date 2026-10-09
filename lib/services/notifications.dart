@@ -93,7 +93,7 @@ class NotificationService extends ChangeNotifier {
     var android = AndroidNotificationDetails(
       channelId,
       channelName,
-      color: Colors.pink[300],
+      color: Colors.black,
       enableLights: true,
       enableVibration: true,
       largeIcon: DrawableResourceAndroidBitmap("ic_launcher"),
@@ -146,10 +146,10 @@ class NotificationService extends ChangeNotifier {
   }
 
   Future<void> cancelNotification(int id) async {
-   return await _flutterLocalNotificationsPlugin.cancel(id);
+    return await _flutterLocalNotificationsPlugin.cancel(id);
   }
 
   Future<void> cancelNotificationAll() async {
-   return await _flutterLocalNotificationsPlugin.cancelAll();
+    return await _flutterLocalNotificationsPlugin.cancelAll();
   }
 }

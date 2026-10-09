@@ -1,5 +1,5 @@
-import 'package:eimunisasi/features/authentication/logic/cubit/login_phone_cubit/login_phone_cubit.dart';
-import 'package:eimunisasi/injection.dart';
+import 'package:e_patient/features/authentication/logic/cubit/login_phone_cubit/login_phone_cubit.dart';
+import 'package:e_patient/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
@@ -20,10 +20,7 @@ class OTPScreenArguments {
 
 class OTPScreen extends StatelessWidget {
   final OTPScreenArguments state;
-  const OTPScreen({
-    Key? key,
-    required this.state,
-  }) : super(key: key);
+  const OTPScreen({Key? key, required this.state}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +38,7 @@ class OTPScreen extends StatelessWidget {
             elevation: 0.0,
           ),
           resizeToAvoidBottomInset: false,
-          body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: OTPForm(),
-          ),
+          body: Padding(padding: const EdgeInsets.all(20), child: OTPForm()),
         ),
       ),
     );

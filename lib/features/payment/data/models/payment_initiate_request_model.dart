@@ -4,11 +4,7 @@ class PaymentInitiateRequestModel extends Equatable {
   final String? gateway, currency;
   final List<ItemModel>? items;
 
-  const PaymentInitiateRequestModel({
-    this.gateway,
-    this.currency,
-    this.items,
-  });
+  const PaymentInitiateRequestModel({this.gateway, this.currency, this.items});
 
   PaymentInitiateRequestModel copyWith({
     String? gateway,
@@ -23,11 +19,7 @@ class PaymentInitiateRequestModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        gateway,
-        currency,
-        items,
-      ];
+  List<Object?> get props => [gateway, currency, items];
 
   factory PaymentInitiateRequestModel.fromSeribase(Map<String, dynamic> data) {
     return PaymentInitiateRequestModel(
@@ -39,7 +31,8 @@ class PaymentInitiateRequestModel extends Equatable {
         }
         try {
           return List<ItemModel>.from(
-              data['items'].map((x) => ItemModel.fromSeribase(x)));
+            data['items'].map((x) => ItemModel.fromSeribase(x)),
+          );
         } catch (e) {
           return null;
         }
@@ -61,22 +54,13 @@ class ItemModel extends Equatable {
   final String? id;
   final int? quantity;
 
-  const ItemModel({
-    this.id,
-    this.quantity,
-  });
+  const ItemModel({this.id, this.quantity});
 
   @override
-  List<Object?> get props => [
-        id,
-        quantity,
-      ];
+  List<Object?> get props => [id, quantity];
 
   factory ItemModel.fromSeribase(Map<String, dynamic> data) {
-    return ItemModel(
-      id: data['id'],
-      quantity: data['quantity'],
-    );
+    return ItemModel(id: data['id'], quantity: data['quantity']);
   }
 
   Map<String, dynamic> toSeribase() {

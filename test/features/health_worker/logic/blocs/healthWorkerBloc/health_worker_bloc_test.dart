@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:eimunisasi/features/health_worker/logic/blocs/healthWorkerBloc/health_worker_bloc.dart';
-import 'package:eimunisasi/features/health_worker/data/repositories/health_worker_repository.dart';
-import 'package:eimunisasi/core/models/pagination_model.dart';
-import 'package:eimunisasi/features/health_worker/data/models/health_worker_model.dart';
+import 'package:e_patient/features/health_worker/logic/blocs/healthWorkerBloc/health_worker_bloc.dart';
+import 'package:e_patient/features/health_worker/data/repositories/health_worker_repository.dart';
+import 'package:e_patient/core/models/pagination_model.dart';
+import 'package:e_patient/features/health_worker/data/models/health_worker_model.dart';
 import 'package:formz/formz.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -23,13 +23,15 @@ void main() {
     blocTest<HealthWorkerBloc, HealthWorkerState>(
       'emits [inProgress, success] when GetHealthWorkers is added and getHealthWorkers succeeds',
       build: () {
-        when(() => healthWorkerRepository.getHealthWorkers(
+        when(
+          () => healthWorkerRepository.getHealthWorkers(
             page: any(named: 'page'),
             perPage: any(named: 'perPage'),
-            search: any(named: 'search'))).thenAnswer(
-          (_) async => BasePagination<HealthWorkerModel>(
-            data: <HealthWorkerModel>[],
+            search: any(named: 'search'),
           ),
+        ).thenAnswer(
+          (_) async =>
+              BasePagination<HealthWorkerModel>(data: <HealthWorkerModel>[]),
         );
         return healthWorkerBloc;
       },
@@ -50,10 +52,13 @@ void main() {
     blocTest<HealthWorkerBloc, HealthWorkerState>(
       'emits [inProgress, failure] when GetHealthWorkers is added and getHealthWorkers fails',
       build: () {
-        when(() => healthWorkerRepository.getHealthWorkers(
+        when(
+          () => healthWorkerRepository.getHealthWorkers(
             page: any(named: 'page'),
             perPage: any(named: 'perPage'),
-            search: any(named: 'search'))).thenThrow(Exception('error'));
+            search: any(named: 'search'),
+          ),
+        ).thenThrow(Exception('error'));
         return healthWorkerBloc;
       },
       act: (bloc) => bloc.add(GetHealthWorkers()),
@@ -77,13 +82,15 @@ void main() {
     blocTest<HealthWorkerBloc, HealthWorkerState>(
       'emits new state with updated search and resets page when ChangeSearch is added',
       build: () {
-        when(() => healthWorkerRepository.getHealthWorkers(
+        when(
+          () => healthWorkerRepository.getHealthWorkers(
             page: any(named: 'page'),
             perPage: any(named: 'perPage'),
-            search: any(named: 'search'))).thenAnswer(
-          (_) async => BasePagination<HealthWorkerModel>(
-            data: <HealthWorkerModel>[],
+            search: any(named: 'search'),
           ),
+        ).thenAnswer(
+          (_) async =>
+              BasePagination<HealthWorkerModel>(data: <HealthWorkerModel>[]),
         );
         return healthWorkerBloc;
       },
@@ -110,17 +117,16 @@ void main() {
   blocTest<HealthWorkerBloc, HealthWorkerState>(
     'emits new state with updated page when ChangePage is added',
     build: () {
-      when(() => healthWorkerRepository.getHealthWorkers(
+      when(
+        () => healthWorkerRepository.getHealthWorkers(
           page: any(named: 'page'),
           perPage: any(named: 'perPage'),
-          search: any(named: 'search'))).thenAnswer(
-            (_) async => BasePagination<HealthWorkerModel>(
+          search: any(named: 'search'),
+        ),
+      ).thenAnswer(
+        (_) async => BasePagination<HealthWorkerModel>(
           data: <HealthWorkerModel>[],
-          metadata: MetadataPaginationModel(
-            total: 2,
-            page: 1,
-            perPage: 10,
-          ),
+          metadata: MetadataPaginationModel(total: 2, page: 1, perPage: 10),
         ),
       );
       return healthWorkerBloc;
@@ -128,16 +134,8 @@ void main() {
     seed: () => HealthWorkerState(
       page: 1,
       healthWorkers: BasePagination<HealthWorkerModel>(
-        data: <HealthWorkerModel>[
-          HealthWorkerModel(
-            id: '1',
-          ),
-        ],
-        metadata: MetadataPaginationModel(
-          total: 2,
-          page: 1,
-          perPage: 10,
-        ),
+        data: <HealthWorkerModel>[HealthWorkerModel(id: '1')],
+        metadata: MetadataPaginationModel(total: 2, page: 1, perPage: 10),
       ),
     ),
     act: (bloc) => bloc.add(ChangePage(2)),
@@ -145,47 +143,23 @@ void main() {
       HealthWorkerState(
         page: 2,
         healthWorkers: BasePagination<HealthWorkerModel>(
-          data: <HealthWorkerModel>[
-            HealthWorkerModel(
-              id: '1',
-            ),
-          ],
-          metadata: MetadataPaginationModel(
-            total: 2,
-            page: 1,
-            perPage: 10,
-          ),
+          data: <HealthWorkerModel>[HealthWorkerModel(id: '1')],
+          metadata: MetadataPaginationModel(total: 2, page: 1, perPage: 10),
         ),
       ),
       HealthWorkerState(
         page: 2,
         healthWorkers: BasePagination<HealthWorkerModel>(
-          data: <HealthWorkerModel>[
-            HealthWorkerModel(
-              id: '1',
-            ),
-          ],
-          metadata: MetadataPaginationModel(
-            total: 2,
-            page: 1,
-            perPage: 10,
-          ),
+          data: <HealthWorkerModel>[HealthWorkerModel(id: '1')],
+          metadata: MetadataPaginationModel(total: 2, page: 1, perPage: 10),
         ),
         statusGetHealthWorkers: FormzSubmissionStatus.inProgress,
       ),
       HealthWorkerState(
         page: 2,
         healthWorkers: BasePagination<HealthWorkerModel>(
-          data: <HealthWorkerModel>[
-            HealthWorkerModel(
-              id: '1',
-            ),
-          ],
-          metadata: MetadataPaginationModel(
-            total: 2,
-            page: 1,
-            perPage: 10,
-          ),
+          data: <HealthWorkerModel>[HealthWorkerModel(id: '1')],
+          metadata: MetadataPaginationModel(total: 2, page: 1, perPage: 10),
         ),
         statusGetHealthWorkers: FormzSubmissionStatus.success,
       ),

@@ -1,4 +1,4 @@
-import 'package:eimunisasi/features/payment/data/models/product_model.dart';
+import 'package:e_patient/features/payment/data/models/product_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

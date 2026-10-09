@@ -24,9 +24,5 @@ class CheckupState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        statusGet,
-        errorMessage,
-        checkups,
-      ];
+  List<Object?> get props => [statusGet, errorMessage, checkups];
 }

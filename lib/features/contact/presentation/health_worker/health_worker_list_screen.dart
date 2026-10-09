@@ -1,7 +1,7 @@
-import 'package:eimunisasi/core/widgets/error.dart';
-import 'package:eimunisasi/features/health_worker/logic/blocs/healthWorkerBloc/health_worker_bloc.dart';
-import 'package:eimunisasi/injection.dart';
-import 'package:eimunisasi/core/widgets/search_bar.dart';
+import 'package:e_patient/core/widgets/error.dart';
+import 'package:e_patient/features/health_worker/logic/blocs/healthWorkerBloc/health_worker_bloc.dart';
+import 'package:e_patient/injection.dart';
+import 'package:e_patient/core/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -9,10 +9,8 @@ import 'package:formz/formz.dart';
 class HealthWorkerListScreen extends StatelessWidget {
   final String name;
 
-  const HealthWorkerListScreen({
-    Key? key,
-    required this.name,
-  }) : super(key: key);
+  const HealthWorkerListScreen({Key? key, required this.name})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +24,7 @@ class HealthWorkerListScreen extends StatelessWidget {
 class _HealthWorkerListScaffold extends StatefulWidget {
   final String name;
 
-  const _HealthWorkerListScaffold({
-    required this.name,
-  });
+  const _HealthWorkerListScaffold({required this.name});
 
   @override
   _HealthWorkerListScaffoldState createState() =>
@@ -75,7 +71,7 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.pink[300],
+        backgroundColor: Colors.black,
         elevation: 0.0,
         title: Text(
           'Daftar ${widget.name}',
@@ -84,7 +80,7 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
       ),
       body: SizedBox.expand(
         child: Container(
-          color: Colors.pink[100],
+          color: Colors.black,
           child: Card(
             margin: EdgeInsets.all(20),
             elevation: 0,
@@ -105,17 +101,15 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
                     if (state.statusGetHealthWorkers ==
                             FormzSubmissionStatus.inProgress &&
                         data.isEmpty) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return Center(child: CircularProgressIndicator());
                     } else if (state.statusGetHealthWorkers ==
                         FormzSubmissionStatus.failure) {
                       return ErrorContainer(
                         message: "Gagal memuat data",
                         onRefresh: () {
-                          context
-                              .read<HealthWorkerBloc>()
-                              .add(GetHealthWorkers());
+                          context.read<HealthWorkerBloc>().add(
+                                GetHealthWorkers(),
+                              );
                         },
                       );
                     }
@@ -123,9 +117,9 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
                       return ErrorContainer(
                         message: "Data tidak ditemukan",
                         onRefresh: () {
-                          context
-                              .read<HealthWorkerBloc>()
-                              .add(GetHealthWorkers());
+                          context.read<HealthWorkerBloc>().add(
+                                GetHealthWorkers(),
+                              );
                         },
                       );
                     }
@@ -162,9 +156,9 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     Card(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.secondary,
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Text(
@@ -181,23 +175,25 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
                                         Icons.phone,
                                         color: Theme.of(context).primaryColor,
                                       ),
-                                      title:
-                                          Text(data[index].phoneNumber ?? '-'),
+                                      title: Text(
+                                        data[index].phoneNumber ?? '-',
+                                      ),
                                     ),
                                     ListTile(
                                       leading: Icon(
                                         Icons.medical_services_rounded,
                                         color: Theme.of(context).primaryColor,
                                       ),
-                                      title:
-                                          Text(data[index].profession ?? '-'),
-                                    )
+                                      title: Text(
+                                        data[index].profession ?? '-',
+                                      ),
+                                    ),
                                   ],
                                 ),
                               );
                             },
                           ),
-                        )
+                        ),
                       ],
                     );
                   },

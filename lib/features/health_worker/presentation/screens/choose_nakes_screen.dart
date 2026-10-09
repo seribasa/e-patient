@@ -1,9 +1,9 @@
-import 'package:eimunisasi/core/widgets/error.dart';
-import 'package:eimunisasi/features/health_worker/data/models/health_worker_model.dart';
-import 'package:eimunisasi/features/health_worker/logic/blocs/healthWorkerBloc/health_worker_bloc.dart';
-import 'package:eimunisasi/features/profile/data/models/child_model.dart';
-import 'package:eimunisasi/core/widgets/search_bar.dart';
-import 'package:eimunisasi/injection.dart';
+import 'package:e_patient/core/widgets/error.dart';
+import 'package:e_patient/features/health_worker/data/models/health_worker_model.dart';
+import 'package:e_patient/features/health_worker/logic/blocs/healthWorkerBloc/health_worker_bloc.dart';
+import 'package:e_patient/features/profile/data/models/child_model.dart';
+import 'package:e_patient/core/widgets/search_bar.dart';
+import 'package:e_patient/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -22,10 +22,7 @@ class ChooseHealthWorkerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<HealthWorkerBloc>()..add(GetHealthWorkers()),
-      child: _ChooseHealthWorkerScaffold(
-        child: child,
-        onSelected: onSelected,
-      ),
+      child: _ChooseHealthWorkerScaffold(child: child, onSelected: onSelected),
     );
   }
 }
@@ -34,10 +31,7 @@ class _ChooseHealthWorkerScaffold extends StatefulWidget {
   final ChildModel child;
   final Function(HealthWorkerModel)? onSelected;
 
-  const _ChooseHealthWorkerScaffold({
-    required this.child,
-    this.onSelected,
-  });
+  const _ChooseHealthWorkerScaffold({required this.child, this.onSelected});
 
   @override
   State<_ChooseHealthWorkerScaffold> createState() =>
@@ -84,7 +78,7 @@ class _ChooseHealthWorkerScaffoldState
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink[300],
+        backgroundColor: Colors.black,
         elevation: 0,
         title: Text(
           'Pilih nakes',
@@ -94,7 +88,7 @@ class _ChooseHealthWorkerScaffoldState
       ),
       body: Container(
         padding: EdgeInsets.all(20),
-        color: Colors.pink[100],
+        color: Colors.black,
         child: Card(
           elevation: 0,
           child: Column(
@@ -103,9 +97,7 @@ class _ChooseHealthWorkerScaffoldState
                 padding: const EdgeInsets.all(5.0),
                 child: SearchBarPeltops(
                   onChanged: (value) {
-                    context.read<HealthWorkerBloc>().add(
-                          ChangeSearch(value),
-                        );
+                    context.read<HealthWorkerBloc>().add(ChangeSearch(value));
                   },
                 ),
               ),
@@ -127,18 +119,16 @@ class _ChooseHealthWorkerScaffoldState
                         if (state.statusGetHealthWorkers ==
                                 FormzSubmissionStatus.inProgress &&
                             data.isEmpty) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return Center(child: CircularProgressIndicator());
                         }
                         if (state.statusGetHealthWorkers ==
                             FormzSubmissionStatus.failure) {
                           return ErrorContainer(
                             message: 'Gagal memuat data',
                             onRefresh: () {
-                              context
-                                  .read<HealthWorkerBloc>()
-                                  .add(GetHealthWorkers());
+                              context.read<HealthWorkerBloc>().add(
+                                    GetHealthWorkers(),
+                                  );
                             },
                           );
                         }
@@ -146,9 +136,9 @@ class _ChooseHealthWorkerScaffoldState
                           return ErrorContainer(
                             message: 'Data tidak ditemukan',
                             onRefresh: () {
-                              context
-                                  .read<HealthWorkerBloc>()
-                                  .add(GetHealthWorkers());
+                              context.read<HealthWorkerBloc>().add(
+                                    GetHealthWorkers(),
+                                  );
                             },
                           );
                         }
@@ -165,9 +155,7 @@ class _ChooseHealthWorkerScaffoldState
                             if (index == data.length &&
                                 state.statusGetHealthWorkers ==
                                     FormzSubmissionStatus.inProgress) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
+                              return Center(child: CircularProgressIndicator());
                             }
                             final healthWorker = data[index];
                             return _ListTileHealthWorker(
@@ -197,10 +185,7 @@ class _ListTileHealthWorker extends StatelessWidget {
   final HealthWorkerModel healthWorker;
   final Function(HealthWorkerModel)? onSelected;
 
-  const _ListTileHealthWorker({
-    required this.healthWorker,
-    this.onSelected,
-  });
+  const _ListTileHealthWorker({required this.healthWorker, this.onSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -214,16 +199,10 @@ class _ListTileHealthWorker extends StatelessWidget {
         },
         title: Text(
           healthWorker.fullName ?? "",
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w700),
         ),
-        subtitle: Text(
-          healthWorker.profession ?? "",
-        ),
-        trailing: Icon(
-          Icons.keyboard_arrow_right_rounded,
-        ),
+        subtitle: Text(healthWorker.profession ?? ""),
+        trailing: Icon(Icons.keyboard_arrow_right_rounded),
       ),
     );
   }

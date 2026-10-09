@@ -17,7 +17,6 @@ extension StringExtension on String {
 
 const String emptyString = '';
 
-
 extension DateTimeExtension on DateTime? {
   /// default format is dd-MM-yyyy
   String formattedDate({String? format}) {

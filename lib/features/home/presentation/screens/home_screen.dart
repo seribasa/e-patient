@@ -1,5 +1,5 @@
-import 'package:eimunisasi/routers/route_paths/profile_route_paths.dart';
-import 'package:eimunisasi/routers/route_paths/root_route_paths.dart';
+import 'package:e_patient/routers/route_paths/profile_route_paths.dart';
+import 'package:e_patient/routers/route_paths/root_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -18,16 +18,13 @@ class _HomeScreenState extends State<HomeScreen> {
         MediaQuery.of(context).orientation == Orientation.landscape;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink[300],
+        backgroundColor: Colors.black,
         elevation: 0,
-        title: Text(
-          'Utama',
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
+        title: Text('Utama', style: TextStyle(fontWeight: FontWeight.w700)),
         centerTitle: true,
       ),
       body: Container(
-        color: Colors.pink[100],
+        color: Colors.black,
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -108,12 +105,7 @@ class TombolMenu extends StatelessWidget {
   final IconData? icon;
   final String? label;
 
-  TombolMenu({
-    Key? key,
-    this.icon,
-    this.label,
-    this.onTap,
-  }) : super(key: key);
+  TombolMenu({Key? key, this.icon, this.label, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -128,20 +120,17 @@ class TombolMenu extends StatelessWidget {
                 width: double.infinity,
                 height: 100,
                 decoration: BoxDecoration(
-                    color: Colors.pink[400],
-                    borderRadius: BorderRadius.circular(20)),
-                child: Icon(
-                  icon,
-                  color: Colors.white,
-                  size: 50,
+                  color: Colors.black,
+                  borderRadius: BorderRadius.zero,
                 ),
+                child: Icon(icon, color: Colors.white, size: 50),
               ),
             ),
             SizedBox(height: 5),
             Text(
               label!,
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-            )
+            ),
           ],
         ),
       ),

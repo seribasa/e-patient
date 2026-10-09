@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:eimunisasi/core/utils/list_constant.dart';
-import 'package:eimunisasi/features/profile/data/models/child_model.dart';
-import 'package:eimunisasi/features/profile/data/repositories/child_repository.dart';
-import 'package:eimunisasi/features/profile/logic/blocs/childBloc/child_profile_bloc.dart';
+import 'package:e_patient/core/utils/list_constant.dart';
+import 'package:e_patient/features/profile/data/models/child_model.dart';
+import 'package:e_patient/features/profile/data/repositories/child_repository.dart';
+import 'package:e_patient/features/profile/logic/blocs/childBloc/child_profile_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -45,11 +45,7 @@ void main() {
       'OnInitialEvent',
       build: () => ChildProfileBloc(mockChildRepository),
       act: (bloc) => bloc.add(OnInitialEvent(child: child)),
-      expect: () => [
-        ChildProfileState(
-          child: child,
-        )
-      ],
+      expect: () => [ChildProfileState(child: child)],
     );
   });
 
@@ -62,19 +58,18 @@ void main() {
     blocTest<ChildProfileBloc, ChildProfileState>(
       "success",
       build: () {
-        when(mockChildRepository.getAllChildren())
-            .thenAnswer((_) async => [child]);
+        when(
+          mockChildRepository.getAllChildren(),
+        ).thenAnswer((_) async => [child]);
         return ChildProfileBloc(mockChildRepository);
       },
       act: (bloc) => bloc.add(OnGetChildrenEvent()),
       expect: () => [
-        ChildProfileState(
-          statusGetChildren: FormzSubmissionStatus.inProgress,
-        ),
+        ChildProfileState(statusGetChildren: FormzSubmissionStatus.inProgress),
         ChildProfileState(
           statusGetChildren: FormzSubmissionStatus.success,
           children: [child],
-        )
+        ),
       ],
     );
 
@@ -86,13 +81,11 @@ void main() {
       },
       act: (bloc) => bloc.add(OnGetChildrenEvent()),
       expect: () => [
-        ChildProfileState(
-          statusGetChildren: FormzSubmissionStatus.inProgress,
-        ),
+        ChildProfileState(statusGetChildren: FormzSubmissionStatus.inProgress),
         ChildProfileState(
           statusGetChildren: FormzSubmissionStatus.failure,
           errorMessage: 'Gagal memuat data anak',
-        )
+        ),
       ],
     );
   });
@@ -108,11 +101,7 @@ void main() {
       build: () => ChildProfileBloc(mockChildRepository)
         ..add(OnInitialEvent(child: child)),
       act: (bloc) => bloc.add(OnChangeNameEvent(name)),
-      expect: () => [
-        ChildProfileState(
-          child: child.copyWith(nama: name),
-        )
-      ],
+      expect: () => [ChildProfileState(child: child.copyWith(nama: name))],
     );
   });
 
@@ -128,9 +117,7 @@ void main() {
         ..add(OnInitialEvent(child: child)),
       act: (bloc) => bloc.add(OnChangeIdentityNumberEvent(identityNumber)),
       expect: () => [
-        ChildProfileState(
-          child: child.copyWith(nik: identityNumber),
-        )
+        ChildProfileState(child: child.copyWith(nik: identityNumber)),
       ],
     );
   });
@@ -147,9 +134,7 @@ void main() {
         ..add(OnInitialEvent(child: child)),
       act: (bloc) => bloc.add(OnChangePlaceOfBirthEvent(placeOfBirth)),
       expect: () => [
-        ChildProfileState(
-          child: child.copyWith(tempatLahir: placeOfBirth),
-        )
+        ChildProfileState(child: child.copyWith(tempatLahir: placeOfBirth)),
       ],
     );
   });
@@ -166,9 +151,7 @@ void main() {
         ..add(OnInitialEvent(child: child)),
       act: (bloc) => bloc.add(OnChangeDateOfBirthEvent(dateOfBirth)),
       expect: () => [
-        ChildProfileState(
-          child: child.copyWith(tanggalLahir: dateOfBirth),
-        )
+        ChildProfileState(child: child.copyWith(tanggalLahir: dateOfBirth)),
       ],
     );
   });
@@ -185,9 +168,7 @@ void main() {
         ..add(OnInitialEvent(child: child)),
       act: (bloc) => bloc.add(OnChangeGenderEvent(genderType)),
       expect: () => [
-        ChildProfileState(
-          child: child.copyWith(jenisKelamin: genderType),
-        )
+        ChildProfileState(child: child.copyWith(jenisKelamin: genderType)),
       ],
     );
   });
@@ -204,9 +185,7 @@ void main() {
         ..add(OnInitialEvent(child: child)),
       act: (bloc) => bloc.add(OnChangeBloodTypeEvent(bloodType)),
       expect: () => [
-        ChildProfileState(
-          child: child.copyWith(golDarah: bloodType),
-        )
+        ChildProfileState(child: child.copyWith(golDarah: bloodType)),
       ],
     );
   });
@@ -220,10 +199,12 @@ void main() {
     blocTest<ChildProfileBloc, ChildProfileState>(
       "success",
       build: () {
-        when(mockChildRepository.updateChild(child))
-            .thenAnswer((_) async => child);
-        when(mockChildRepository.getAllChildren())
-            .thenAnswer((_) async => [child]);
+        when(
+          mockChildRepository.updateChild(child),
+        ).thenAnswer((_) async => child);
+        when(
+          mockChildRepository.getAllChildren(),
+        ).thenAnswer((_) async => [child]);
         return ChildProfileBloc(mockChildRepository)
           ..add(OnInitialEvent(child: child));
       },
@@ -274,7 +255,7 @@ void main() {
           child: child,
           statusUpdate: FormzSubmissionStatus.failure,
           errorMessage: 'Gagal memperbarui profil anak',
-        )
+        ),
       ],
     );
 
@@ -282,29 +263,31 @@ void main() {
       "failed throw FormatException when child data is null",
       seed: () => ChildProfileState(child: null),
       build: () {
-        when(mockChildRepository.updateChild(child)).thenThrow(
-          FormatException('Data anak tidak boleh kosong'),
-        );
+        when(
+          mockChildRepository.updateChild(child),
+        ).thenThrow(FormatException('Data anak tidak boleh kosong'));
         return ChildProfileBloc(mockChildRepository);
       },
       act: (bloc) => bloc.add(UpdateProfileEvent()),
       expect: () => [
-        ChildProfileState(
-          statusUpdate: FormzSubmissionStatus.inProgress,
-        ),
+        ChildProfileState(statusUpdate: FormzSubmissionStatus.inProgress),
         ChildProfileState(
           statusUpdate: FormzSubmissionStatus.failure,
           errorMessage: 'Data anak tidak boleh kosong',
-        )
+        ),
       ],
     );
 
     blocTest<ChildProfileBloc, ChildProfileState>(
       "failed throw FormatException when name length is invalid",
       build: () {
-        when(mockChildRepository.updateChild(child.copyWith(
-          nama: 'a', // Invalid name length
-        ))).thenThrow(
+        when(
+          mockChildRepository.updateChild(
+            child.copyWith(
+              nama: 'a', // Invalid name length
+            ),
+          ),
+        ).thenThrow(
           FormatException('Panjang nama harus antara 2-128 karakter'),
         );
         return ChildProfileBloc(mockChildRepository);
@@ -322,23 +305,27 @@ void main() {
           child: child.copyWith(nama: 'a'),
           statusUpdate: FormzSubmissionStatus.failure,
           errorMessage: 'Panjang nama harus antara 2-128 karakter',
-        )
+        ),
       ],
     );
 
     blocTest<ChildProfileBloc, ChildProfileState>(
       "failed throw FormatException when date of birth is null",
       build: () {
-        when(mockChildRepository.updateChild(child.copyWith(
-          tanggalLahir: null, // Invalid date of birth
-        ))).thenThrow(
-          FormatException('Tanggal lahir tidak boleh kosong'),
-        );
+        when(
+          mockChildRepository.updateChild(
+            child.copyWith(
+              tanggalLahir: null, // Invalid date of birth
+            ),
+          ),
+        ).thenThrow(FormatException('Tanggal lahir tidak boleh kosong'));
         return ChildProfileBloc(mockChildRepository);
       },
       act: (bloc) => bloc.add(UpdateProfileEvent()),
       seed: () => ChildProfileState(
-        child: child.copyWith(tanggalLahir: null), // Set initial state with invalid date of birth
+        child: child.copyWith(
+          tanggalLahir: null,
+        ), // Set initial state with invalid date of birth
       ),
       expect: () => [
         ChildProfileState(
@@ -349,7 +336,7 @@ void main() {
           child: child.copyWith(tanggalLahir: null),
           statusUpdate: FormzSubmissionStatus.failure,
           errorMessage: 'Tanggal lahir tidak boleh kosong',
-        )
+        ),
       ],
     );
   });
@@ -363,18 +350,18 @@ void main() {
     blocTest<ChildProfileBloc, ChildProfileState>(
       "success",
       build: () {
-        when(mockChildRepository.setChild(child))
-            .thenAnswer((_) async => child);
-        when(mockChildRepository.getAllChildren())
-            .thenAnswer((_) async => [child]);
+        when(
+          mockChildRepository.setChild(child),
+        ).thenAnswer((_) async => child);
+        when(
+          mockChildRepository.getAllChildren(),
+        ).thenAnswer((_) async => [child]);
         return ChildProfileBloc(mockChildRepository)
           ..add(OnInitialEvent(child: child));
       },
       act: (bloc) => bloc.add(CreateProfileEvent()),
       expect: () => [
-        ChildProfileState(
-          child: child,
-        ),
+        ChildProfileState(child: child),
         ChildProfileState(
           child: child,
           statusCreate: FormzSubmissionStatus.inProgress,
@@ -403,29 +390,31 @@ void main() {
       "failed throw FormatException when child data is null",
       seed: () => ChildProfileState(child: null),
       build: () {
-        when(mockChildRepository.setChild(child)).thenThrow(
-          FormatException('Data anak tidak boleh kosong'),
-        );
+        when(
+          mockChildRepository.setChild(child),
+        ).thenThrow(FormatException('Data anak tidak boleh kosong'));
         return ChildProfileBloc(mockChildRepository);
       },
       act: (bloc) => bloc.add(CreateProfileEvent()),
       expect: () => [
-        ChildProfileState(
-          statusCreate: FormzSubmissionStatus.inProgress,
-        ),
+        ChildProfileState(statusCreate: FormzSubmissionStatus.inProgress),
         ChildProfileState(
           statusCreate: FormzSubmissionStatus.failure,
           errorMessage: 'Data anak tidak boleh kosong',
-        )
+        ),
       ],
     );
 
     blocTest<ChildProfileBloc, ChildProfileState>(
       "failed throw FormatException when name length is invalid",
       build: () {
-        when(mockChildRepository.setChild(child.copyWith(
-          nama: 'a', // Invalid name length
-        ))).thenThrow(
+        when(
+          mockChildRepository.setChild(
+            child.copyWith(
+              nama: 'a', // Invalid name length
+            ),
+          ),
+        ).thenThrow(
           FormatException('Panjang nama harus antara 2-128 karakter'),
         );
         return ChildProfileBloc(mockChildRepository);
@@ -443,16 +432,16 @@ void main() {
           child: child.copyWith(nama: 'a'),
           statusCreate: FormzSubmissionStatus.failure,
           errorMessage: 'Panjang nama harus antara 2-128 karakter',
-        )
+        ),
       ],
     );
 
     blocTest<ChildProfileBloc, ChildProfileState>(
       "failed throw Exception",
       build: () {
-        when(mockChildRepository.setChild(child)).thenThrow(
-          Exception('Gagal membuat profil anak'),
-        );
+        when(
+          mockChildRepository.setChild(child),
+        ).thenThrow(Exception('Gagal membuat profil anak'));
         return ChildProfileBloc(mockChildRepository);
       },
       seed: () => ChildProfileState(child: child),
@@ -466,23 +455,27 @@ void main() {
           child: child,
           statusCreate: FormzSubmissionStatus.failure,
           errorMessage: 'Gagal membuat profil anak',
-        )
+        ),
       ],
     );
 
     blocTest<ChildProfileBloc, ChildProfileState>(
       "failed throw FormatException when date of birth is null",
       build: () {
-        when(mockChildRepository.setChild(child.copyWith(
-          tanggalLahir: null, // Invalid date of birth
-        ))).thenThrow(
-          FormatException('Tanggal lahir tidak boleh kosong'),
-        );
+        when(
+          mockChildRepository.setChild(
+            child.copyWith(
+              tanggalLahir: null, // Invalid date of birth
+            ),
+          ),
+        ).thenThrow(FormatException('Tanggal lahir tidak boleh kosong'));
         return ChildProfileBloc(mockChildRepository);
       },
       act: (bloc) => bloc.add(CreateProfileEvent()),
       seed: () => ChildProfileState(
-        child: child.copyWith(tanggalLahir: null), // Set initial state with invalid date of birth
+        child: child.copyWith(
+          tanggalLahir: null,
+        ), // Set initial state with invalid date of birth
       ),
       expect: () => [
         ChildProfileState(
@@ -493,7 +486,7 @@ void main() {
           child: child.copyWith(tanggalLahir: null),
           statusCreate: FormzSubmissionStatus.failure,
           errorMessage: 'Tanggal lahir tidak boleh kosong',
-        )
+        ),
       ],
     );
   });
@@ -509,18 +502,18 @@ void main() {
     blocTest<ChildProfileBloc, ChildProfileState>(
       "success",
       build: () {
-        when(mockChildRepository.updateChildAvatar(file: file, id: id))
-            .thenAnswer((_) async => url);
-        when(mockChildRepository.getAllChildren())
-            .thenAnswer((_) async => [child.copyWith(photoURL: url)]);
+        when(
+          mockChildRepository.updateChildAvatar(file: file, id: id),
+        ).thenAnswer((_) async => url);
+        when(
+          mockChildRepository.getAllChildren(),
+        ).thenAnswer((_) async => [child.copyWith(photoURL: url)]);
         return ChildProfileBloc(mockChildRepository)
           ..add(OnInitialEvent(child: child));
       },
       act: (bloc) => bloc.add(UpdateProfilePhotoEvent(photo: file, id: id)),
       expect: () => [
-        ChildProfileState(
-          child: child,
-        ),
+        ChildProfileState(child: child),
         ChildProfileState(
           child: child,
           statusUpdateAvatar: FormzSubmissionStatus.inProgress,
@@ -548,15 +541,14 @@ void main() {
     blocTest<ChildProfileBloc, ChildProfileState>(
       "failed",
       build: () {
-        when(mockChildRepository.updateChildAvatar(file: file, id: id))
-            .thenThrow(Exception());
+        when(
+          mockChildRepository.updateChildAvatar(file: file, id: id),
+        ).thenThrow(Exception());
         return ChildProfileBloc(mockChildRepository);
       },
       act: (bloc) => bloc.add(UpdateProfilePhotoEvent(photo: file, id: id)),
       expect: () => [
-        ChildProfileState(
-          statusUpdateAvatar: FormzSubmissionStatus.inProgress,
-        ),
+        ChildProfileState(statusUpdateAvatar: FormzSubmissionStatus.inProgress),
         ChildProfileState(
           statusUpdateAvatar: FormzSubmissionStatus.failure,
           errorMessage: 'Gagal memperbarui foto profil anak',

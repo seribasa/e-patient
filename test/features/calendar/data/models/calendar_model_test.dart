@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-import 'package:eimunisasi/features/calendar/data/models/calendar_model.dart';
-import 'package:eimunisasi/features/calendar/data/models/hive_calendar_activity_model.dart';
+import 'package:e_patient/features/calendar/data/models/calendar_model.dart';
+import 'package:e_patient/features/calendar/data/models/hive_calendar_activity_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -21,7 +21,9 @@ void main() {
       expect(result['parent_id'], equals('testUid'));
       expect(result['activity'], equals('testActivity'));
       expect(
-          result['do_at'], equals(testCalendarModel.date?.toIso8601String()));
+        result['do_at'],
+        equals(testCalendarModel.date?.toIso8601String()),
+      );
       expect(result['read_only'], equals(false));
     });
 
@@ -128,7 +130,7 @@ void main() {
           date: date2,
           readOnly: false,
           documentID: 'testDocumentID4',
-        )
+        ),
       ];
 
       final result = data.groupEventsByDate();
@@ -174,16 +176,21 @@ void main() {
   });
 
   group('vaccinationSchedules', () {
-    test('generate list calendar schedules from vaccinationSchedules function',
-        () {
-      final result = CalendarModel.vaccinationSchedules(
-          'testUid', DateTime(2024, 1, 1), 'childName');
-      expect(result, isA<List<CalendarModel>>());
-      expect(result.length, equals(33));
+    test(
+      'generate list calendar schedules from vaccinationSchedules function',
+      () {
+        final result = CalendarModel.vaccinationSchedules(
+          'testUid',
+          DateTime(2024, 1, 1),
+          'childName',
+        );
+        expect(result, isA<List<CalendarModel>>());
+        expect(result.length, equals(33));
 
-      expect(result[0].activity, equals('Hepatitis B (childName)'));
-      expect(result[0].date, equals(DateTime(2024, 3, 1, 6)));
-      expect(result[0].readOnly, equals(true));
-    });
+        expect(result[0].activity, equals('Hepatitis B (childName)'));
+        expect(result[0].date, equals(DateTime(2024, 3, 1, 6)));
+        expect(result[0].readOnly, equals(true));
+      },
+    );
   });
 }

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:eimunisasi/core/models/pagination_model.dart';
+import 'package:e_patient/core/models/pagination_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';
@@ -15,9 +15,7 @@ part 'health_worker_state.dart';
 class HealthWorkerBloc extends Bloc<HealthWorkerEvent, HealthWorkerState> {
   final HealthWorkerRepository healthWorkerRepository;
 
-  HealthWorkerBloc(
-    this.healthWorkerRepository,
-  ) : super(HealthWorkerState()) {
+  HealthWorkerBloc(this.healthWorkerRepository) : super(HealthWorkerState()) {
     on<GetHealthWorkers>(_onGetHealthWorkers);
     on<ChangePage>(_onChangePage);
     on<ChangeSearch>(_onChangeSearch);
@@ -28,9 +26,7 @@ class HealthWorkerBloc extends Bloc<HealthWorkerEvent, HealthWorkerState> {
     Emitter<HealthWorkerState> emit,
   ) async {
     emit(
-      state.copyWith(
-        statusGetHealthWorkers: FormzSubmissionStatus.inProgress,
-      ),
+      state.copyWith(statusGetHealthWorkers: FormzSubmissionStatus.inProgress),
     );
     try {
       final healthWorkers = await healthWorkerRepository.getHealthWorkers(
@@ -38,23 +34,20 @@ class HealthWorkerBloc extends Bloc<HealthWorkerEvent, HealthWorkerState> {
         perPage: state.perPage,
         search: state.search,
       );
-      emit(state.copyWith(
-        healthWorkers: BasePagination<HealthWorkerModel>(
-          data: state.page == 1
-              ? healthWorkers.data
-              : [
-                  ...?state.healthWorkers.data,
-                  ...?healthWorkers.data,
-                ],
-          metadata: healthWorkers.metadata,
-        ),
-        statusGetHealthWorkers: FormzSubmissionStatus.success,
-      ));
-    } catch (e) {
       emit(
         state.copyWith(
-          statusGetHealthWorkers: FormzSubmissionStatus.failure,
+          healthWorkers: BasePagination<HealthWorkerModel>(
+            data: state.page == 1
+                ? healthWorkers.data
+                : [...?state.healthWorkers.data, ...?healthWorkers.data],
+            metadata: healthWorkers.metadata,
+          ),
+          statusGetHealthWorkers: FormzSubmissionStatus.success,
         ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(statusGetHealthWorkers: FormzSubmissionStatus.failure),
       );
     }
   }
@@ -70,10 +63,7 @@ class HealthWorkerBloc extends Bloc<HealthWorkerEvent, HealthWorkerState> {
   }
 
   void _onChangeSearch(ChangeSearch event, Emitter<HealthWorkerState> emit) {
-    emit(state.copyWith(
-      search: event.search,
-      page: 1,
-    ));
+    emit(state.copyWith(search: event.search, page: 1));
     add(GetHealthWorkers());
   }
 }

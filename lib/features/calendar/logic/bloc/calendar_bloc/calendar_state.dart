@@ -1,21 +1,22 @@
 part of 'calendar_bloc.dart';
 
 class CalendarState extends Equatable {
-  const CalendarState(
-      {this.status = FormzSubmissionStatus.initial,
-      this.statusAddEvent = FormzSubmissionStatus.initial,
-      this.statusUpdateEvent = FormzSubmissionStatus.initial,
-      this.statusDeleteEvent = FormzSubmissionStatus.initial,
-      this.errorMessage,
-      this.events,
-      this.selectedEvents,
-      this.groupedEvents,
-      this.selectedDate,
-      this.focusedDate,
-      this.currentPageDate,
-      this.format = CalendarFormat.month,
-      this.dateTimeForm,
-      this.activityForm = emptyString});
+  const CalendarState({
+    this.status = FormzSubmissionStatus.initial,
+    this.statusAddEvent = FormzSubmissionStatus.initial,
+    this.statusUpdateEvent = FormzSubmissionStatus.initial,
+    this.statusDeleteEvent = FormzSubmissionStatus.initial,
+    this.errorMessage,
+    this.events,
+    this.selectedEvents,
+    this.groupedEvents,
+    this.selectedDate,
+    this.focusedDate,
+    this.currentPageDate,
+    this.format = CalendarFormat.month,
+    this.dateTimeForm,
+    this.activityForm = emptyString,
+  });
 
   final FormzSubmissionStatus status;
   final FormzSubmissionStatus statusAddEvent;

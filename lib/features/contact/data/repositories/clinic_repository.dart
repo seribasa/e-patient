@@ -1,4 +1,4 @@
-import 'package:eimunisasi/core/models/pagination_model.dart';
+import 'package:e_patient/core/models/pagination_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

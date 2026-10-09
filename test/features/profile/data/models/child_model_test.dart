@@ -1,13 +1,18 @@
 import 'package:test/test.dart';
-import 'package:eimunisasi/features/profile/data/models/child_model.dart';
+import 'package:e_patient/features/profile/data/models/child_model.dart';
 
 void main() {
   group('ChildModel', () {
     group('umurAnak', () {
-      test('returns correct age in years and months when tanggalLahir is provided', () {
-        final child = ChildModel(tanggalLahir: DateTime.now().subtract(Duration(days: 400)));
-        expect(child.umurAnak, '1 tahun, 1 bulan');
-      });
+      test(
+        'returns correct age in years and months when tanggalLahir is provided',
+        () {
+          final child = ChildModel(
+            tanggalLahir: DateTime.now().subtract(Duration(days: 400)),
+          );
+          expect(child.umurAnak, '1 tahun, 1 bulan');
+        },
+      );
 
       test('returns "Umur belum diisi" when tanggalLahir is null', () {
         final child = ChildModel(tanggalLahir: null);
@@ -40,13 +45,14 @@ void main() {
         expect(child.photoURL, 'http://example.com/photo.jpg');
       });
 
-      test('creates ChildModel with null tanggalLahir when date_of_birth is invalid', () {
-        final data = {
-          'date_of_birth': 'invalid-date',
-        };
-        final child = ChildModel.fromSeribase(data);
-        expect(child.tanggalLahir, null);
-      });
+      test(
+        'creates ChildModel with null tanggalLahir when date_of_birth is invalid',
+        () {
+          final data = {'date_of_birth': 'invalid-date'};
+          final child = ChildModel.fromSeribase(data);
+          expect(child.tanggalLahir, null);
+        },
+      );
     });
 
     group('toSeribaseMap', () {
@@ -116,24 +122,27 @@ void main() {
         expect(updatedChild.tempatLahir, 'City');
       });
 
-      test('returns a copy with unchanged fields when no new values are provided', () {
-        final child = ChildModel(
-          id: '1',
-          parentId: '2',
-          nama: 'John',
-          nik: '123456',
-          tempatLahir: 'City',
-          tanggalLahir: DateTime.parse('2022-01-01'),
-          jenisKelamin: 'Male',
-          golDarah: 'O',
-          photoURL: 'http://example.com/photo.jpg',
-        );
-        final updatedChild = child.copyWith();
-        expect(updatedChild, equals(child));
-        expect(updatedChild.nama, 'John');
-        expect(updatedChild.nik, '123456');
-        expect(updatedChild.tempatLahir, 'City');
-      });
+      test(
+        'returns a copy with unchanged fields when no new values are provided',
+        () {
+          final child = ChildModel(
+            id: '1',
+            parentId: '2',
+            nama: 'John',
+            nik: '123456',
+            tempatLahir: 'City',
+            tanggalLahir: DateTime.parse('2022-01-01'),
+            jenisKelamin: 'Male',
+            golDarah: 'O',
+            photoURL: 'http://example.com/photo.jpg',
+          );
+          final updatedChild = child.copyWith();
+          expect(updatedChild, equals(child));
+          expect(updatedChild.nama, 'John');
+          expect(updatedChild.nik, '123456');
+          expect(updatedChild.tempatLahir, 'City');
+        },
+      );
     });
   });
 }

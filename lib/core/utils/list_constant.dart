@@ -4,12 +4,7 @@ class ListConstant {
   static const GENDER = ['-', 'Laki-laki', 'Perempuan'];
 }
 
-enum BloodType {
-  A,
-  AB,
-  B,
-  O,
-}
+enum BloodType { A, AB, B, O }
 
 enum Gender {
   MALE('Laki-laki'),
@@ -17,7 +12,5 @@ enum Gender {
 
   final String value;
 
-  const Gender(
-    this.value,
-  );
+  const Gender(this.value);
 }

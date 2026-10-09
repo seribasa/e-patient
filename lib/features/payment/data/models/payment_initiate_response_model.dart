@@ -11,12 +11,7 @@ class PaymentInitiateResponseModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        orderId,
-        gateway,
-        redirectUrl,
-        token,
-      ];
+  List<Object?> get props => [orderId, gateway, redirectUrl, token];
 
   factory PaymentInitiateResponseModel.fromSeribase(Map<String, dynamic> data) {
     return PaymentInitiateResponseModel(

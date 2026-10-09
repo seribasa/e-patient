@@ -1,9 +1,9 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/features/authentication/presentation/screens/auth/otp_screen.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
-import 'package:eimunisasi/routers/route_paths/auth_route_paths.dart';
-import 'package:eimunisasi/core/utils/string_extension.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/features/authentication/presentation/screens/auth/otp_screen.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/routers/route_paths/auth_route_paths.dart';
+import 'package:e_patient/core/utils/string_extension.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/widgets/button_custom.dart';
 import '../../../../core/widgets/text_form_custom.dart';
@@ -20,8 +20,9 @@ class LoginPhoneForm extends StatelessWidget {
     return BlocListener<LoginPhoneCubit, LoginPhoneState>(
       listener: (context, state) {
         if (state.status.isFailure) {
-          snackbarCustom(state.errorMessage ?? 'Authentication Failure')
-              .show(context);
+          snackbarCustom(
+            state.errorMessage ?? 'Authentication Failure',
+          ).show(context);
         } else if (state.verId != null) {
           context.pushReplacement(
             AuthRoutePaths.otp.fullPath,
@@ -38,10 +39,7 @@ class LoginPhoneForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'assets/images/logo.png',
-                width: 80,
-              ),
+              Image.asset('assets/images/logo.png', width: 80),
               SizedBox(height: 30.0),
               Text(
                 AppConstant.PLEASE_LOGIN,
@@ -56,17 +54,23 @@ class LoginPhoneForm extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(AppConstant.NEW_USER_QUESTION,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black)),
+                  Text(
+                    AppConstant.NEW_USER_QUESTION,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
+                  ),
                   InkWell(
-                    child: Text(' Buat akun',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor)),
+                    child: Text(
+                      ' Buat akun',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
                     onTap: () {
                       context.push(AuthRoutePaths.registerPhone.fullPath);
                     },
@@ -130,7 +134,7 @@ class _PhoneInput extends StatelessWidget {
               } else {
                 return Container();
               }
-            }()
+            }(),
           ],
         );
       },

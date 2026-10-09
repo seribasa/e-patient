@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:eimunisasi/features/vaccination/data/models/appointment_model.dart';
-import 'package:eimunisasi/features/vaccination/data/models/appointment_payment_entity.dart';
-import 'package:eimunisasi/features/vaccination/data/repositories/appointment_repository.dart';
+import 'package:e_patient/features/vaccination/data/models/appointment_model.dart';
+import 'package:e_patient/features/vaccination/data/models/appointment_payment_entity.dart';
+import 'package:e_patient/features/vaccination/data/repositories/appointment_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';
@@ -22,22 +22,21 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     on<ChangeSortCriteriaEvent>(_onChangeSortCriteria);
   }
 
-  void _onLoadAppointments(
-    LoadAppointmentsEvent event,
-    Emitter emit,
-  ) async {
-    emit(state.copyWith(
-      statusGetAppointments: FormzSubmissionStatus.inProgress,
-    ));
+  void _onLoadAppointments(LoadAppointmentsEvent event, Emitter emit) async {
+    emit(
+      state.copyWith(statusGetAppointments: FormzSubmissionStatus.inProgress),
+    );
     try {
       final appointments = await appointmentRepository.getAppointments(
         userId: event.userId,
         sortCriteria: state.sortCriteria,
       );
-      emit(state.copyWith(
-        statusGetAppointments: FormzSubmissionStatus.success,
-        getAppointments: appointments,
-      ));
+      emit(
+        state.copyWith(
+          statusGetAppointments: FormzSubmissionStatus.success,
+          getAppointments: appointments,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
@@ -48,18 +47,17 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     }
   }
 
-  void _onCreateAppointment(
-    CreateAppointmentEvent event,
-    Emitter emit,
-  ) async {
+  void _onCreateAppointment(CreateAppointmentEvent event, Emitter emit) async {
     emit(state.copyWith(statusSubmit: FormzSubmissionStatus.inProgress));
     try {
       final appointment = event.appointment;
       final result = await appointmentRepository.setAppointment(appointment);
-      emit(state.copyWith(
-        statusSubmit: FormzSubmissionStatus.success,
-        appointmentWithOrder: result,
-      ));
+      emit(
+        state.copyWith(
+          statusSubmit: FormzSubmissionStatus.success,
+          appointmentWithOrder: result,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
@@ -70,20 +68,17 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     }
   }
 
-  void _onUpdateAppointment(
-    UpdateAppointmentEvent event,
-    Emitter emit,
-  ) async {
+  void _onUpdateAppointment(UpdateAppointmentEvent event, Emitter emit) async {
     emit(state.copyWith(statusSubmit: FormzSubmissionStatus.inProgress));
     try {
       final appointment = event.appointment;
       final result = await appointmentRepository.updateAppointment(appointment);
-      emit(state.copyWith(
-        statusSubmit: FormzSubmissionStatus.success,
-        appointmentWithOrder: AppointmentOrderEntity(
-          appointment: result,
+      emit(
+        state.copyWith(
+          statusSubmit: FormzSubmissionStatus.success,
+          appointmentWithOrder: AppointmentOrderEntity(appointment: result),
         ),
-      ));
+      );
     } catch (e) {
       emit(
         state.copyWith(
@@ -94,10 +89,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     }
   }
 
-  void _onLoadAppointment(
-    LoadAppointmentEvent event,
-    Emitter emit,
-  ) async {
+  void _onLoadAppointment(LoadAppointmentEvent event, Emitter emit) async {
     emit(
       state.copyWith(statusGetAppointment: FormzSubmissionStatus.inProgress),
     );
@@ -105,10 +97,12 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       final appointment = await appointmentRepository.getAppointment(
         id: event.id,
       );
-      emit(state.copyWith(
-        statusGetAppointment: FormzSubmissionStatus.success,
-        getAppointmentWithOrder: appointment,
-      ));
+      emit(
+        state.copyWith(
+          statusGetAppointment: FormzSubmissionStatus.success,
+          getAppointmentWithOrder: appointment,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(

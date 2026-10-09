@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:eimunisasi/features/contact/logic/clinic_bloc/clinic_bloc.dart';
-import 'package:eimunisasi/features/contact/data/repositories/clinic_repository.dart';
-import 'package:eimunisasi/core/models/pagination_model.dart';
-import 'package:eimunisasi/features/health_worker/data/models/clinic_model.dart';
+import 'package:e_patient/features/contact/logic/clinic_bloc/clinic_bloc.dart';
+import 'package:e_patient/features/contact/data/repositories/clinic_repository.dart';
+import 'package:e_patient/core/models/pagination_model.dart';
+import 'package:e_patient/features/health_worker/data/models/clinic_model.dart';
 import 'package:formz/formz.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -22,12 +22,15 @@ void main() {
     blocTest<ClinicBloc, ClinicState>(
       'emits [inProgress, success] when GetClinics is added and getClinics succeeds',
       build: () {
-        when(() =>
-            clinicRepository.getClinics(
-                page: any(named: 'page'),
-                perPage: any(named: 'perPage'),
-                search: any(named: 'search'))).thenAnswer(
-            (_) async => BasePagination<ClinicModel>(data: <ClinicModel>[]));
+        when(
+          () => clinicRepository.getClinics(
+            page: any(named: 'page'),
+            perPage: any(named: 'perPage'),
+            search: any(named: 'search'),
+          ),
+        ).thenAnswer(
+          (_) async => BasePagination<ClinicModel>(data: <ClinicModel>[]),
+        );
         return clinicBloc;
       },
       act: (bloc) => bloc.add(GetClinics()),
@@ -35,9 +38,7 @@ void main() {
         ClinicState(statusGetClinic: FormzSubmissionStatus.inProgress),
         ClinicState(
           statusGetClinic: FormzSubmissionStatus.success,
-          clinics: BasePagination<ClinicModel>(
-            data: <ClinicModel>[],
-          ),
+          clinics: BasePagination<ClinicModel>(data: <ClinicModel>[]),
         ),
       ],
     );
@@ -45,10 +46,13 @@ void main() {
     blocTest<ClinicBloc, ClinicState>(
       'emits [inProgress, failure] when GetClinics is added and getClinics fails',
       build: () {
-        when(() => clinicRepository.getClinics(
+        when(
+          () => clinicRepository.getClinics(
             page: any(named: 'page'),
             perPage: any(named: 'perPage'),
-            search: any(named: 'search'))).thenThrow(Exception('error'));
+            search: any(named: 'search'),
+          ),
+        ).thenThrow(Exception('error'));
         return clinicBloc;
       },
       act: (bloc) => bloc.add(GetClinics()),
@@ -60,17 +64,16 @@ void main() {
     blocTest<ClinicBloc, ClinicState>(
       'emits new state with updated page when ChangePage is added',
       build: () {
-        when(() => clinicRepository.getClinics(
+        when(
+          () => clinicRepository.getClinics(
             page: any(named: 'page'),
             perPage: any(named: 'perPage'),
-            search: any(named: 'search'))).thenAnswer(
+            search: any(named: 'search'),
+          ),
+        ).thenAnswer(
           (_) async => BasePagination<ClinicModel>(
             data: <ClinicModel>[],
-            metadata: MetadataPaginationModel(
-              total: 2,
-              page: 1,
-              perPage: 10,
-            ),
+            metadata: MetadataPaginationModel(total: 2, page: 1, perPage: 10),
           ),
         );
         return clinicBloc;
@@ -79,17 +82,9 @@ void main() {
         page: 1,
         clinics: BasePagination<ClinicModel>(
           data: <ClinicModel>[
-            ClinicModel(
-              id: '1',
-              name: 'Clinic 1',
-              address: 'Address 1',
-            ),
+            ClinicModel(id: '1', name: 'Clinic 1', address: 'Address 1'),
           ],
-          metadata: MetadataPaginationModel(
-            total: 2,
-            page: 1,
-            perPage: 10,
-          ),
+          metadata: MetadataPaginationModel(total: 2, page: 1, perPage: 10),
         ),
       ),
       act: (bloc) => bloc.add(ChangePage(2)),
@@ -98,34 +93,18 @@ void main() {
           page: 2,
           clinics: BasePagination<ClinicModel>(
             data: <ClinicModel>[
-              ClinicModel(
-                id: '1',
-                name: 'Clinic 1',
-                address: 'Address 1',
-              ),
+              ClinicModel(id: '1', name: 'Clinic 1', address: 'Address 1'),
             ],
-            metadata: MetadataPaginationModel(
-              total: 2,
-              page: 1,
-              perPage: 10,
-            ),
+            metadata: MetadataPaginationModel(total: 2, page: 1, perPage: 10),
           ),
         ),
         ClinicState(
           page: 2,
           clinics: BasePagination<ClinicModel>(
             data: <ClinicModel>[
-              ClinicModel(
-                id: '1',
-                name: 'Clinic 1',
-                address: 'Address 1',
-              ),
+              ClinicModel(id: '1', name: 'Clinic 1', address: 'Address 1'),
             ],
-            metadata: MetadataPaginationModel(
-              total: 2,
-              page: 1,
-              perPage: 10,
-            ),
+            metadata: MetadataPaginationModel(total: 2, page: 1, perPage: 10),
           ),
           statusGetClinic: FormzSubmissionStatus.inProgress,
         ),
@@ -133,17 +112,9 @@ void main() {
           page: 2,
           clinics: BasePagination<ClinicModel>(
             data: <ClinicModel>[
-              ClinicModel(
-                id: '1',
-                name: 'Clinic 1',
-                address: 'Address 1',
-              ),
+              ClinicModel(id: '1', name: 'Clinic 1', address: 'Address 1'),
             ],
-            metadata: MetadataPaginationModel(
-              total: 2,
-              page: 1,
-              perPage: 10,
-            ),
+            metadata: MetadataPaginationModel(total: 2, page: 1, perPage: 10),
           ),
           statusGetClinic: FormzSubmissionStatus.success,
         ),
@@ -160,12 +131,15 @@ void main() {
     blocTest<ClinicBloc, ClinicState>(
       'emits new state with updated search and resets page when ChangeSearch is added',
       build: () {
-        when(() =>
-            clinicRepository.getClinics(
-                page: any(named: 'page'),
-                perPage: any(named: 'perPage'),
-                search: any(named: 'search'))).thenAnswer(
-            (_) async => BasePagination<ClinicModel>(data: <ClinicModel>[]));
+        when(
+          () => clinicRepository.getClinics(
+            page: any(named: 'page'),
+            perPage: any(named: 'perPage'),
+            search: any(named: 'search'),
+          ),
+        ).thenAnswer(
+          (_) async => BasePagination<ClinicModel>(data: <ClinicModel>[]),
+        );
         return clinicBloc;
       },
       act: (bloc) => bloc.add(ChangeSearch('Clinic')),
@@ -179,16 +153,14 @@ void main() {
         ClinicState(
           search: 'Clinic',
           page: 1,
-          clinics: BasePagination<ClinicModel>(
-            data: <ClinicModel>[],
-          ),
+          clinics: BasePagination<ClinicModel>(data: <ClinicModel>[]),
           statusGetClinic: FormzSubmissionStatus.success,
         ),
       ],
     );
   });
 
- group('ChangePage', () {
+  group('ChangePage', () {
     test('supports value comparisons', () {
       expect(ChangePage(1), ChangePage(1));
     });

@@ -31,11 +31,8 @@ class ButtonText extends StatelessWidget {
 }
 
 class LabelText extends StatelessWidget {
-  const LabelText({
-    Key? key,
-    required this.text,
-    this.color = Colors.black,
-  }) : super(key: key);
+  const LabelText({Key? key, required this.text, this.color = Colors.black})
+      : super(key: key);
   final String text;
   final Color color;
 
@@ -43,11 +40,7 @@ class LabelText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
-        fontSize: 15,
-        fontWeight: FontWeight.w700,
-        color: color,
-      ),
+      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: color),
     );
   }
 }

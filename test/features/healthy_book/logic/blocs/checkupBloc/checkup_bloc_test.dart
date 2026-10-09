@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:eimunisasi/features/healthy_book/data/models/checkup_model.dart';
-import 'package:eimunisasi/features/healthy_book/data/repositories/checkup_repository.dart';
-import 'package:eimunisasi/features/healthy_book/logic/blocs/checkupBloc/checkup_bloc.dart';
+import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart';
+import 'package:e_patient/features/healthy_book/data/repositories/checkup_repository.dart';
+import 'package:e_patient/features/healthy_book/logic/blocs/checkupBloc/checkup_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
@@ -23,36 +23,27 @@ void main() {
   blocTest<CheckupBloc, CheckupState>(
     "CheckupBloc on get checkups emit success",
     setUp: () {
-      when(mockCheckupRepository.getCheckups(
-        'childId',
-      )).thenAnswer((_) async => [
-            mockCheckupModel,
-          ]);
+      when(
+        mockCheckupRepository.getCheckups('childId'),
+      ).thenAnswer((_) async => [mockCheckupModel]);
     },
-    build: () => CheckupBloc(
-      mockCheckupRepository,
-    ),
-    act: (bloc) => bloc.add(OnGetCheckupsEvent(
-      childId: 'childId',
-    )),
+    build: () => CheckupBloc(mockCheckupRepository),
+    act: (bloc) => bloc.add(OnGetCheckupsEvent(childId: 'childId')),
     expect: () => [
       CheckupState(statusGet: FormzSubmissionStatus.inProgress),
       CheckupState(
-          statusGet: FormzSubmissionStatus.success,
-          checkups: [mockCheckupModel]),
+        statusGet: FormzSubmissionStatus.success,
+        checkups: [mockCheckupModel],
+      ),
     ],
   );
 
   blocTest<CheckupBloc, CheckupState>(
     "CheckupBloc on get checkups emit failure",
     setUp: () {
-      when(mockCheckupRepository.getCheckups(
-        'childId',
-      )).thenThrow(Exception());
+      when(mockCheckupRepository.getCheckups('childId')).thenThrow(Exception());
     },
-    build: () => CheckupBloc(
-      mockCheckupRepository,
-    ),
+    build: () => CheckupBloc(mockCheckupRepository),
     act: (bloc) => bloc.add(OnGetCheckupsEvent()),
     expect: () => [
       CheckupState(statusGet: FormzSubmissionStatus.inProgress),

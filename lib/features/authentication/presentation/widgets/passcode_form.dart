@@ -1,7 +1,7 @@
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
-import 'package:eimunisasi/routers/route_paths/auth_route_paths.dart';
-import 'package:eimunisasi/routers/route_paths/root_route_paths.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/routers/route_paths/auth_route_paths.dart';
+import 'package:e_patient/routers/route_paths/root_route_paths.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/widgets/button_custom.dart';
@@ -84,7 +84,8 @@ class _PasscodeInput extends StatelessWidget {
                     child: Text(
                       AppConstant.PASSCODE_FORM_HINT,
                       style: TextStyle(fontSize: 12, color: Colors.red),
-                    ))
+                    ),
+                  )
                 : Container(),
           ],
         );
@@ -124,9 +125,9 @@ class _NextButton extends StatelessWidget {
                   );
                 }
               } else {
-                context
-                    .read<LocalAuthCubit>()
-                    .checkPasscode(state.passcode.value);
+                context.read<LocalAuthCubit>().checkPasscode(
+                      state.passcode.value,
+                    );
               }
             },
           );

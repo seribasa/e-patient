@@ -10,7 +10,7 @@ class SearchBarPeltops extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.zero,
       ),
       child: TextField(
         onChanged: onChanged,

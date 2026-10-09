@@ -17,117 +17,80 @@ class CalendarEventLoaded extends CalendarEvent {
 class SetSelectedDate extends CalendarEvent {
   final DateTime? selectedDate;
 
-  SetSelectedDate({
-    required this.selectedDate,
-  });
+  SetSelectedDate({required this.selectedDate});
 
   @override
-  List<Object?> get props => [
-        selectedDate,
-      ];
+  List<Object?> get props => [selectedDate];
 }
 
 class SetFocusedDate extends CalendarEvent {
   final DateTime focusedDate;
 
-  SetFocusedDate({
-    required this.focusedDate,
-  });
+  SetFocusedDate({required this.focusedDate});
 
   @override
-  List<Object> get props => [
-        focusedDate,
-      ];
+  List<Object> get props => [focusedDate];
 }
 
 class SetCurrentPageDate extends CalendarEvent {
   final DateTime currentPageDate;
 
-  SetCurrentPageDate({
-    required this.currentPageDate,
-  });
+  SetCurrentPageDate({required this.currentPageDate});
 
   @override
-  List<Object> get props => [
-        currentPageDate,
-      ];
+  List<Object> get props => [currentPageDate];
 }
 
 class SetFormat extends CalendarEvent {
   final CalendarFormat format;
 
-  SetFormat({
-    required this.format,
-  });
+  SetFormat({required this.format});
 
   @override
-  List<Object> get props => [
-        format,
-      ];
+  List<Object> get props => [format];
 }
 
 class AddEvent extends CalendarEvent {
   final CalendarModel event;
 
-  AddEvent({
-    required this.event,
-  });
+  AddEvent({required this.event});
 
   @override
-  List<Object> get props => [
-    event,
-  ];
+  List<Object> get props => [event];
 }
 
 class UpdateEvent extends CalendarEvent {
   final CalendarModel event;
 
-  UpdateEvent({
-    required this.event,
-  });
+  UpdateEvent({required this.event});
 
   @override
-  List<Object> get props => [
-    event,
-  ];
+  List<Object> get props => [event];
 }
 
 class DeleteEvent extends CalendarEvent {
   final CalendarModel event;
 
-  DeleteEvent({
-    required this.event,
-  });
+  DeleteEvent({required this.event});
 
   @override
-  List<Object> get props => [
-    event,
-  ];
-
+  List<Object> get props => [event];
 }
 
 class SetDateTimeForm extends CalendarEvent {
   final DateTime? value;
 
-  SetDateTimeForm({
-    required this.value,
-  });
+  SetDateTimeForm({required this.value});
 
   @override
-  List<Object?> get props => [
-    value,
-  ];
+  List<Object?> get props => [value];
 }
 
 class SetActivityForm extends CalendarEvent {
   final String? value;
 
-  SetActivityForm({
-    required this.value,
-  });
+  SetActivityForm({required this.value});
 
   @override
-  List<Object?> get props => [
-    value,
-  ];
+  List<Object?> get props => [value];
 }

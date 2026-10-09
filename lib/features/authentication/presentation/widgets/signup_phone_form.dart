@@ -1,10 +1,10 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/features/authentication/logic/cubit/signup_cubit/signup_cubit.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
-import 'package:eimunisasi/features/authentication/presentation/screens/auth/otp_screen.dart';
-import 'package:eimunisasi/routers/route_paths/auth_route_paths.dart';
-import 'package:eimunisasi/core/utils/string_extension.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/features/authentication/logic/cubit/signup_cubit/signup_cubit.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/features/authentication/presentation/screens/auth/otp_screen.dart';
+import 'package:e_patient/routers/route_paths/auth_route_paths.dart';
+import 'package:e_patient/core/utils/string_extension.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/widgets/text_form_custom.dart';
 import '../../../../core/widgets/button_custom.dart';
@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-
 class SignUpPhoneForm extends StatelessWidget {
   const SignUpPhoneForm({Key? key}) : super(key: key);
   @override
@@ -21,8 +20,9 @@ class SignUpPhoneForm extends StatelessWidget {
     return BlocListener<SignUpCubit, SignUpState>(
       listener: (context, state) {
         if (state.status.isFailure) {
-          snackbarCustom(state.errorMessage ?? 'Authentication Failure')
-              .show(context);
+          snackbarCustom(
+            state.errorMessage ?? 'Authentication Failure',
+          ).show(context);
         } else if (state.verId.isNotNullOrEmpty) {
           context.pushReplacement(
             AuthRoutePaths.otp.fullPath,
@@ -63,9 +63,10 @@ class SignUpPhoneForm extends StatelessWidget {
                     child: Text(
                       ' ${AppConstant.LOGIN}',
                       style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).primaryColor),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                     onTap: () => context.pop(),
                   ),

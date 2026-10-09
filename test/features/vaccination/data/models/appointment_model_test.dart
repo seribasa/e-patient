@@ -1,8 +1,8 @@
-import 'package:eimunisasi/features/authentication/data/models/user_profile.dart';
-import 'package:eimunisasi/features/health_worker/data/models/health_worker_model.dart';
-import 'package:eimunisasi/features/profile/data/models/child_model.dart';
+import 'package:e_patient/features/authentication/data/models/user_profile.dart';
+import 'package:e_patient/features/health_worker/data/models/health_worker_model.dart';
+import 'package:e_patient/features/profile/data/models/child_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:eimunisasi/features/vaccination/data/models/appointment_model.dart';
+import 'package:e_patient/features/vaccination/data/models/appointment_model.dart';
 import 'package:mockito/annotations.dart';
 
 @GenerateNiceMocks([
@@ -20,18 +20,9 @@ void main() {
         'date': '2023-10-10T00:00:00.000Z',
         'note': 'First appointment',
         'purpose': 'Vaccination',
-        'children': {
-          'id': '1',
-          'name': 'First child',
-        },
-        'profiles': {
-          'user_id': '12',
-          'mother_name': 'Mom',
-        },
-        'health_worker': {
-          'id': '1',
-          'full_name': 'First health worker',
-        },
+        'children': {'id': '1', 'name': 'First child'},
+        'profiles': {'user_id': '12', 'mother_name': 'Mom'},
+        'health_worker': {'id': '1', 'full_name': 'First health worker'},
         'start_time': '08:00:33',
         'end_time': '09:00',
       };
@@ -49,25 +40,28 @@ void main() {
       expect(appointment.time, '08:00 - 09:00');
     });
 
-    test('fromSeribase creates an instance from a valid map with null children and profiles', () {
-      final map = {
-        'id': '1',
-        'date': '2023-10-10T00:00:00.000Z',
-        'note': 'First appointment',
-        'purpose': 'Vaccination',
-      };
+    test(
+      'fromSeribase creates an instance from a valid map with null children and profiles',
+      () {
+        final map = {
+          'id': '1',
+          'date': '2023-10-10T00:00:00.000Z',
+          'note': 'First appointment',
+          'purpose': 'Vaccination',
+        };
 
-      final appointment = AppointmentModel.fromSeribase(map);
+        final appointment = AppointmentModel.fromSeribase(map);
 
-      expect(appointment.id, '1');
-      expect(appointment.date, DateTime.parse('2023-10-10T00:00:00.000Z'));
-      expect(appointment.note, 'First appointment');
-      expect(appointment.purpose, 'Vaccination');
-      expect(appointment.child, isNull);
-      expect(appointment.parent, isNull);
-      expect(appointment.healthWorker, isNull);
-      expect(appointment.time, isEmpty);
-    });
+        expect(appointment.id, '1');
+        expect(appointment.date, DateTime.parse('2023-10-10T00:00:00.000Z'));
+        expect(appointment.note, 'First appointment');
+        expect(appointment.purpose, 'Vaccination');
+        expect(appointment.child, isNull);
+        expect(appointment.parent, isNull);
+        expect(appointment.healthWorker, isNull);
+        expect(appointment.time, isEmpty);
+      },
+    );
 
     test('fromSeribase returns null for invalid date format', () {
       final map = {

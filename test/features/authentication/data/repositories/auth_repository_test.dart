@@ -2,7 +2,7 @@ import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/test.dart';
-import 'package:eimunisasi/features/authentication/data/repositories/auth_repository.dart';
+import 'package:e_patient/features/authentication/data/repositories/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import 'package:flutter_test/flutter_test.dart' as flutter_test;
 import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
@@ -45,15 +45,13 @@ void main() {
 
     mockGoTrue = MockGoTrueClient();
     oAuthResponse = MockOAuthResponse();
-    authRepository = AuthRepository(
-      sharedPreferences,
-      mockSupabase,
-    );
+    authRepository = AuthRepository(sharedPreferences, mockSupabase);
   });
   group('destroyPasscode', () {
     test('destroyPasscode success', () async {
-      when(() => sharedPreferences.remove('passCode'))
-          .thenAnswer((_) async => true);
+      when(
+        () => sharedPreferences.remove('passCode'),
+      ).thenAnswer((_) async => true);
 
       final result = await authRepository.destroyPasscode();
       verify(() => sharedPreferences.remove('passCode')).called(1);
@@ -61,9 +59,9 @@ void main() {
     });
 
     test('destroyPasscode throws an exception if remove throws', () async {
-      when(() => sharedPreferences.remove('passCode')).thenThrow(
-        Exception('error'),
-      );
+      when(
+        () => sharedPreferences.remove('passCode'),
+      ).thenThrow(Exception('error'));
 
       final result = authRepository.destroyPasscode();
 
@@ -76,29 +74,29 @@ void main() {
     late MockSupabaseClient mockSupabase;
     setUp(() {
       mockSupabase = MockSupabaseClient();
-      authRepository = AuthRepository(
-        sharedPreferences,
-        mockSupabase,
-      );
+      authRepository = AuthRepository(sharedPreferences, mockSupabase);
       //  Mock the URL launcher
       final mock = setupMockUrlLauncher();
       UrlLauncherPlatform.instance = mock;
 
       // Mock the OAuth response URL
-      when(() => oAuthResponse.provider)
-          .thenReturn(supabase.OAuthProvider.keycloak);
+      when(
+        () => oAuthResponse.provider,
+      ).thenReturn(supabase.OAuthProvider.keycloak);
       when(() => oAuthResponse.url).thenReturn('http://www.google.com');
       when(() => mockSupabase.auth).thenReturn(mockGoTrue);
     });
 
     test('logInWithSeribaseOauth success', () async {
       // Mock the getOAuthSignInUrl method
-      when(() => mockGoTrue.getOAuthSignInUrl(
-            provider: supabase.OAuthProvider.keycloak,
-            redirectTo: any(named: 'redirectTo'),
-            scopes: any(named: 'scopes'),
-            queryParams: any(named: 'queryParams'),
-          )).thenAnswer((_) async => oAuthResponse);
+      when(
+        () => mockGoTrue.getOAuthSignInUrl(
+          provider: supabase.OAuthProvider.keycloak,
+          redirectTo: any(named: 'redirectTo'),
+          scopes: any(named: 'scopes'),
+          queryParams: any(named: 'queryParams'),
+        ),
+      ).thenAnswer((_) async => oAuthResponse);
 
       // Ensure mockSupabase.auth returns the correct MockGoTrueClient
       when(() => mockSupabase.auth).thenReturn(mockGoTrue);
@@ -110,22 +108,26 @@ void main() {
       expect(result, true);
     });
 
-    test('logInWithSeribaseOauth throws an exception if signInWithOAuth throws',
-        () async {
-      // Mock the getOAuthSignInUrl method
-      when(() => mockGoTrue.getOAuthSignInUrl(
+    test(
+      'logInWithSeribaseOauth throws an exception if signInWithOAuth throws',
+      () async {
+        // Mock the getOAuthSignInUrl method
+        when(
+          () => mockGoTrue.getOAuthSignInUrl(
             provider: supabase.OAuthProvider.keycloak,
             redirectTo: any(named: 'redirectTo'),
             scopes: any(named: 'scopes'),
             queryParams: any(named: 'queryParams'),
-          )).thenThrow(Exception('error'));
+          ),
+        ).thenThrow(Exception('error'));
 
-      // Ensure mockSupabase.auth returns the correct MockGoTrueClient
-      when(() => mockSupabase.auth).thenReturn(mockGoTrue);
+        // Ensure mockSupabase.auth returns the correct MockGoTrueClient
+        when(() => mockSupabase.auth).thenReturn(mockGoTrue);
 
-      final result = authRepository.logInWithSeribaseOauth();
+        final result = authRepository.logInWithSeribaseOauth();
 
-      expect(result, throwsA(isA<Exception>()));
-    });
+        expect(result, throwsA(isA<Exception>()));
+      },
+    );
   });
 }

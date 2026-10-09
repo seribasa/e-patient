@@ -49,7 +49,7 @@ class CheckupModel extends Equatable {
         idDokter,
         createdAt,
         updatedAt,
-        deletedAt
+        deletedAt,
       ];
 
   factory CheckupModel.fromSeribase(Map<String, dynamic> map) {

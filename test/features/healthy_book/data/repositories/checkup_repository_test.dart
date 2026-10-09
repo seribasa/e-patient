@@ -1,16 +1,9 @@
-import 'package:eimunisasi/features/healthy_book/data/models/checkup_model.dart';
-import 'package:eimunisasi/features/healthy_book/data/repositories/checkup_repository.dart';
+import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart';
+import 'package:e_patient/features/healthy_book/data/repositories/checkup_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
-import 'package:mockito/annotations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-@GenerateMocks([
-  GoTrueClient,
-  SupabaseClient,
-])
-@GenerateNiceMocks([MockSpec<User>()])
-import 'checkup_repository_test.mocks.dart';
 
 void main() {
   late CheckupRepository checkupRepository;

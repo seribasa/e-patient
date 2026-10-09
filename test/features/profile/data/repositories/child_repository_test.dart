@@ -1,18 +1,12 @@
-import 'package:eimunisasi/features/profile/data/models/child_model.dart';
-import 'package:eimunisasi/features/profile/data/repositories/child_repository.dart';
+import 'package:e_patient/features/profile/data/models/child_model.dart';
+import 'package:e_patient/features/profile/data/repositories/child_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/annotations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-@GenerateMocks([
-  GoTrueClient,
-  SupabaseStorageClient,
-])
-@GenerateNiceMocks([
-  MockSpec<User>(),
-  MockSpec<ChildModel>(),
-])
+@GenerateMocks([GoTrueClient, SupabaseStorageClient])
+@GenerateNiceMocks([MockSpec<User>(), MockSpec<ChildModel>()])
 import 'child_repository_test.mocks.dart';
 
 void main() {
@@ -53,21 +47,13 @@ void main() {
         tanggalLahir: DateTime.now(),
         photoURL: 'https://example.com',
       );
-      final child2 = child1.copyWith(
-        nik: '0987654321',
-        nama: 'Child 2',
-      );
-      final List<ChildModel> mockData = [
-        child1,
-        child2,
-      ];
+      final child2 = child1.copyWith(nik: '0987654321', nama: 'Child 2');
+      final List<ChildModel> mockData = [child1, child2];
 
       for (var element in mockData) {
         final data = element.toSeribaseMap();
         data.addAll({'created_at': DateTime.now().toIso8601String()});
-        await mockSupabaseClient
-            .from('children')
-            .insert(data);
+        await mockSupabaseClient.from('children').insert(data);
       }
 
       final result = await childRepository.getAllChildren();

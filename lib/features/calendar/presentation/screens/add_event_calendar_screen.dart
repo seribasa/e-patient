@@ -1,7 +1,7 @@
-import 'package:eimunisasi/core/extension.dart';
-import 'package:eimunisasi/core/widgets/top_app_bar.dart';
-import 'package:eimunisasi/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/core/extension.dart';
+import 'package:e_patient/core/widgets/top_app_bar.dart';
+import 'package:e_patient/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -47,10 +47,8 @@ class AddEventCalendar extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.pink[100],
-        appBar: AppBarPeltops(
-          title: 'Tambah Aktivitas',
-        ),
+        backgroundColor: Colors.black,
+        appBar: AppBarPeltops(title: 'Tambah Aktivitas'),
         body: Card(
           margin: EdgeInsets.all(AppPadding.paddingM),
           child: ListView(
@@ -115,10 +113,11 @@ class AddEventCalendar extends StatelessWidget {
                 },
                 builder: (context, state) {
                   return ButtonCustom(
-                      loading: state.statusAddEvent ==
-                          FormzSubmissionStatus.inProgress,
-                      child: ButtonText(text: AppConstant.SAVE),
-                      onPressed: () => onSaved(context, state));
+                    loading: state.statusAddEvent ==
+                        FormzSubmissionStatus.inProgress,
+                    child: ButtonText(text: AppConstant.SAVE),
+                    onPressed: () => onSaved(context, state),
+                  );
                 },
               ),
             ],

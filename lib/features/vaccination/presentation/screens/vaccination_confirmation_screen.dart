@@ -1,12 +1,12 @@
 import 'dart:developer';
 
-import 'package:eimunisasi/core/extension.dart';
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/core/widgets/button_custom.dart';
-import 'package:eimunisasi/core/widgets/error.dart';
-import 'package:eimunisasi/features/payment/data/models/order_model.dart';
-import 'package:eimunisasi/injection.dart';
-import 'package:eimunisasi/routers/route_paths/root_route_paths.dart';
+import 'package:e_patient/core/extension.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/core/widgets/button_custom.dart';
+import 'package:e_patient/core/widgets/error.dart';
+import 'package:e_patient/features/payment/data/models/order_model.dart';
+import 'package:e_patient/injection.dart';
+import 'package:e_patient/routers/route_paths/root_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
@@ -23,21 +23,15 @@ import '../../logic/blocs/appointmentBloc/appointment_bloc.dart';
 class VaccinationConfirmationScreen extends StatelessWidget {
   final String appointmentId;
 
-  const VaccinationConfirmationScreen({
-    Key? key,
-    required this.appointmentId,
-  }) : super(key: key);
+  const VaccinationConfirmationScreen({Key? key, required this.appointmentId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<AppointmentBloc>()
-        ..add(
-          LoadAppointmentEvent(appointmentId),
-        ),
-      child: _VaccinationConfirmationScaffold(
-        appointmentId,
-      ),
+      create: (context) =>
+          getIt<AppointmentBloc>()..add(LoadAppointmentEvent(appointmentId)),
+      child: _VaccinationConfirmationScaffold(appointmentId),
     );
   }
 }
@@ -45,18 +39,16 @@ class VaccinationConfirmationScreen extends StatelessWidget {
 class _VaccinationConfirmationScaffold extends StatelessWidget {
   final String appointmentId;
 
-  const _VaccinationConfirmationScaffold(
-    this.appointmentId,
-  );
+  const _VaccinationConfirmationScaffold(this.appointmentId);
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.pink[100],
+      backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.pink[300],
+        backgroundColor: Colors.black,
         elevation: 0.0,
         title: Text(
           AppConstant.APPOINTMENT,
@@ -66,9 +58,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
       body: BlocBuilder<AppointmentBloc, AppointmentState>(
         builder: (context, state) {
           if (state.statusGetAppointment == FormzSubmissionStatus.inProgress) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Center(child: CircularProgressIndicator());
           }
           if (state.statusGetAppointment == FormzSubmissionStatus.failure) {
             return ErrorContainer(
@@ -89,7 +79,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
             return DateFormat('dd MMMM yyyy').format(appointment!.date!);
           }();
           return Container(
-            color: Colors.pink[100],
+            color: Colors.black,
             child: Card(
               margin: EdgeInsets.all(20),
               elevation: 0,
@@ -123,10 +113,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                       SizedBox(height: 10),
                       Row(
                         children: [
-                          Icon(
-                            Icons.person,
-                            color: Colors.pink[300],
-                          ),
+                          Icon(Icons.person, color: Colors.black),
                           SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,9 +125,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                                   fontSize: 15,
                                 ),
                               ),
-                              Text(
-                                appointment?.child?.umurAnak ?? '',
-                              ),
+                              Text(appointment?.child?.umurAnak ?? ''),
                             ],
                           ),
                         ],
@@ -148,10 +133,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                       SizedBox(height: 10),
                       Row(
                         children: [
-                          Icon(
-                            Icons.person,
-                            color: Colors.pink[300],
-                          ),
+                          Icon(Icons.person, color: Colors.black),
                           SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,11 +141,11 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                               Text(
                                 appointment?.healthWorker?.fullName ?? '',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
                               ),
-                              Text(
-                                appointment?.healthWorker?.profession ?? '',
-                              ),
+                              Text(appointment?.healthWorker?.profession ?? ''),
                             ],
                           ),
                         ],
@@ -180,9 +162,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                                   fontSize: 15,
                                 ),
                               ),
-                              Text(
-                                date,
-                              ),
+                              Text(date),
                             ],
                           ),
                           TableRow(
@@ -194,9 +174,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                                   fontSize: 15,
                                 ),
                               ),
-                              Text(
-                                appointment?.time ?? '',
-                              ),
+                              Text(appointment?.time ?? ''),
                             ],
                           ),
                         ],
@@ -226,9 +204,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                                   fontSize: 15,
                                 ),
                               ),
-                              Text(
-                                order?.id ?? '',
-                              ),
+                              Text(order?.id ?? ''),
                             ],
                           ),
                           ...?order?.orderItems?.map(
@@ -241,9 +217,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                                     fontSize: 15,
                                   ),
                                 ),
-                                Text(
-                                  '${item.price} x ${item.quantity}',
-                                ),
+                                Text('${item.price} x ${item.quantity}'),
                               ],
                             ),
                           ),
@@ -256,9 +230,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                                   fontSize: 15,
                                 ),
                               ),
-                              Text(
-                                order?.status ?? '',
-                              ),
+                              Text(order?.status ?? ''),
                             ],
                           ),
                           TableRow(
@@ -270,9 +242,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                                   fontSize: 15,
                                 ),
                               ),
-                              Text(
-                                order?.totalAmount.toString() ?? '',
-                              ),
+                              Text(order?.totalAmount.toString() ?? ''),
                             ],
                           ),
                         ],
@@ -287,9 +257,7 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                       SizedBox(height: 15),
                       ButtonCustom(
                         onPressed: () {
-                          context.go(
-                            RootRoutePaths.dashboard.fullPath,
-                          );
+                          context.go(RootRoutePaths.dashboard.fullPath);
                         },
                         child: Text(
                           'Halaman Utama',
@@ -312,10 +280,7 @@ class _PaymentButtonsRow extends StatelessWidget {
   final String appointmentId;
   final OrderModel? order;
 
-  const _PaymentButtonsRow({
-    required this.appointmentId,
-    required this.order,
-  });
+  const _PaymentButtonsRow({required this.appointmentId, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -338,17 +303,20 @@ class _PaymentButtonsRow extends StatelessWidget {
                           child: WebViewWidget(
                             controller: WebViewController()
                               ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                              ..setNavigationDelegate(NavigationDelegate(
-                                onNavigationRequest: (request) {
-                                  if (request.url.startsWith(
-                                      'https://eimunisasi-app.peltops.com/payment/midtrans')) {
-                                    context.pop();
+                              ..setNavigationDelegate(
+                                NavigationDelegate(
+                                  onNavigationRequest: (request) {
+                                    if (request.url.startsWith(
+                                      'https://e-patient-app.peltops.com/payment/midtrans',
+                                    )) {
+                                      context.pop();
 
-                                    return NavigationDecision.prevent;
-                                  }
-                                  return NavigationDecision.navigate;
-                                },
-                              ))
+                                      return NavigationDecision.prevent;
+                                    }
+                                    return NavigationDecision.navigate;
+                                  },
+                                ),
+                              )
                               ..setBackgroundColor(Colors.transparent)
                               ..loadRequest(paymentUri),
                           ),
@@ -366,7 +334,7 @@ class _PaymentButtonsRow extends StatelessWidget {
                       paymentIntentClientSecret: payment?.token,
                       customFlow: false,
                       style: ThemeMode.light,
-                      merchantDisplayName: 'E-Imunisasi',
+                      merchantDisplayName: 'e-Patient',
                     ),
                   );
                   await stripe.Stripe.instance.presentPaymentSheet();
@@ -381,19 +349,13 @@ class _PaymentButtonsRow extends StatelessWidget {
                 ).show(context);
               }
             },
-            child: Text(
-              'Bayar',
-              style: TextStyle(color: Colors.white),
-            ),
+            child: Text('Bayar', style: TextStyle(color: Colors.white)),
           ),
         ),
         SizedBox(width: 10),
         Expanded(
           child: ButtonCustom(
-            child: Text(
-              'Check Status',
-              style: TextStyle(color: Colors.white),
-            ),
+            child: Text('Check Status', style: TextStyle(color: Colors.white)),
             onPressed: () {
               context.read<AppointmentBloc>().add(
                     LoadAppointmentEvent(appointmentId),

@@ -43,20 +43,20 @@ class TextFormCustom extends StatelessWidget {
                   Text(
                     label!,
                     style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
                   ),
                   (labelIcon != null)
                       ? PopupMenuButton(
                           initialValue: 1,
-                          child: Icon(
-                            labelIcon,
-                            color: Colors.amber,
-                          ),
+                          child: Icon(labelIcon, color: Colors.black),
                           itemBuilder: (context) => [
                             PopupMenuItem<int>(
-                                value: 0, child: Text(labelIconText!)),
+                              value: 0,
+                              child: Text(labelIconText!),
+                            ),
                           ],
                         )
                       : Container(),
@@ -85,10 +85,7 @@ class TextFormCustom extends StatelessWidget {
         (errorText != null)
             ? Align(
                 alignment: Alignment.topLeft,
-                child: Text(
-                  errorText!,
-                  style: TextStyle(color: Colors.red),
-                ),
+                child: Text(errorText!, style: TextStyle(color: Colors.red)),
               )
             : Container(),
       ],

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:eimunisasi/core/models/pagination_model.dart';
-import 'package:eimunisasi/features/health_worker/data/models/clinic_model.dart';
+import 'package:e_patient/core/models/pagination_model.dart';
+import 'package:e_patient/features/health_worker/data/models/clinic_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';
@@ -15,9 +15,7 @@ part 'clinic_state.dart';
 class ClinicBloc extends Bloc<ClinicEvent, ClinicState> {
   final ClinicRepository clinicRepository;
 
-  ClinicBloc(
-    this.clinicRepository,
-  ) : super(ClinicState()) {
+  ClinicBloc(this.clinicRepository) : super(ClinicState()) {
     on<ChangePage>(_onChangePage);
     on<ChangeSearch>(_onChangeSearch);
     on<GetClinics>(_onGetClinics);
@@ -34,10 +32,7 @@ class ClinicBloc extends Bloc<ClinicEvent, ClinicState> {
   }
 
   void _onChangeSearch(ChangeSearch event, Emitter<ClinicState> emit) {
-    emit(state.copyWith(
-      search: event.search,
-      page: 1,
-    ));
+    emit(state.copyWith(search: event.search, page: 1));
     add(GetClinics());
   }
 
@@ -54,21 +49,14 @@ class ClinicBloc extends Bloc<ClinicEvent, ClinicState> {
           clinics: BasePagination<ClinicModel>(
             data: state.page == 1
                 ? clinics.data
-                : [
-                    ...?state.clinics.data,
-                    ...?clinics.data,
-                  ],
+                : [...?state.clinics.data, ...?clinics.data],
             metadata: clinics.metadata,
           ),
           statusGetClinic: FormzSubmissionStatus.success,
         ),
       );
     } catch (e) {
-      emit(
-        state.copyWith(
-          statusGetClinic: FormzSubmissionStatus.failure,
-        ),
-      );
+      emit(state.copyWith(statusGetClinic: FormzSubmissionStatus.failure));
     }
   }
 }

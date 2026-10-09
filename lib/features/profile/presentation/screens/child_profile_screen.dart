@@ -1,12 +1,12 @@
-import 'package:eimunisasi/core/extension.dart';
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/core/widgets/button_custom.dart';
-import 'package:eimunisasi/core/widgets/image_picker.dart';
-import 'package:eimunisasi/core/widgets/spacer.dart';
-import 'package:eimunisasi/core/widgets/text_form_custom.dart';
-import 'package:eimunisasi/features/profile/data/models/child_model.dart';
-import 'package:eimunisasi/features/profile/logic/blocs/childBloc/child_profile_bloc.dart';
-import 'package:eimunisasi/core/utils/dismiss_keyboard.dart';
+import 'package:e_patient/core/extension.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/core/widgets/button_custom.dart';
+import 'package:e_patient/core/widgets/image_picker.dart';
+import 'package:e_patient/core/widgets/spacer.dart';
+import 'package:e_patient/core/widgets/text_form_custom.dart';
+import 'package:e_patient/features/profile/data/models/child_model.dart';
+import 'package:e_patient/features/profile/logic/blocs/childBloc/child_profile_bloc.dart';
+import 'package:e_patient/core/utils/dismiss_keyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -37,13 +37,8 @@ class ChildProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: context.read<ChildProfileBloc>()
-        ..add(
-          OnInitialEvent(child: child),
-        ),
-      child: _ChildProfileScaffold(
-        mode: mode,
-        child: child,
-      ),
+        ..add(OnInitialEvent(child: child)),
+      child: _ChildProfileScaffold(mode: mode, child: child),
     );
   }
 }
@@ -52,10 +47,7 @@ class _ChildProfileScaffold extends StatelessWidget {
   final ChildProfileScreenMode mode;
   final ChildModel? child;
 
-  const _ChildProfileScaffold({
-    required this.mode,
-    required this.child,
-  });
+  const _ChildProfileScaffold({required this.mode, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -77,23 +69,19 @@ class _ChildProfileScaffold extends StatelessWidget {
             state.errorMessage ?? 'Gagal mengubah foto',
           ).show(context);
         } else if (state.statusUpdateAvatar.isSuccess) {
-          snackbarCustom(
-            'Berhasil mengubah foto',
-          ).show(context);
+          snackbarCustom('Berhasil mengubah foto').show(context);
         } else if (state.statusCreate.isFailure) {
           snackbarCustom(
             state.errorMessage ?? 'Gagal menyimpan data',
           ).show(context);
         } else if (state.statusCreate.isSuccess) {
           context.pop();
-          snackbarCustom(
-            'Berhasil menyimpan data',
-          ).show(context);
+          snackbarCustom('Berhasil menyimpan data').show(context);
         }
       },
       child: Scaffold(
         appBar: AppBarPeltops(title: AppConstant.APP_BAR_CHILD_PROFILE),
-        backgroundColor: Colors.pink[100],
+        backgroundColor: Colors.black,
         body: BlocBuilder<ChildProfileBloc, ChildProfileState>(
           builder: (context, state) {
             final bloc = context.read<ChildProfileBloc>();
@@ -152,9 +140,7 @@ class _ChildProfileScaffold extends StatelessWidget {
                                       currentTime: state.child?.tanggalLahir,
                                     );
                                     if (date != null) {
-                                      bloc.add(
-                                        OnChangeDateOfBirthEvent(date),
-                                      );
+                                      bloc.add(OnChangeDateOfBirthEvent(date));
                                     }
                                   },
                                   readOnly: true,
@@ -191,7 +177,8 @@ class _ChildProfileScaffold extends StatelessWidget {
                                 .toList(),
                             onChanged: (val) {
                               bloc.add(
-                                  OnChangeBloodTypeEvent(val ?? emptyString));
+                                OnChangeBloodTypeEvent(val ?? emptyString),
+                              );
                             },
                           ),
                           VerticalSpacer(),
@@ -202,7 +189,7 @@ class _ChildProfileScaffold extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             );
           },
@@ -215,10 +202,7 @@ class _ChildProfileScaffold extends StatelessWidget {
 class _HeaderChildProfile extends StatelessWidget {
   final ChildModel? child;
 
-  const _HeaderChildProfile({
-    Key? key,
-    required this.child,
-  }) : super(key: key);
+  const _HeaderChildProfile({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -229,10 +213,7 @@ class _HeaderChildProfile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _PhotoProfile(
-              url: child?.photoURL,
-              id: child?.id,
-            ),
+            _PhotoProfile(url: child?.photoURL, id: child?.id),
             Text('Umur: ' + (child?.umurAnak ?? emptyString)),
           ],
         ),
@@ -244,10 +225,7 @@ class _HeaderChildProfile extends StatelessWidget {
 class _SaveButton extends StatelessWidget {
   final ChildProfileScreenMode mode;
 
-  const _SaveButton({
-    Key? key,
-    required this.mode,
-  }) : super(key: key);
+  const _SaveButton({Key? key, required this.mode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -296,10 +274,9 @@ class _PhotoProfile extends StatelessWidget {
             url: url,
             onPressedCamera: () async {
               ModalPickerImage.showPicker(context, (file) {
-                bloc.add(UpdateProfilePhotoEvent(
-                  id: id ?? emptyString,
-                  photo: file,
-                ));
+                bloc.add(
+                  UpdateProfilePhotoEvent(id: id ?? emptyString, photo: file),
+                );
               });
             },
           );

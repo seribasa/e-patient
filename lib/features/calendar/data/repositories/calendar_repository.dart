@@ -1,5 +1,5 @@
-import 'package:eimunisasi/features/calendar/data/models/calendar_model.dart';
-import 'package:eimunisasi/features/calendar/data/models/hive_calendar_activity_model.dart';
+import 'package:e_patient/features/calendar/data/models/calendar_model.dart';
+import 'package:e_patient/features/calendar/data/models/hive_calendar_activity_model.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,19 +9,14 @@ class CalendarRepository {
   final SupabaseClient supabase;
   final HiveInterface hiveInterface;
 
-  CalendarRepository(
-    this.supabase,
-    this.hiveInterface,
-  );
+  CalendarRepository(this.supabase, this.hiveInterface);
 
   Future<CalendarModel> setEvent(CalendarModel model) async {
     try {
       final modelWithCreatedDate = model.copyWith(createdDate: DateTime.now());
       final result = await supabase
           .from(CalendarModel.tableName)
-          .insert(
-            modelWithCreatedDate.toSeribase(),
-          )
+          .insert(modelWithCreatedDate.toSeribase())
           .select('id');
       if (result.isEmpty) {
         throw Exception('Failed to create event');
@@ -47,10 +42,7 @@ class CalendarRepository {
 
   Future<void> deleteEvent(String docID) async {
     try {
-      await supabase.from(CalendarModel.tableName).delete().eq(
-            'id',
-            docID,
-          );
+      await supabase.from(CalendarModel.tableName).delete().eq('id', docID);
     } catch (e) {
       rethrow;
     }
@@ -76,8 +68,9 @@ class CalendarRepository {
 
   Future<int> setEventLocal(CalendarModel data) async {
     try {
-      final box = await hiveInterface
-          .openBox<CalendarActivityHive>('calendar_activity');
+      final box = await hiveInterface.openBox<CalendarActivityHive>(
+        'calendar_activity',
+      );
       final id = data.createdDate?.millisecondsSinceEpoch;
       await box.put('$id', data.toHive());
       return box.values.toList().indexWhere((element) => element.id == id);
@@ -87,21 +80,24 @@ class CalendarRepository {
   }
 
   Future<List<CalendarActivityHive>> getEventLocal() async {
-    final box =
-        await hiveInterface.openBox<CalendarActivityHive>('calendar_activity');
+    final box = await hiveInterface.openBox<CalendarActivityHive>(
+      'calendar_activity',
+    );
     return box.values.toList();
   }
 
   Future<void> deleteEventLocal(CalendarModel data) async {
-    final box =
-        await hiveInterface.openBox<CalendarActivityHive>('calendar_activity');
+    final box = await hiveInterface.openBox<CalendarActivityHive>(
+      'calendar_activity',
+    );
     final id = data.createdDate?.millisecondsSinceEpoch;
     return box.delete('$id');
   }
 
   Future<int> deleteAllEventLocal() async {
-    final box =
-        await hiveInterface.openBox<CalendarActivityHive>('calendar_activity');
+    final box = await hiveInterface.openBox<CalendarActivityHive>(
+      'calendar_activity',
+    );
     return await box.clear();
   }
 }

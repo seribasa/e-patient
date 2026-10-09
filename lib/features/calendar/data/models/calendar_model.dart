@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-import 'package:eimunisasi/core/extension.dart';
-import 'package:eimunisasi/features/calendar/data/models/hive_calendar_activity_model.dart';
+import 'package:e_patient/core/extension.dart';
+import 'package:e_patient/features/calendar/data/models/hive_calendar_activity_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:table_calendar/table_calendar.dart';
 

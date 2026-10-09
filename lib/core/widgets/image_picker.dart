@@ -38,15 +38,16 @@ class ModalPickerImage {
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                    leading: Icon(Icons.photo_library),
-                    title: Text('Photo Library'),
-                    onTap: () async {
-                      final file = await _imgFromGallery(context);
-                      if (file != null) {
-                        callback(file);
-                      }
-                      context.pop();
-                    }),
+                  leading: Icon(Icons.photo_library),
+                  title: Text('Photo Library'),
+                  onTap: () async {
+                    final file = await _imgFromGallery(context);
+                    if (file != null) {
+                      callback(file);
+                    }
+                    context.pop();
+                  },
+                ),
                 ListTile(
                   leading: Icon(Icons.photo_camera),
                   title: Text('Camera'),

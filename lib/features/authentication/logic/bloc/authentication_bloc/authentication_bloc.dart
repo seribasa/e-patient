@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:eimunisasi/features/splash/data/repositories/splash_repository.dart';
+import 'package:e_patient/features/splash/data/repositories/splash_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -39,14 +39,12 @@ class AuthenticationBloc
   }
 
   void _authSubcription() {
-    _authSubscription = supabaseClient.auth.onAuthStateChange.listen((
-      event,
-    ) {
+    _authSubscription = supabaseClient.auth.onAuthStateChange.listen((event) {
       final authEvent = event.event;
       if (!kReleaseMode) {
         final maskedToken = event.session?.accessToken != null &&
-                event.session!.accessToken!.length >= 6
-            ? event.session!.accessToken!.substring(0, 6)
+                event.session!.accessToken.length >= 6
+            ? event.session!.accessToken.substring(0, 6)
             : 'N/A';
         debugPrint('accessToken: $maskedToken...');
       }
@@ -87,10 +85,7 @@ class AuthenticationBloc
     }
   }
 
-  void _onLoggedIn(
-    LoggedIn event,
-    Emitter<AuthenticationState> emit,
-  ) async {
+  void _onLoggedIn(LoggedIn event, Emitter<AuthenticationState> emit) async {
     emit(Loading());
     final data = await authRepository.getUser();
     if (data == null) {
@@ -100,21 +95,17 @@ class AuthenticationBloc
     emit(Authenticated(user: data));
   }
 
-  void _onLoggedOut(
-    LoggedOut event,
-    Emitter<AuthenticationState> emit,
-  ) async {
+  void _onLoggedOut(LoggedOut event, Emitter<AuthenticationState> emit) async {
     emit(Loading());
     final isSeenOnboarding = await splashRepository.isSeen();
     await authRepository.signOut().then((_) {
       emit(Unauthenticated(isSeenOnboarding: isSeenOnboarding));
     }).catchError((error) {
-      log(
-        error.toString(),
-        name: 'Error LoggedOut',
-      );
+      log(error.toString(), name: 'Error LoggedOut');
       emit(
-        const AuthenticationError(message: 'Gagal logout. Silahkan coba lagi!'),
+        const AuthenticationError(
+          message: 'Gagal logout. Silahkan coba lagi!',
+        ),
       );
     });
   }

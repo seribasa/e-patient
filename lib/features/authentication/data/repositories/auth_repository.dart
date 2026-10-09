@@ -17,10 +17,7 @@ class AuthRepository {
 
   static const String _tableName = 'profiles';
 
-  AuthRepository(
-    this.sharedPreferences,
-    this.supabaseClient,
-  );
+  AuthRepository(this.sharedPreferences, this.supabaseClient);
 
   Future<AuthResponse> logInWithEmailAndPassword({
     required String email,
@@ -33,41 +30,25 @@ class AuthRepository {
   }
 
   Future<void> forgetEmailPassword({required String email}) {
-    return supabaseClient.auth.resetPasswordForEmail(
-      email,
-    );
+    return supabaseClient.auth.resetPasswordForEmail(email);
   }
 
   Future<AuthResponse> signUpWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
-    return await supabaseClient.auth.signUp(
-      email: email,
-      password: password,
-    );
+    return await supabaseClient.auth.signUp(email: email, password: password);
   }
 
-  Future<void> insertUserToDatabase({
-    required UserProfile user,
-  }) async {
+  Future<void> insertUserToDatabase({required UserProfile user}) async {
     try {
-      await supabaseClient.auth.updateUser(
-        UserAttributes(
-          email: user.email,
-        ),
-      );
+      await supabaseClient.auth.updateUser(UserAttributes(email: user.email));
       final userResult = user.toSeribaseMap();
       final userId = supabaseClient.auth.currentUser!.id;
       return await supabaseClient
           .from(_tableName)
-          .update(
-            userResult,
-          )
-          .eq(
-            'user_id',
-            userId,
-          );
+          .update(userResult)
+          .eq('user_id', userId);
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -85,10 +66,8 @@ class AuthRepository {
 
   Future<UserProfile?> getUser() async {
     final user = await supabaseClient.auth.currentUser;
-    final userExpand = await supabaseClient.from(_tableName).select().eq(
-          'user_id',
-          user!.id,
-        );
+    final userExpand =
+        await supabaseClient.from(_tableName).select().eq('user_id', user!.id);
     if (userExpand.isNotEmpty) {
       final userResult = UserProfile.fromSeribase(userExpand.first);
       return userResult.copyWith(
@@ -109,9 +88,8 @@ class AuthRepository {
             fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
             retryAttempts: 3,
           );
-      final fullPath = await supabaseClient.storage
-          .from('avatars')
-          .getPublicUrl('$id');
+      final fullPath =
+          await supabaseClient.storage.from('avatars').getPublicUrl('$id');
       await CachedNetworkImage.evictFromCache(fullPath);
       return fullPath;
     } catch (e) {
@@ -125,9 +103,7 @@ class AuthRepository {
         throw Exception('User not found');
       }
       await supabaseClient.from(_tableName).update({'avatar_url': url}).eq(
-        'user_id',
-        supabaseClient.auth.currentUser!.id,
-      );
+          'user_id', supabaseClient.auth.currentUser!.id);
     } catch (e) {
       log(e.toString());
       rethrow;

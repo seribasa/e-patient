@@ -1,13 +1,13 @@
-# e-imunisasi
+# e-Patient
 
-**e-imunisasi** is a mobile application designed to help parents manage and monitor their children's immunization schedules and records with ease.
+**e-Patient** is a mobile application designed to help parents manage and monitor their children's immunization schedules and records with ease.
 
 ## Download
 Get the latest APK
 
-[Download APK with Midtrans Payment](https://github.com/peltops/e-imunisasi/releases/download/v1.2.0/app-midtrans-v1.2.0-debug.apk)
+[Download APK with Midtrans Payment](https://github.com/peltops/e-Patient/releases/download/v1.2.0/app-midtrans-v1.2.0-debug.apk)
 
-[Download APK with Stripe Payment](https://github.com/peltops/e-imunisasi/releases/download/v1.2.0/app-stripe-v1.2.0-debug.apk)
+[Download APK with Stripe Payment](https://github.com/peltops/e-Patient/releases/download/v1.2.0/app-stripe-v1.2.0-debug.apk)
 
 ## Features
 
@@ -30,4 +30,4 @@ Contributions are welcome! Please open an issue or submit a pull request for imp
 
 ---
 
-**e-imunisasi** helps ensure your child's immunizations are up-to-date and organized, making healthcare management simpler for families.
+**e-Patient** helps ensure your child's immunizations are up-to-date and organized, making healthcare management simpler for families.

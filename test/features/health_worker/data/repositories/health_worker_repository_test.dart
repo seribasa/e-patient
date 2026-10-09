@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:eimunisasi/features/health_worker/data/repositories/health_worker_repository.dart';
-import 'package:eimunisasi/features/health_worker/data/models/health_worker_model.dart';
+import 'package:e_patient/features/health_worker/data/repositories/health_worker_repository.dart';
+import 'package:e_patient/features/health_worker/data/models/health_worker_model.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -13,11 +13,7 @@ void main() {
     final mockFunctionsClient = MockFunctionsClient();
     final mockSupabaseClient = MockSupabaseClient();
     final repository = HealthWorkerRepository(mockSupabaseClient);
-    final queryParameters = {
-      'page': '1',
-      'pageSize': '10',
-      'search': 'John',
-    };
+    final queryParameters = {'page': '1', 'pageSize': '10', 'search': 'John'};
     final dataJson = {
       'id': '1',
       'clinic': {
@@ -33,15 +29,15 @@ void main() {
         {
           'day': 'Monday',
           'start_time': '2023-10-10T08:00:00.000Z',
-          'end_time': '2023-10-10T12:00:00.000Z'
-        }
+          'end_time': '2023-10-10T12:00:00.000Z',
+        },
       ],
       'practice_schedules': [
         {
           'day': 'Tuesday',
           'start_time': '2023-10-11T08:00:00.000Z',
-          'end_time': '2023-10-11T12:00:00.000Z'
-        }
+          'end_time': '2023-10-11T12:00:00.000Z',
+        },
       ],
       'no_kartu_keluarga': '1234567890',
       'full_name': 'John Doe',
@@ -64,19 +60,25 @@ void main() {
 
     group('getHealthWorkers', () {
       test('returns a list of health workers when successful', () async {
-        when(() => mockFunctionsClient.invoke(
-              'get-health-workers',
-              queryParameters: queryParameters,
-              method: HttpMethod.get,
-            )).thenAnswer((_) async => FunctionResponse(
-              status: 200,
-              data: responseJsonHealthWorkers,
-            ));
-        when(() => mockSupabaseClient.functions)
-            .thenReturn(mockFunctionsClient);
+        when(
+          () => mockFunctionsClient.invoke(
+            'get-health-workers',
+            queryParameters: queryParameters,
+            method: HttpMethod.get,
+          ),
+        ).thenAnswer(
+          (_) async =>
+              FunctionResponse(status: 200, data: responseJsonHealthWorkers),
+        );
+        when(
+          () => mockSupabaseClient.functions,
+        ).thenReturn(mockFunctionsClient);
 
         final result = await repository.getHealthWorkers(
-            page: 1, perPage: 10, search: 'John');
+          page: 1,
+          perPage: 10,
+          search: 'John',
+        );
 
         expect(result.data, isA<List<HealthWorkerModel>>());
         expect(result.data?.length, 1);
@@ -91,17 +93,17 @@ void main() {
             method: HttpMethod.get,
           ),
         ).thenAnswer(
-          (_) async => FunctionResponse(
-            status: 200,
-            data: {'data': null},
-          ),
+          (_) async => FunctionResponse(status: 200, data: {'data': null}),
         );
-        when(() => mockSupabaseClient.functions).thenReturn(
-          mockFunctionsClient,
-        );
+        when(
+          () => mockSupabaseClient.functions,
+        ).thenReturn(mockFunctionsClient);
 
         final result = await repository.getHealthWorkers(
-            page: 1, perPage: 10, search: 'John');
+          page: 1,
+          perPage: 10,
+          search: 'John',
+        );
 
         expect(result.data, isNull);
       });
@@ -119,16 +121,13 @@ void main() {
             data: {'error': 'Internal Server Error'},
           ),
         );
-        when(() => mockSupabaseClient.functions).thenReturn(
-          mockFunctionsClient,
-        );
+        when(
+          () => mockSupabaseClient.functions,
+        ).thenReturn(mockFunctionsClient);
 
         expect(
-          () => repository.getHealthWorkers(
-            page: 1,
-            perPage: 10,
-            search: 'John',
-          ),
+          () =>
+              repository.getHealthWorkers(page: 1, perPage: 10, search: 'John'),
           throwsException,
         );
       });
@@ -136,15 +135,17 @@ void main() {
 
     group('getHealthWorkerById', () {
       test('returns a health worker when successful', () async {
-        when(() => mockFunctionsClient.invoke(
-              'get-health-worker/1',
-              method: HttpMethod.get,
-            )).thenAnswer((_) async => FunctionResponse(
-              status: 200,
-              data: {'data': dataJson},
-            ));
-        when(() => mockSupabaseClient.functions)
-            .thenReturn(mockFunctionsClient);
+        when(
+          () => mockFunctionsClient.invoke(
+            'get-health-worker/1',
+            method: HttpMethod.get,
+          ),
+        ).thenAnswer(
+          (_) async => FunctionResponse(status: 200, data: {'data': dataJson}),
+        );
+        when(
+          () => mockSupabaseClient.functions,
+        ).thenReturn(mockFunctionsClient);
 
         final result = await repository.getHealthWorkerById('1');
 
@@ -159,14 +160,11 @@ void main() {
             method: HttpMethod.get,
           ),
         ).thenAnswer(
-          (_) async => FunctionResponse(
-            status: 404,
-            data: {'data': null},
-          ),
+          (_) async => FunctionResponse(status: 404, data: {'data': null}),
         );
-        when(() => mockSupabaseClient.functions).thenReturn(
-          mockFunctionsClient,
-        );
+        when(
+          () => mockSupabaseClient.functions,
+        ).thenReturn(mockFunctionsClient);
 
         final result = await repository.getHealthWorkerById('1');
 
@@ -185,14 +183,11 @@ void main() {
             data: {'error': 'Internal Server Error'},
           ),
         );
-        when(() => mockSupabaseClient.functions).thenReturn(
-          mockFunctionsClient,
-        );
+        when(
+          () => mockSupabaseClient.functions,
+        ).thenReturn(mockFunctionsClient);
 
-        expect(
-          () => repository.getHealthWorkerById('1'),
-          throwsException,
-        );
+        expect(() => repository.getHealthWorkerById('1'), throwsException);
       });
     });
   });

@@ -12,26 +12,19 @@ part 'login_phone_state.dart';
 class LoginPhoneCubit extends Cubit<LoginPhoneState> {
   LoginPhoneCubit() : super(const LoginPhoneState());
 
-
   void phoneChanged(String value) {
     final phone = Phone.dirty(value);
-    emit(state.copyWith(
-      phone: phone,
-    ));
+    emit(state.copyWith(phone: phone));
   }
 
   void otpCodeChanged(String value) {
     final otpCode = OTP.dirty(value);
-    emit(state.copyWith(
-      otpCode: otpCode,
-    ));
+    emit(state.copyWith(otpCode: otpCode));
   }
 
   void countryCodeChanged(String value) {
     final countryCode = CountryCode.dirty(value);
-    emit(state.copyWith(
-      countryCode: countryCode,
-    ));
+    emit(state.copyWith(countryCode: countryCode));
   }
 
   void verIdChanged(String value) {

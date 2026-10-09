@@ -1,13 +1,13 @@
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:eimunisasi/features/health_worker/data/models/health_worker_model.dart';
-import 'package:eimunisasi/features/profile/data/models/child_model.dart';
-import 'package:eimunisasi/features/vaccination/data/models/appointment_model.dart';
-import 'package:eimunisasi/features/vaccination/logic/blocs/appointmentBloc/appointment_bloc.dart';
-import 'package:eimunisasi/injection.dart';
-import 'package:eimunisasi/core/widgets/button_custom.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
-import 'package:eimunisasi/routers/route_paths/vaccination_route_paths.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:e_patient/features/health_worker/data/models/health_worker_model.dart';
+import 'package:e_patient/features/profile/data/models/child_model.dart';
+import 'package:e_patient/features/vaccination/data/models/appointment_model.dart';
+import 'package:e_patient/features/vaccination/logic/blocs/appointmentBloc/appointment_bloc.dart';
+import 'package:e_patient/injection.dart';
+import 'package:e_patient/core/widgets/button_custom.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/routers/route_paths/vaccination_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -30,10 +30,7 @@ class VaccinationRegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<AppointmentBloc>(),
-      child: _VaccinationRegisterScaffold(
-        child: anak,
-        healthWorker: nakes,
-      ),
+      child: _VaccinationRegisterScaffold(child: anak, healthWorker: nakes),
     );
   }
 }
@@ -80,9 +77,7 @@ class _VaccinationRegisterScaffoldState
 
     void onSubmit() {
       if (selectedRadioTile == null || _selectedDate == null) {
-        snackbarCustom(
-          'Lengkapi data terlebih dahulu!',
-        ).show(context);
+        snackbarCustom('Lengkapi data terlebih dahulu!').show(context);
         return;
       }
       final appointment = AppointmentModel(
@@ -95,9 +90,7 @@ class _VaccinationRegisterScaffoldState
         startTime: selectedRadioTile?.startTime,
         endTime: selectedRadioTile?.endTime,
       );
-      context.read<AppointmentBloc>().add(
-            CreateAppointmentEvent(appointment),
-          );
+      context.read<AppointmentBloc>().add(CreateAppointmentEvent(appointment));
     }
 
     return BlocListener<AppointmentBloc, AppointmentState>(
@@ -108,15 +101,13 @@ class _VaccinationRegisterScaffoldState
             extra: state.appointmentWithOrder?.appointment?.id,
           );
         } else if (state.statusSubmit == FormzSubmissionStatus.failure) {
-          snackbarCustom(
-            AppConstant.MAKE_APPOINTMENT_FAILED,
-          ).show(context);
+          snackbarCustom(AppConstant.MAKE_APPOINTMENT_FAILED).show(context);
         }
       },
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.pink[300],
+          backgroundColor: Colors.black,
           elevation: 0.0,
           title: Text(
             AppConstant.MAKE_APPOINTMENT,
@@ -127,7 +118,7 @@ class _VaccinationRegisterScaffoldState
           builder: (context, state) {
             return SizedBox.expand(
               child: Container(
-                color: Colors.pink[100],
+                color: Colors.black,
                 child: Card(
                   margin: EdgeInsets.all(20),
                   elevation: 0,
@@ -148,16 +139,12 @@ class _VaccinationRegisterScaffoldState
                               fontSize: 15,
                             ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          SizedBox(height: 10),
                           ...?widget.healthWorker.schedules?.map((schedule) {
                             final day = schedule.day?.name;
                             return Column(
                               children: [
-                                Text(
-                                  '$day, ${schedule.time}',
-                                ),
+                                Text('$day, ${schedule.time}'),
                                 SizedBox(height: 5),
                               ],
                             );
@@ -166,23 +153,25 @@ class _VaccinationRegisterScaffoldState
                           TextField(
                             readOnly: true,
                             controller: TextEditingController(
-                                text: _selectedDate == null
-                                    ? null
-                                    : DateFormat('dd MMMM yyyy')
-                                        .format(_selectedDate!)),
+                              text: _selectedDate == null
+                                  ? null
+                                  : DateFormat(
+                                      'dd MMMM yyyy',
+                                    ).format(_selectedDate!),
+                            ),
                             decoration: InputDecoration(
                               suffixIcon: Icon(Icons.date_range),
-                              suffixIconColor: Colors.pink,
+                              suffixIconColor: Colors.black,
                               labelText: 'Tanggal',
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Colors.pink,
+                                  color: Colors.black,
                                   width: 2.0,
                                 ),
                               ),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Colors.pink,
+                                  color: Colors.black,
                                   width: 2.0,
                                 ),
                               ),
@@ -201,8 +190,9 @@ class _VaccinationRegisterScaffoldState
                                     return null;
                                   }
 
-                                  final tomorrowDate =
-                                      DateTime.now().add(Duration(days: 1));
+                                  final tomorrowDate = DateTime.now().add(
+                                    Duration(days: 1),
+                                  );
                                   final tomorrow = tomorrowDate.weekday;
 
                                   final nextAvailableDay = days.firstWhere(
@@ -212,8 +202,9 @@ class _VaccinationRegisterScaffoldState
 
                                   final difference =
                                       (nextAvailableDay - tomorrow) % 7;
-                                  return tomorrowDate
-                                      .add(Duration(days: difference));
+                                  return tomorrowDate.add(
+                                    Duration(days: difference),
+                                  );
                                 }(),
                                 maxTime: kLastDay,
                                 minTime: kFirstDay,
@@ -249,29 +240,27 @@ class _VaccinationRegisterScaffoldState
                               final schedules =
                                   widget.healthWorker.practiceSchedules;
                               if (schedules == null || schedules.isEmpty) {
-                                return Text('Belum ada jadwal imunisasi');
+                                return Text(
+                                  'Belum ada jadwal imunisasi',
+                                );
                               }
-                              return schedules.where(
-                                (element) {
-                                  return element.day?.id ==
-                                      _selectedDate?.weekday;
-                                },
-                              ).map(
-                                (e) {
-                                  final day = e.day?.name;
-                                  return RadioListTile<Schedule>(
-                                    dense: true,
-                                    contentPadding: EdgeInsets.all(0),
-                                    value: e,
-                                    groupValue: selectedRadioTile,
-                                    title: Text(
-                                      '$day, ${e.time}',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    onChanged: setSelectedRadioTile,
-                                  );
-                                },
-                              ).toList();
+                              return schedules.where((element) {
+                                return element.day?.id ==
+                                    _selectedDate?.weekday;
+                              }).map((e) {
+                                final day = e.day?.name;
+                                return RadioListTile<Schedule>(
+                                  dense: true,
+                                  contentPadding: EdgeInsets.all(0),
+                                  value: e,
+                                  groupValue: selectedRadioTile,
+                                  title: Text(
+                                    '$day, ${e.time}',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                  onChanged: setSelectedRadioTile,
+                                );
+                              }).toList();
                             }() as List<Widget>,
                           ),
                           SizedBox(height: 20),
@@ -284,13 +273,13 @@ class _VaccinationRegisterScaffoldState
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Colors.pink,
+                                  color: Colors.black,
                                   width: 2.0,
                                 ),
                               ),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Colors.pink,
+                                  color: Colors.black,
                                   width: 2.0,
                                 ),
                               ),
@@ -307,9 +296,7 @@ class _VaccinationRegisterScaffoldState
                             ),
                             subtitle: Text(
                               'Rp. ${widget.healthWorker.bookingFee ?? '-'}',
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
+                              style: TextStyle(fontSize: 15),
                             ),
                           ),
                           ButtonCustom(

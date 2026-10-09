@@ -22,11 +22,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<VerifyEmailEvent>(_onVerifyEmailEvent);
 
     on<OnChangeNameEvent>((event, emit) {
-      emit(
-        state.copyWith(
-          user: state.user?.copyWith(momName: event.name),
-        ),
-      );
+      emit(state.copyWith(user: state.user?.copyWith(momName: event.name)));
     });
     on<OnChangePlaceOfBirthEvent>((event, emit) {
       emit(
@@ -100,18 +96,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(state.copyWith(statusUpdate: FormzSubmissionStatus.inProgress));
     try {
       if (state.user == null) {
-        emit(state.copyWith(
-          statusUpdate: FormzSubmissionStatus.failure,
-          errorMessage: 'User tidak ditemukan',
-        ));
+        emit(
+          state.copyWith(
+            statusUpdate: FormzSubmissionStatus.failure,
+            errorMessage: 'User tidak ditemukan',
+          ),
+        );
         return;
       }
 
       if (state.user?.isNameEmpty == true) {
-        emit(state.copyWith(
-          statusUpdate: FormzSubmissionStatus.failure,
-          errorMessage: 'Nama tidak boleh kosong',
-        ));
+        emit(
+          state.copyWith(
+            statusUpdate: FormzSubmissionStatus.failure,
+            errorMessage: 'Nama tidak boleh kosong',
+          ),
+        );
         return;
       }
       await _authRepository.insertUserToDatabase(user: state.user!);

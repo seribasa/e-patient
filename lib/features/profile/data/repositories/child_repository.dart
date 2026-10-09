@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eimunisasi/features/profile/data/models/child_model.dart';
+import 'package:e_patient/features/profile/data/models/child_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -11,16 +11,14 @@ class ChildRepository {
 
   static const String _tableName = 'children';
 
-  ChildRepository(
-    this.supabaseClient,
-  );
+  ChildRepository(this.supabaseClient);
 
   Future<List<ChildModel>> getAllChildren() async {
     try {
-      final data = await supabaseClient.from(_tableName).select().order(
-            'created_at',
-            ascending: true,
-          );
+      final data = await supabaseClient
+          .from(_tableName)
+          .select()
+          .order('created_at', ascending: true);
       final result = data.map((e) => ChildModel.fromSeribase(e)).toList();
       return result;
     } catch (e) {
@@ -34,9 +32,7 @@ class ChildRepository {
       final data = anak.copyWith(parentId: _currentUser?.id);
       final result = await supabaseClient
           .from(_tableName)
-          .insert(
-            data.toSeribaseMap(),
-          )
+          .insert(data.toSeribaseMap())
           .select('id')
           .limit(1);
       if (result.isEmpty) {
@@ -55,9 +51,7 @@ class ChildRepository {
       if (anak.id == null) throw 'ID anak tidak ditemukan';
       await supabaseClient
           .from(_tableName)
-          .update(
-            data.toSeribaseMap(),
-          )
+          .update(data.toSeribaseMap())
           .eq('id', anak.id!)
           .select();
 
@@ -104,9 +98,7 @@ class ChildRepository {
       final url = await _uploadImage(file, id);
       await supabaseClient
           .from(_tableName)
-          .update(
-            {'avatar_url': url},
-          )
+          .update({'avatar_url': url})
           .eq('id', id)
           .catchError((e) {
             _deleteImage(id);

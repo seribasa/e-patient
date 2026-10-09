@@ -12,10 +12,7 @@ class PasscodeScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => getIt<LocalAuthCubit>()..getPasscode(),
       child: const Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: PasscodeForm(),
-        ),
+        body: Padding(padding: EdgeInsets.all(20.0), child: PasscodeForm()),
       ),
     );
   }

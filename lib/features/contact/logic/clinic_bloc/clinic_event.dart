@@ -4,7 +4,6 @@ sealed class ClinicEvent extends Equatable {
   const ClinicEvent();
 }
 
-
 class ChangePage extends ClinicEvent {
   final int page;
 

@@ -42,15 +42,12 @@ class AppBarPeltops extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
-        title,
-        style: TextStyle(fontWeight: FontWeight.w700),
-      ),
+      title: Text(title, style: TextStyle(fontWeight: FontWeight.w700)),
       actions: actions,
       leading: leading,
       bottom: bottom,
       elevation: elevation,
-      backgroundColor: Colors.pink[300],
+      backgroundColor: Colors.black,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,

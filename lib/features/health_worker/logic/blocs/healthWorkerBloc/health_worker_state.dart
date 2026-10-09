@@ -27,16 +27,17 @@ class HealthWorkerState extends Equatable {
       perPage: perPage ?? this.perPage,
       search: search ?? this.search,
       healthWorkers: healthWorkers ?? this.healthWorkers,
-      statusGetHealthWorkers: statusGetHealthWorkers ?? this.statusGetHealthWorkers,
+      statusGetHealthWorkers:
+          statusGetHealthWorkers ?? this.statusGetHealthWorkers,
     );
   }
 
   @override
   List<Object?> get props => [
-    page,
-    perPage,
-    search,
-    healthWorkers,
-    statusGetHealthWorkers,
-  ];
+        page,
+        perPage,
+        search,
+        healthWorkers,
+        statusGetHealthWorkers,
+      ];
 }

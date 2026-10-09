@@ -1,6 +1,6 @@
-import 'package:eimunisasi/features/health_worker/data/models/clinic_model.dart';
+import 'package:e_patient/features/health_worker/data/models/clinic_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:eimunisasi/features/health_worker/data/models/health_worker_model.dart';
+import 'package:e_patient/features/health_worker/data/models/health_worker_model.dart';
 
 void main() {
   group('HealthWorkerModel', () {
@@ -19,23 +19,17 @@ void main() {
           'email': 'test@example.com',
           'schedule': [
             {
-              'day': {
-                'id': 1,
-                'name': 'Senin',
-              },
+              'day': {'id': 1, 'name': 'Senin'},
               'start_time': '12:00:00',
-              'end_time': '14:00:00'
-            }
+              'end_time': '14:00:00',
+            },
           ],
           'practice_schedules': [
             {
-              'day': {
-                'id': 2,
-                'name': 'Selasa',
-              },
+              'day': {'id': 2, 'name': 'Selasa'},
               'start_time': '10:00:00',
-              'end_time': '12:00:00'
-            }
+              'end_time': '12:00:00',
+            },
           ],
           'no_kartu_keluarga': '1234567890',
           'full_name': 'John Doe',
@@ -60,16 +54,15 @@ void main() {
         expect(healthWorker.phoneNumber, '0987654321');
         expect(healthWorker.photoURL, 'http://example.com/photo.jpg');
         expect(healthWorker.profession, 'Doctor');
-        expect(healthWorker.date_of_birth,
-            DateTime.parse('1980-01-01T00:00:00.000Z'));
+        expect(
+          healthWorker.date_of_birth,
+          DateTime.parse('1980-01-01T00:00:00.000Z'),
+        );
         expect(healthWorker.place_of_date, 'City');
       });
 
       test('returns null for invalid date format', () {
-        final map = {
-          'id': '1',
-          'date_of_birth': 'invalid-date',
-        };
+        final map = {'id': '1', 'date_of_birth': 'invalid-date'};
 
         final healthWorker = HealthWorkerModel.fromSeribase(map);
 
@@ -82,8 +75,8 @@ void main() {
           'schedule': {
             'day': 'Monday',
             'start_time': '2023-10-10T08:00:00.000Z',
-            'end_time': '2023-10-10T12:00:00.000Z'
-          }
+            'end_time': '2023-10-10T12:00:00.000Z',
+          },
         };
 
         final healthWorker = HealthWorkerModel.fromSeribase(map);
@@ -97,8 +90,8 @@ void main() {
           'practice_schedules': {
             'day': 'Monday',
             'start_time': '2023-10-10T08:00:00.000Z',
-            'end_time': '2023-10-10T12:00:00.000Z'
-          }
+            'end_time': '2023-10-10T12:00:00.000Z',
+          },
         };
 
         final healthWorker = HealthWorkerModel.fromSeribase(map);
@@ -124,23 +117,17 @@ void main() {
           email: 'test@example.com',
           schedules: [
             Schedule(
-              day: Day(
-                id: 1,
-                name: 'Senin',
-              ),
+              day: Day(id: 1, name: 'Senin'),
               startTime: '08:23:45',
               endTime: '12:23:45',
-            )
+            ),
           ],
           practiceSchedules: [
             Schedule(
-              day: Day(
-                id: 2,
-                name: 'Selasa',
-              ),
+              day: Day(id: 2, name: 'Selasa'),
               startTime: '08:23:45',
               endTime: '12:23:45',
-            )
+            ),
           ],
           kartuKeluarga: '1234567890',
           fullName: 'John Doe',
@@ -211,23 +198,17 @@ void main() {
           email: 'test@example.com',
           schedules: [
             Schedule(
-              day: Day(
-                id: 1,
-                name: 'Senin',
-              ),
+              day: Day(id: 1, name: 'Senin'),
               startTime: '08:23:45',
               endTime: '12:23:45',
-            )
+            ),
           ],
           practiceSchedules: [
             Schedule(
-              day: Day(
-                id: 2,
-                name: 'Selasa',
-              ),
+              day: Day(id: 2, name: 'Selasa'),
               startTime: '08:23:45',
               endTime: '12:23:45',
-            )
+            ),
           ],
           kartuKeluarga: '1234567890',
           fullName: 'John Doe',
@@ -237,7 +218,7 @@ void main() {
           profession: 'Doctor',
           date_of_birth: DateTime.parse(dateString),
           place_of_date: 'City',
-          bookingFee: '100'
+          bookingFee: '100',
         );
 
         expect(healthWorker.props, [
@@ -254,7 +235,7 @@ void main() {
           'Doctor',
           DateTime.parse(dateString),
           'City',
-          '100'
+          '100',
         ]);
       });
     });
@@ -262,10 +243,7 @@ void main() {
     group('schedule model', () {
       test('returns combine start time and end time with get time', () {
         final schedule = Schedule(
-          day: Day(
-            id: 1,
-            name: 'Senin',
-          ),
+          day: Day(id: 1, name: 'Senin'),
           startTime: '08:23:45',
           endTime: '12:23:45',
         );
@@ -273,40 +251,28 @@ void main() {
         expect(schedule.time, '08:23 - 12:23');
       });
 
-      test('returns emptyString when start time and end time null with get time', () {
-        final schedule = Schedule(
-          day: Day(
-            id: 1,
-            name: 'Senin',
-          ),
-        );
+      test(
+        'returns emptyString when start time and end time null with get time',
+        () {
+          final schedule = Schedule(day: Day(id: 1, name: 'Senin'));
 
-        expect(schedule.time, '');
-      });
+          expect(schedule.time, '');
+        },
+      );
       test('returns correct props', () {
         final schedule = Schedule(
-          day: Day(
-            id: 1,
-            name: 'Senin',
-          ),
+          day: Day(id: 1, name: 'Senin'),
           startTime: '08:23:45',
           endTime: '12:23:45',
         );
 
-        expect(schedule.props, [
-          schedule.day,
-          '08:23:45',
-          '12:23:45',
-        ]);
+        expect(schedule.props, [schedule.day, '08:23:45', '12:23:45']);
       });
     });
 
     group('day model', () {
       test('toSeribase returns a valid map', () {
-        final day = Day(
-          id: 1,
-          name: 'Senin',
-        );
+        final day = Day(id: 1, name: 'Senin');
 
         final map = day.toSeribase();
 
@@ -314,15 +280,9 @@ void main() {
         expect(map['name'], 'Senin');
       });
       test('returns correct props', () {
-        final day = Day(
-          id: 1,
-          name: 'Senin',
-        );
+        final day = Day(id: 1, name: 'Senin');
 
-        expect(day.props, [
-          1,
-          'Senin',
-        ]);
+        expect(day.props, [1, 'Senin']);
       });
     });
   });

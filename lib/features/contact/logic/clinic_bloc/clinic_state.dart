@@ -27,17 +27,10 @@ class ClinicState extends Equatable {
       perPage: perPage ?? this.perPage,
       search: search ?? this.search,
       clinics: clinics ?? this.clinics,
-      statusGetClinic:
-          statusGetClinic ?? this.statusGetClinic,
+      statusGetClinic: statusGetClinic ?? this.statusGetClinic,
     );
   }
 
   @override
-  List<Object?> get props => [
-        page,
-        perPage,
-        search,
-        clinics,
-        statusGetClinic,
-      ];
+  List<Object?> get props => [page, perPage, search, clinics, statusGetClinic];
 }

@@ -1,10 +1,10 @@
-import 'package:eimunisasi/core/utils/assets_constant.dart';
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/core/utils/themes/padding_constant.dart';
-import 'package:eimunisasi/core/widgets/spacer.dart';
-import 'package:eimunisasi/core/widgets/text.dart';
-import 'package:eimunisasi/core/widgets/top_app_bar.dart';
-import 'package:eimunisasi/routers/route_paths/root_route_paths.dart';
+import 'package:e_patient/core/utils/assets_constant.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/core/utils/themes/padding_constant.dart';
+import 'package:e_patient/core/widgets/spacer.dart';
+import 'package:e_patient/core/widgets/text.dart';
+import 'package:e_patient/core/widgets/top_app_bar.dart';
+import 'package:e_patient/routers/route_paths/root_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,7 +22,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBarPeltops(title: 'Profil'),
       body: Container(
-        color: Colors.pink[100],
+        color: Colors.black,
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -48,9 +48,7 @@ class ProfilePage extends StatelessWidget {
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                 ),
               ),
-              Expanded(
-                child: Container(),
-              ),
+              Expanded(child: Container()),
               _LogoutButton(),
             ],
           ),
@@ -84,7 +82,7 @@ class _LogoutButton extends StatelessWidget {
                 },
                 child: Text(
                   AppConstant.LOGOUT_LABEL,
-                  style: TextStyle(color: Colors.pink[400]),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ),
@@ -101,14 +99,8 @@ class _LogoutButton extends StatelessWidget {
       color: Theme.of(context).primaryColor,
       child: ListTile(
         onTap: () => _showLogoutDialog(context),
-        title: LabelText(
-          text: AppConstant.LOGOUT_LABEL,
-          color: Colors.white,
-        ),
-        trailing: Icon(
-          Icons.logout,
-          color: Colors.white,
-        ),
+        title: LabelText(text: AppConstant.LOGOUT_LABEL, color: Colors.white),
+        trailing: Icon(Icons.logout, color: Colors.white),
       ),
     );
   }

@@ -1,4 +1,4 @@
-import 'package:eimunisasi/injection.dart';
+import 'package:e_patient/injection.dart';
 
 import '../../../logic/cubit/login_cubit/login_cubit.dart';
 import '../../widgets/login_email_form.dart';

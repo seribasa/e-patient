@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:eimunisasi/core/utils/constant.dart';
+import 'package:e_patient/core/utils/constant.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
@@ -15,24 +15,16 @@ part 'local_auth_state.dart';
 @Injectable()
 class LocalAuthCubit extends Cubit<LocalAuthState> {
   final SharedPreferences sharedPreferences;
-  LocalAuthCubit(
-    this.sharedPreferences,
-  ) : super(const LocalAuthState());
+  LocalAuthCubit(this.sharedPreferences) : super(const LocalAuthState());
 
   void passcodeChanged(String value) {
     final code = Passcode.dirty(value);
-    emit(state.copyWith(
-      passcode: code,
-    ));
+    emit(state.copyWith(passcode: code));
   }
 
   void passcodeConfirmChanged(String value) {
     final codeConfirm = Passcode.dirty(value);
-    emit(
-      state.copyWith(
-        confirmPasscode: codeConfirm,
-      ),
-    );
+    emit(state.copyWith(confirmPasscode: codeConfirm));
   }
 
   void _setPasscode(int passcode) async {
@@ -79,8 +71,9 @@ class LocalAuthCubit extends Cubit<LocalAuthState> {
     } catch (e) {
       emit(
         state.copyWith(
-            errorMessage: 'Gagal mendapatkan passcode',
-            statusGet: FormzSubmissionStatus.failure),
+          errorMessage: 'Gagal mendapatkan passcode',
+          statusGet: FormzSubmissionStatus.failure,
+        ),
       );
     }
   }

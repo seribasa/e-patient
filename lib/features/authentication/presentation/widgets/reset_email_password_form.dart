@@ -1,5 +1,5 @@
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/widgets/button_custom.dart';

@@ -1,4 +1,4 @@
-import 'package:eimunisasi/features/health_worker/data/models/health_worker_model.dart';
+import 'package:e_patient/features/health_worker/data/models/health_worker_model.dart';
 import 'package:equatable/equatable.dart';
 
 class ClinicModel extends Equatable {
@@ -47,7 +47,7 @@ class ClinicModel extends Equatable {
       schedules: () {
         try {
           return List<Schedule>.from(
-              data['clinic_schedules'].map((x) => Schedule.fromSeribase(x)),
+            data['clinic_schedules'].map((x) => Schedule.fromSeribase(x)),
           );
         } catch (e) {
           return <Schedule>[];

@@ -3,7 +3,7 @@ import 'package:formz/formz.dart';
 /// Validation errors for the [Password] [FormzInput].
 enum PasscodeValidationError {
   /// Generic invalid error.
-  invalid
+  invalid,
 }
 
 /// {@template password}

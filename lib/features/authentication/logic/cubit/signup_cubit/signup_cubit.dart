@@ -19,30 +19,22 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
-    emit(state.copyWith(
-      email: email,
-    ));
+    emit(state.copyWith(email: email));
   }
 
   void passwordChanged(String value) {
     final password = Password.dirty(value);
-    emit(state.copyWith(
-      password: password,
-    ));
+    emit(state.copyWith(password: password));
   }
 
   void countryCodeChanged(String value) {
     final countryCode = CountryCode.dirty(value);
-    emit(state.copyWith(
-      countryCode: countryCode,
-    ));
+    emit(state.copyWith(countryCode: countryCode));
   }
 
   void phoneChanged(String value) {
     final phone = Phone.dirty(value);
-    emit(state.copyWith(
-      phone: phone,
-    ));
+    emit(state.copyWith(phone: phone));
   }
 
   void showHidePassword() {

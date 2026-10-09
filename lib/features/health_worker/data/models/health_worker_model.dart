@@ -1,5 +1,5 @@
-import 'package:eimunisasi/core/extension.dart';
-import 'package:eimunisasi/features/health_worker/data/models/clinic_model.dart';
+import 'package:e_patient/core/extension.dart';
+import 'package:e_patient/features/health_worker/data/models/clinic_model.dart';
 import 'package:equatable/equatable.dart';
 
 class HealthWorkerModel extends Equatable {
@@ -128,11 +128,7 @@ class Schedule extends Equatable {
   final String? startTime;
   final String? endTime;
 
-  const Schedule({
-    this.day,
-    this.startTime,
-    this.endTime,
-  });
+  const Schedule({this.day, this.startTime, this.endTime});
 
   String get time => () {
         if (startTime != null && endTime != null) {
@@ -152,11 +148,7 @@ class Schedule extends Equatable {
   }
 
   Map<String, dynamic> toSeribase() {
-    return {
-      "day_id": day?.id,
-      "start_time": startTime,
-      "end_time": endTime,
-    };
+    return {"day_id": day?.id, "start_time": startTime, "end_time": endTime};
   }
 
   @override
@@ -167,23 +159,14 @@ class Day extends Equatable {
   final int? id;
   final String? name;
 
-  const Day({
-    this.id,
-    this.name,
-  });
+  const Day({this.id, this.name});
 
   factory Day.fromSeribase(Map<String, dynamic> data) {
-    return Day(
-      id: data['id'],
-      name: data['name'],
-    );
+    return Day(id: data['id'], name: data['name']);
   }
 
   Map<String, dynamic> toSeribase() {
-    return {
-      "id": id,
-      "name": name,
-    };
+    return {"id": id, "name": name};
   }
 
   @override

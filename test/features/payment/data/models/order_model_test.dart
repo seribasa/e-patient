@@ -1,4 +1,4 @@
-import 'package:eimunisasi/features/payment/data/models/order_model.dart';
+import 'package:e_patient/features/payment/data/models/order_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -24,7 +24,7 @@ void main() {
             'quantity': 2,
             'created_at': '2023-10-01T00:00:00Z',
             'updated_at': '2023-10-01T00:00:00Z',
-          }
+          },
         ],
       };
 
@@ -46,13 +46,7 @@ void main() {
         totalAmount: 100.0,
         createdAt: testDate,
         updatedAt: testDate,
-        orderItems: [
-          OrderItemModel(
-            id: '456',
-            price: 50.0,
-            quantity: 2,
-          ),
-        ],
+        orderItems: [OrderItemModel(id: '456', price: 50.0, quantity: 2)],
       );
 
       final Map<String, dynamic> json = order.toSeribase();

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:eimunisasi/features/health_worker/data/models/clinic_model.dart';
+import 'package:e_patient/features/health_worker/data/models/clinic_model.dart';
 
 void main() {
   group('ClinicModel', () {
@@ -14,18 +14,12 @@ void main() {
           'photos': ['photo1.jpg', 'photo2.jpg'],
           'clinic_schedules': [
             {
-              'day': {
-                'id': 1,
-                'name': 'SENIN',
-              },
+              'day': {'id': 1, 'name': 'SENIN'},
               'start_time': '08:00',
               'end_time': '16:00',
             },
             {
-              'day': {
-                'id': 2,
-                'name': 'SELASA',
-              },
+              'day': {'id': 2, 'name': 'SELASA'},
               'start_time': '08:00',
               'end_time': '16:00',
             },

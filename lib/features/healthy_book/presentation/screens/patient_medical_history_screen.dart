@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eimunisasi/features/healthy_book/presentation/screens/tabbar_action_screen.dart';
-import 'package:eimunisasi/features/healthy_book/presentation/screens/tabbar_chart_screen.dart';
-import 'package:eimunisasi/features/healthy_book/presentation/screens/tabbar_diagnosa_screen.dart';
-import 'package:eimunisasi/features/healthy_book/presentation/screens/tabbar_table_screen.dart';
-import 'package:eimunisasi/features/healthy_book/presentation/screens/tabbar_vaccine_screen.dart';
-import 'package:eimunisasi/features/profile/data/models/child_model.dart';
-import 'package:eimunisasi/injection.dart';
+import 'package:e_patient/features/healthy_book/presentation/screens/tabbar_action_screen.dart';
+import 'package:e_patient/features/healthy_book/presentation/screens/tabbar_chart_screen.dart';
+import 'package:e_patient/features/healthy_book/presentation/screens/tabbar_diagnosa_screen.dart';
+import 'package:e_patient/features/healthy_book/presentation/screens/tabbar_table_screen.dart';
+import 'package:e_patient/features/healthy_book/presentation/screens/tabbar_vaccine_screen.dart';
+import 'package:e_patient/features/profile/data/models/child_model.dart';
+import 'package:e_patient/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -20,15 +20,13 @@ class PatientMedicalHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<CheckupBloc>()
-        ..add(OnGetCheckupsEvent(
-          childId: child?.id,
-        )),
+      create: (context) =>
+          getIt<CheckupBloc>()..add(OnGetCheckupsEvent(childId: child?.id)),
       child: BlocBuilder<CheckupBloc, CheckupState>(
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.pink[300],
+              backgroundColor: Colors.black,
               elevation: 0,
               title: Text(
                 'Riwayat',
@@ -38,19 +36,11 @@ class PatientMedicalHistoryScreen extends StatelessWidget {
             ),
             body: () {
               if (state.statusGet == FormzSubmissionStatus.success) {
-                return PatientMedicalHistoryScaffold(
-                  child: child,
-                );
+                return PatientMedicalHistoryScaffold(child: child);
               } else if (state.statusGet == FormzSubmissionStatus.inProgress) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
+                return Center(child: CircularProgressIndicator());
               } else {
-                return Scaffold(
-                  body: Center(
-                    child: Text('Gagal memuat data'),
-                  ),
-                );
+                return Scaffold(body: Center(child: Text('Gagal memuat data')));
               }
             }(),
           );
@@ -73,56 +63,52 @@ class PatientMedicalHistoryScaffold extends StatelessWidget {
           width: double.infinity,
           height: MediaQuery.of(context).size.height / 6,
           child: Card(
-              elevation: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ClipOval(
-                      child: SizedBox(
-                        height: 80,
-                        width: 80,
-                        child: child?.photoURL == null
-                            ? Icon(
-                                Icons.supervised_user_circle_sharp,
-                              )
-                            : CachedNetworkImage(
-                                imageUrl: child?.photoURL ?? '',
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                                errorWidget: (context, url, error) => FittedBox(
-                                  child: Icon(
-                                    Icons.supervised_user_circle_sharp,
-                                    color: Colors.red,
-                                  ),
+            elevation: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipOval(
+                    child: SizedBox(
+                      height: 80,
+                      width: 80,
+                      child: child?.photoURL == null
+                          ? Icon(Icons.supervised_user_circle_sharp)
+                          : CachedNetworkImage(
+                              imageUrl: child?.photoURL ?? '',
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) =>
+                                  Center(child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) => FittedBox(
+                                child: Icon(
+                                  Icons.supervised_user_circle_sharp,
+                                  color: Colors.red,
                                 ),
                               ),
+                            ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      Text(
+                        child?.nama ?? '',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          child?.nama ?? '',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w700),
-                        ),
-                        Text(child?.umurAnak ?? ''),
-                      ],
-                    ),
-                  ],
-                ),
-              )),
+                      Text(child?.umurAnak ?? ''),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
         BlocBuilder<CheckupBloc, CheckupState>(
           builder: (context, state) {
@@ -150,22 +136,11 @@ class PatientMedicalHistoryScaffold extends StatelessWidget {
                       child: TabBarView(
                         physics: NeverScrollableScrollPhysics(),
                         children: [
-                          TabBarVaccineScreen(
-                            checkup: data,
-                          ),
-                          TabBarTableScreen(
-                            checkup: data,
-                          ),
-                          TabBarChartScreen(
-                            checkup: data,
-                            child: child,
-                          ),
-                          TabBarDiagnosisScreen(
-                            checkup: data,
-                          ),
-                          TabBarActionScreen(
-                            checkup: data,
-                          ),
+                          TabBarVaccineScreen(checkup: data),
+                          TabBarTableScreen(checkup: data),
+                          TabBarChartScreen(checkup: data, child: child),
+                          TabBarDiagnosisScreen(checkup: data),
+                          TabBarActionScreen(checkup: data),
                         ],
                       ),
                     ),

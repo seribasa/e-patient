@@ -1,6 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:eimunisasi/injection.dart';
-import 'package:eimunisasi/routers/router.dart';
+import 'package:e_patient/injection.dart';
+import 'package:e_patient/routers/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,9 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
 
 class App extends StatelessWidget {
-  const App({
-    Key? key,
-  }) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +33,75 @@ class _AppViewState extends State<AppView> {
       routerConfig: router,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.pink[300],
-        primarySwatch: Colors.pink,
-        colorScheme: ColorScheme.fromSwatch()
-            .copyWith(primary: Colors.pink[500], secondary: Colors.pink[300]),
+        useMaterial3: true,
+        brightness: Brightness.light,
+        primaryColor: Colors.black,
+        scaffoldBackgroundColor: Colors.white,
+        colorScheme: const ColorScheme.light(
+          primary: Colors.black,
+          onPrimary: Colors.white,
+          secondary: Colors.black,
+          onSecondary: Colors.white,
+          surface: Colors.white,
+          onSurface: Colors.black,
+          error: Colors.black,
+          onError: Colors.white,
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+        ),
+        cardTheme: const CardThemeData(
+          color: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+            side: BorderSide(color: Colors.black),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
+          ),
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.zero,
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.zero,
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.zero,
+            borderSide: BorderSide(color: Colors.black, width: 2),
+          ),
+        ),
+        tabBarTheme: const TabBarThemeData(
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.black,
+          indicatorColor: Colors.black,
+        ),
         fontFamily: 'Nunito',
       ),
-      supportedLocales: [
-        Locale("en"),
-        Locale("id"),
-      ],
+      supportedLocales: [Locale("en"), Locale("id")],
       localizationsDelegates: [
         CountryLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

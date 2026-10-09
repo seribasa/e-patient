@@ -92,10 +92,7 @@ class UpdateProfilePhotoEvent extends ChildProfileEvent {
   final String id;
   final File photo;
 
-  UpdateProfilePhotoEvent({
-    required this.photo,
-    required this.id,
-  });
+  UpdateProfilePhotoEvent({required this.photo, required this.id});
 
   @override
   List<Object> get props => [photo];

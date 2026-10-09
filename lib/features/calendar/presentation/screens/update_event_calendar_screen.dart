@@ -1,6 +1,6 @@
-import 'package:eimunisasi/core/extension.dart';
-import 'package:eimunisasi/core/widgets/top_app_bar.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/core/extension.dart';
+import 'package:e_patient/core/widgets/top_app_bar.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -19,10 +19,8 @@ import '../../logic/bloc/calendar_bloc/calendar_bloc.dart';
 
 class UpdateEventCalendarScreen extends StatelessWidget {
   final CalendarModel event;
-  const UpdateEventCalendarScreen({
-    Key? key,
-    required this.event,
-  }) : super(key: key);
+  const UpdateEventCalendarScreen({Key? key, required this.event})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +36,7 @@ class UpdateEventCalendarScreen extends StatelessWidget {
 class UpdateEventCalendar extends StatelessWidget {
   final CalendarModel event;
 
-  const UpdateEventCalendar({
-    Key? key,
-    required this.event,
-  }) : super(key: key);
+  const UpdateEventCalendar({Key? key, required this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +52,8 @@ class UpdateEventCalendar extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.pink[100],
-        appBar: AppBarPeltops(
-          title: 'Ubah Aktivitas',
-        ),
+        backgroundColor: Colors.black,
+        appBar: AppBarPeltops(title: 'Ubah Aktivitas'),
         body: Card(
           margin: EdgeInsets.all(AppPadding.paddingM),
           child: ListView(

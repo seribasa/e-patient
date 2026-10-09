@@ -28,12 +28,7 @@ class BaseResponse<T> extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        data,
-        isSuccessful,
-        message,
-        error,
-      ];
+  List<Object?> get props => [data, isSuccessful, message, error];
 
   factory BaseResponse.fromJson(
     Map<String, dynamic> json,

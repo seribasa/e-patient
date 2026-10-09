@@ -1,25 +1,23 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:eimunisasi/features/authentication/data/models/country_code.dart';
-import 'package:eimunisasi/features/authentication/data/models/email.dart';
-import 'package:eimunisasi/features/authentication/data/models/password.dart';
-import 'package:eimunisasi/features/authentication/data/models/phone.dart';
-import 'package:eimunisasi/features/authentication/data/repositories/auth_repository.dart';
-import 'package:eimunisasi/features/authentication/data/models/user_profile.dart';
+import 'package:e_patient/features/authentication/data/models/country_code.dart';
+import 'package:e_patient/features/authentication/data/models/email.dart';
+import 'package:e_patient/features/authentication/data/models/password.dart';
+import 'package:e_patient/features/authentication/data/models/phone.dart';
+import 'package:e_patient/features/authentication/data/repositories/auth_repository.dart';
+import 'package:e_patient/features/authentication/data/models/user_profile.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/test.dart';
-import 'package:eimunisasi/features/authentication/logic/cubit/signup_cubit/signup_cubit.dart';
+import 'package:e_patient/features/authentication/logic/cubit/signup_cubit/signup_cubit.dart';
 
 @GenerateMocks([AuthRepository])
-@GenerateNiceMocks(
-  [
-    MockSpec<UserProfile>(),
-    MockSpec<AuthResponse>(),
-    MockSpec<User>(),
-  ],
-)
+@GenerateNiceMocks([
+  MockSpec<UserProfile>(),
+  MockSpec<AuthResponse>(),
+  MockSpec<User>(),
+])
 import 'signup_cubit_test.mocks.dart';
 
 void main() {
@@ -43,52 +41,49 @@ void main() {
     userFirebase = MockUser();
     authResponse = MockAuthResponse();
   });
-  group(
-    "emailChanged",
-    () {
-      final email = "contoh@contoh.com";
-      final emailInvalid = "contoh.com";
-      final password = "Test123!";
-      final passwordInvalid = "test123";
-      blocTest<SignUpCubit, SignUpState>(
-        "emailChanged email is valid and password is valid",
-        build: () => SignUpCubit(authRepository),
-        seed: () => SignUpState(password: Password.dirty(password)),
-        act: (cubit) => cubit.emailChanged(email),
-        expect: () => [
-          SignUpState(
-            email: Email.dirty(email),
-            password: Password.dirty(password),
-          )
-        ],
-      );
-      blocTest<SignUpCubit, SignUpState>(
-        "emailChanged email is invalid and password is valid",
-        build: () => SignUpCubit(authRepository),
-        seed: () => SignUpState(password: Password.dirty(password)),
-        act: (cubit) => cubit.emailChanged(emailInvalid),
-        expect: () => [
-          SignUpState(
-            email: Email.dirty(emailInvalid),
-            password: Password.dirty(password),
-          )
-        ],
-      );
+  group("emailChanged", () {
+    final email = "contoh@contoh.com";
+    final emailInvalid = "contoh.com";
+    final password = "Test123!";
+    final passwordInvalid = "test123";
+    blocTest<SignUpCubit, SignUpState>(
+      "emailChanged email is valid and password is valid",
+      build: () => SignUpCubit(authRepository),
+      seed: () => SignUpState(password: Password.dirty(password)),
+      act: (cubit) => cubit.emailChanged(email),
+      expect: () => [
+        SignUpState(
+          email: Email.dirty(email),
+          password: Password.dirty(password),
+        ),
+      ],
+    );
+    blocTest<SignUpCubit, SignUpState>(
+      "emailChanged email is invalid and password is valid",
+      build: () => SignUpCubit(authRepository),
+      seed: () => SignUpState(password: Password.dirty(password)),
+      act: (cubit) => cubit.emailChanged(emailInvalid),
+      expect: () => [
+        SignUpState(
+          email: Email.dirty(emailInvalid),
+          password: Password.dirty(password),
+        ),
+      ],
+    );
 
-      blocTest<SignUpCubit, SignUpState>(
-        "emailChanged email is valid and password is invalid",
-        build: () => SignUpCubit(authRepository),
-        seed: () => SignUpState(password: Password.dirty(passwordInvalid)),
-        act: (cubit) => cubit.emailChanged(email),
-        expect: () => [
-          SignUpState(
-            email: Email.dirty(email),
-            password: Password.dirty(passwordInvalid),
-          )
-        ],
-      );
-    },
-  );
+    blocTest<SignUpCubit, SignUpState>(
+      "emailChanged email is valid and password is invalid",
+      build: () => SignUpCubit(authRepository),
+      seed: () => SignUpState(password: Password.dirty(passwordInvalid)),
+      act: (cubit) => cubit.emailChanged(email),
+      expect: () => [
+        SignUpState(
+          email: Email.dirty(email),
+          password: Password.dirty(passwordInvalid),
+        ),
+      ],
+    );
+  });
   group('passwordChanged', () {
     blocTest<SignUpCubit, SignUpState>(
       "passwordChanged password is valid",
@@ -99,7 +94,7 @@ void main() {
         SignUpState(
           email: Email.dirty(email),
           password: Password.dirty(password),
-        )
+        ),
       ],
     );
     blocTest<SignUpCubit, SignUpState>(
@@ -111,7 +106,7 @@ void main() {
         SignUpState(
           email: Email.dirty(email),
           password: Password.dirty(passwordInvalid),
-        )
+        ),
       ],
     );
 
@@ -124,7 +119,7 @@ void main() {
         SignUpState(
           email: Email.dirty(emailInvalid),
           password: Password.dirty(password),
-        )
+        ),
       ],
     );
   });
@@ -155,7 +150,7 @@ void main() {
         SignUpState(
           phone: Phone.dirty(phone),
           countryCode: CountryCode.dirty(countryCode),
-        )
+        ),
       ],
     );
 
@@ -168,7 +163,7 @@ void main() {
         SignUpState(
           phone: Phone.dirty(phone),
           countryCode: CountryCode.dirty(countryCodeInvalid),
-        )
+        ),
       ],
     );
   });
@@ -183,7 +178,7 @@ void main() {
         SignUpState(
           countryCode: CountryCode.dirty(countryCode),
           phone: Phone.dirty(phone),
-        )
+        ),
       ],
     );
 
@@ -196,7 +191,7 @@ void main() {
         SignUpState(
           countryCode: CountryCode.dirty(countryCode),
           phone: Phone.dirty(phoneInvalid),
-        )
+        ),
       ],
     );
   });
@@ -218,7 +213,7 @@ void main() {
       },
       expect: () => [
         SignUpState(isShowPassword: true),
-        SignUpState(isShowPassword: false)
+        SignUpState(isShowPassword: false),
       ],
     );
   });
@@ -241,12 +236,15 @@ void main() {
       build: () {
         when(authResponse.user).thenReturn(userFirebase);
 
-        when(authRepository.signUpWithEmailAndPassword(
-          email: email,
-          password: password,
-        )).thenAnswer((_) => Future.value(authResponse));
-        when(authRepository.insertUserToDatabase(user: user))
-            .thenAnswer((_) => Future.value());
+        when(
+          authRepository.signUpWithEmailAndPassword(
+            email: email,
+            password: password,
+          ),
+        ).thenAnswer((_) => Future.value(authResponse));
+        when(
+          authRepository.insertUserToDatabase(user: user),
+        ).thenAnswer((_) => Future.value());
         return SignUpCubit(authRepository);
       },
       seed: () => SignUpState(
@@ -257,10 +255,12 @@ void main() {
       ),
       act: (cubit) => cubit.signUpFormSubmitted(),
       verify: (_) {
-        verify(authRepository.signUpWithEmailAndPassword(
-          email: email,
-          password: password,
-        )).called(1);
+        verify(
+          authRepository.signUpWithEmailAndPassword(
+            email: email,
+            password: password,
+          ),
+        ).called(1);
       },
       expect: () => [
         SignUpState(
@@ -283,10 +283,12 @@ void main() {
     blocTest<SignUpCubit, SignUpState>(
       "signUpFormSubmitted status is valid and error",
       build: () {
-        when(authRepository.signUpWithEmailAndPassword(
-          email: email,
-          password: password,
-        )).thenThrow(Exception());
+        when(
+          authRepository.signUpWithEmailAndPassword(
+            email: email,
+            password: password,
+          ),
+        ).thenThrow(Exception());
         return SignUpCubit(authRepository);
       },
       seed: () => SignUpState(
@@ -297,10 +299,12 @@ void main() {
       ),
       act: (cubit) => cubit.signUpFormSubmitted(),
       verify: (_) {
-        verify(authRepository.signUpWithEmailAndPassword(
-          email: email,
-          password: password,
-        )).called(1);
+        verify(
+          authRepository.signUpWithEmailAndPassword(
+            email: email,
+            password: password,
+          ),
+        ).called(1);
       },
       expect: () => [
         SignUpState(

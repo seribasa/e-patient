@@ -36,10 +36,7 @@ class _LoginSeribaseOauthScaffold extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/logo.png',
-                  width: 100,
-                ),
+                Image.asset('assets/images/logo.png', width: 100),
                 const SizedBox(height: 30.0),
                 const Text(
                   "Silahkan masuk dengan akun Seribase Anda",

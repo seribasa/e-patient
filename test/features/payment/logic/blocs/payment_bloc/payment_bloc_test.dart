@@ -1,10 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:eimunisasi/core/models/base_response_model.dart';
-import 'package:eimunisasi/features/payment/data/models/order_model.dart';
-import 'package:eimunisasi/features/payment/data/models/payment_initiate_request_model.dart';
-import 'package:eimunisasi/features/payment/data/models/payment_initiate_response_model.dart';
-import 'package:eimunisasi/features/payment/data/repositories/payment_repository.dart';
-import 'package:eimunisasi/features/payment/logic/blocs/payment_bloc/payment_bloc.dart';
+import 'package:e_patient/core/models/base_response_model.dart';
+import 'package:e_patient/features/payment/data/models/order_model.dart';
+import 'package:e_patient/features/payment/data/models/payment_initiate_request_model.dart';
+import 'package:e_patient/features/payment/data/models/payment_initiate_response_model.dart';
+import 'package:e_patient/features/payment/data/repositories/payment_repository.dart';
+import 'package:e_patient/features/payment/logic/blocs/payment_bloc/payment_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -34,29 +34,25 @@ void main() {
     blocTest<PaymentBloc, PaymentState>(
       'emits [PaymentLoading, PaymentInitiateSuccess] when successful',
       build: () {
-        when(() => mockPaymentRepository.initiate(request))
-            .thenAnswer((_) async => response);
+        when(
+          () => mockPaymentRepository.initiate(request),
+        ).thenAnswer((_) async => response);
         return paymentBloc;
       },
       act: (bloc) => bloc.add(InitiatePaymentEvent(request)),
-      expect: () => [
-        PaymentLoading(),
-        PaymentInitiateSuccess(response),
-      ],
+      expect: () => [PaymentLoading(), PaymentInitiateSuccess(response)],
     );
 
     blocTest<PaymentBloc, PaymentState>(
       'emits [PaymentLoading, PaymentFailure] when error occurs',
       build: () {
-        when(() => mockPaymentRepository.initiate(request))
-            .thenThrow(Exception('Error'));
+        when(
+          () => mockPaymentRepository.initiate(request),
+        ).thenThrow(Exception('Error'));
         return paymentBloc;
       },
       act: (bloc) => bloc.add(InitiatePaymentEvent(request)),
-      expect: () => [
-        PaymentLoading(),
-        PaymentFailure('Exception: Error'),
-      ],
+      expect: () => [PaymentLoading(), PaymentFailure('Exception: Error')],
     );
   });
 
@@ -67,22 +63,21 @@ void main() {
     blocTest<PaymentBloc, PaymentState>(
       'emits [PaymentLoading, OrderDetailSuccess] when successful',
       build: () {
-        when(() => mockPaymentRepository.getOrderDetail(orderId))
-            .thenAnswer((_) async => orderDetail);
+        when(
+          () => mockPaymentRepository.getOrderDetail(orderId),
+        ).thenAnswer((_) async => orderDetail);
         return paymentBloc;
       },
       act: (bloc) => bloc.add(GetOrderDetailEvent(orderId)),
-      expect: () => [
-        PaymentLoading(),
-        OrderDetailSuccess(orderDetail),
-      ],
+      expect: () => [PaymentLoading(), OrderDetailSuccess(orderDetail)],
     );
 
     blocTest<PaymentBloc, PaymentState>(
       'emits [PaymentLoading, PaymentFailure] when order not found',
       build: () {
-        when(() => mockPaymentRepository.getOrderDetail(orderId))
-            .thenAnswer((_) async => null);
+        when(
+          () => mockPaymentRepository.getOrderDetail(orderId),
+        ).thenAnswer((_) async => null);
         return paymentBloc;
       },
       act: (bloc) => bloc.add(GetOrderDetailEvent(orderId)),
@@ -95,15 +90,13 @@ void main() {
     blocTest<PaymentBloc, PaymentState>(
       'emits [PaymentLoading, PaymentFailure] when error occurs',
       build: () {
-        when(() => mockPaymentRepository.getOrderDetail(orderId))
-            .thenThrow(Exception('Error'));
+        when(
+          () => mockPaymentRepository.getOrderDetail(orderId),
+        ).thenThrow(Exception('Error'));
         return paymentBloc;
       },
       act: (bloc) => bloc.add(GetOrderDetailEvent(orderId)),
-      expect: () => [
-        PaymentLoading(),
-        PaymentFailure('Exception: Error'),
-      ],
+      expect: () => [PaymentLoading(), PaymentFailure('Exception: Error')],
     );
   });
 }

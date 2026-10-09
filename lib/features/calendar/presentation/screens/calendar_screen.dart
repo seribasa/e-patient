@@ -1,9 +1,9 @@
-import 'package:eimunisasi/core/extension.dart';
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/features/calendar/data/models/calendar_model.dart';
-import 'package:eimunisasi/injection.dart';
-import 'package:eimunisasi/routers/route_paths/calendar_route_paths.dart';
-import 'package:eimunisasi/core/utils/any_extension.dart';
+import 'package:e_patient/core/extension.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/features/calendar/data/models/calendar_model.dart';
+import 'package:e_patient/injection.dart';
+import 'package:e_patient/routers/route_paths/calendar_route_paths.dart';
+import 'package:e_patient/core/utils/any_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -36,7 +36,7 @@ class _CalendarScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.pink[300],
+        backgroundColor: Colors.black,
         elevation: 0.0,
         title: Text(
           AppConstant.CALENDAR_LABEL,
@@ -47,11 +47,9 @@ class _CalendarScaffold extends StatelessWidget {
             icon: Icon(Icons.add),
             onPressed: () => context.push(
               CalendarRoutePaths.addCalendar.fullPath,
-              extra: {
-                'bloc': context.read<CalendarBloc>(),
-              },
+              extra: {'bloc': context.read<CalendarBloc>()},
             ),
-          )
+          ),
         ],
       ),
       body: BlocConsumer<CalendarBloc, CalendarState>(
@@ -92,32 +90,35 @@ class _CalendarSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final _calendarBloc = context.read<CalendarBloc>();
     CalendarBuilders calendarBuilder() {
-      return CalendarBuilders(markerBuilder: (context, date, events) {
-        if (events.isNotEmpty) {
-          return Positioned(
-            bottom: 1,
-            child: Container(
-              padding: EdgeInsets.all(1.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                shape: BoxShape.circle,
-              ),
-              constraints: BoxConstraints(minWidth: 15.0, minHeight: 15.0),
-              child: Center(
-                child: Text(
-                  "${events.length}",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
+      return CalendarBuilders(
+        markerBuilder: (context, date, events) {
+          if (events.isNotEmpty) {
+            return Positioned(
+              bottom: 1,
+              child: Container(
+                padding: EdgeInsets.all(1.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  shape: BoxShape.rectangle,
+                ),
+                constraints: BoxConstraints(minWidth: 15.0, minHeight: 15.0),
+                child: Center(
+                  child: Text(
+                    "${events.length}",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 10.0,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          );
-        }
-        return Container();
-      });
+            );
+          }
+          return Container();
+        },
+      );
     }
 
     final kFirstDay = DateTime(DateTime.now().year - 5);
@@ -137,11 +138,11 @@ class _CalendarSection extends StatelessWidget {
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
-              shape: BoxShape.circle,
+              shape: BoxShape.rectangle,
             ),
             selectedDecoration: BoxDecoration(
-              color: Colors.pink[200],
-              shape: BoxShape.circle,
+              color: Colors.black,
+              shape: BoxShape.rectangle,
             ),
           ),
           firstDay: kFirstDay,
@@ -198,10 +199,7 @@ class _HeaderDetailCalendarSection extends StatelessWidget {
               children: [
                 Text(
                   'Daftar aktivitas : ' + dateString,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                 ),
                 CircleAvatar(
                   foregroundColor: Colors.white,
@@ -212,11 +210,9 @@ class _HeaderDetailCalendarSection extends StatelessWidget {
                             SetSelectedDate(selectedDate: null),
                           );
                     },
-                    icon: Icon(
-                      Icons.close_rounded,
-                    ),
+                    icon: Icon(Icons.close_rounded),
                   ),
-                )
+                ),
               ],
             ),
             SizedBox(height: 5.0),
@@ -257,22 +253,14 @@ class _DetailCalendarSection extends StatelessWidget {
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
-            dataTextStyle: TextStyle(
-              fontFamily: 'Nunito',
-              color: Colors.black,
-            ),
+            dataTextStyle: TextStyle(fontFamily: 'Nunito', color: Colors.black),
             headingRowColor: WidgetStateColor.resolveWith(
-                (states) => Theme.of(context).primaryColor),
+              (states) => Theme.of(context).primaryColor,
+            ),
             columns: [
-              DataColumn(
-                label: Text('Tanggal'),
-              ),
-              DataColumn(
-                label: Text('Aktivitas'),
-              ),
-              DataColumn(
-                label: Text(''),
-              ),
+              DataColumn(label: Text('Tanggal')),
+              DataColumn(label: Text('Aktivitas')),
+              DataColumn(label: Text('')),
             ],
             rows: state.groupedEvents?[state.selectedDate]?.map((e) {
                   return _ListRowEvent(event: e).build(context);
@@ -288,20 +276,14 @@ class _DetailCalendarSection extends StatelessWidget {
 }
 
 class _ListRowEvent {
-  const _ListRowEvent({
-    required this.event,
-  });
+  const _ListRowEvent({required this.event});
 
   final CalendarModel event;
 
   DataRow build(BuildContext context) {
     return DataRow(
       cells: [
-        DataCell(
-          Text(
-            DateFormat('dd-MM-yyyy').format(event.date!).toString(),
-          ),
-        ),
+        DataCell(Text(DateFormat('dd-MM-yyyy').format(event.date!).toString())),
         DataCell(
           Text(
             event.activity ?? emptyString,
@@ -318,7 +300,7 @@ class _ListRowEvent {
               if (event.readOnly == false) {
                 return PopupMenuButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.zero,
                   ),
                   onSelected: (item) {
                     selectedItem(context, item, event);
@@ -329,18 +311,8 @@ class _ListRowEvent {
                     color: Theme.of(context).primaryColor,
                   ),
                   itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 0,
-                      child: Text(
-                        AppConstant.EDIT,
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 1,
-                      child: Text(
-                        AppConstant.DELETE,
-                      ),
-                    ),
+                    PopupMenuItem(value: 0, child: Text(AppConstant.EDIT)),
+                    PopupMenuItem(value: 1, child: Text(AppConstant.DELETE)),
                   ],
                 );
               }
@@ -355,18 +327,17 @@ class _ListRowEvent {
   void confirmDeleteDialog(BuildContext context, CalendarModel event) {
     // set up the buttons
     final cancelButton = ElevatedButton(
-        child: Text(
-          AppConstant.NO,
-          style: TextStyle(
-            color: Theme.of(context).scaffoldBackgroundColor,
-          ),
-        ),
-        onPressed: () {
-          context.pop();
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).primaryColor,
-        ));
+      child: Text(
+        AppConstant.NO,
+        style: TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
+      ),
+      onPressed: () {
+        context.pop();
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+    );
     final continueButton = TextButton(
       child: Text(AppConstant.YES),
       onPressed: () async {
@@ -378,10 +349,7 @@ class _ListRowEvent {
     final alert = AlertDialog(
       title: Text(AppConstant.CONFIRMATION),
       content: Text(AppConstant.DELETE_CONFIRMATION_QUESTION),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
+      actions: [cancelButton, continueButton],
     );
     showDialog(
       context: context,
@@ -396,10 +364,7 @@ class _ListRowEvent {
       case 0:
         context.push(
           CalendarRoutePaths.editCalendar.fullPath,
-          extra: {
-            'bloc': context.read<CalendarBloc>(),
-            'data': data,
-          },
+          extra: {'bloc': context.read<CalendarBloc>(), 'data': data},
         );
         break;
       case 1:

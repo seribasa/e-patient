@@ -1,4 +1,4 @@
-import 'package:eimunisasi/features/payment/data/models/payment_initiate_response_model.dart';
+import 'package:e_patient/features/payment/data/models/payment_initiate_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -14,13 +14,14 @@ void main() {
       'order_id': 'order123',
       'gateway': 'midtrans',
       'redirect_url': 'https://example.com',
-      'token': 'token123'
+      'token': 'token123',
     };
 
     test('should create PaymentInitiateResponseModel from map', () {
       // act
-      final result =
-          PaymentInitiateResponseModel.fromSeribase(tPaymentInitiateMap);
+      final result = PaymentInitiateResponseModel.fromSeribase(
+        tPaymentInitiateMap,
+      );
 
       // assert
       expect(result, equals(tPaymentInitiateResponse));
@@ -37,10 +38,11 @@ void main() {
     test('should return true when comparing two identical models', () {
       // arrange
       final model1 = PaymentInitiateResponseModel(
-          orderId: 'order123',
-          gateway: 'midtrans',
-          redirectUrl: 'https://example.com',
-          token: 'token123');
+        orderId: 'order123',
+        gateway: 'midtrans',
+        redirectUrl: 'https://example.com',
+        token: 'token123',
+      );
 
       // act & assert
       expect(model1, equals(tPaymentInitiateResponse));

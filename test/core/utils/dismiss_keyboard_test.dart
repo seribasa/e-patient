@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:eimunisasi/core/utils/dismiss_keyboard.dart';
+import 'package:e_patient/core/utils/dismiss_keyboard.dart';
 
 void main() {
   group('dismissKeyboard', () {
-    testWidgets('unfocuses when current focus does not have primary focus',
-        (WidgetTester tester) async {
+    testWidgets('unfocuses when current focus does not have primary focus', (
+      WidgetTester tester,
+    ) async {
       final focusNode = FocusNode();
       final widget = MaterialApp(
-        home: Scaffold(
-          body: TextField(focusNode: focusNode),
-        ),
+        home: Scaffold(body: TextField(focusNode: focusNode)),
       );
 
       await tester.pumpWidget(widget);

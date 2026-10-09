@@ -39,8 +39,7 @@ class UserProfile extends Equatable {
     this.noKTP,
   });
 
-  get isNameEmpty =>
-      (momName?.isEmpty ?? false) || (dadName?.isEmpty ?? false);
+  get isNameEmpty => (momName?.isEmpty ?? false) || (dadName?.isEmpty ?? false);
 
   factory UserProfile.fromSeribase(Map<String, dynamic> data) {
     return UserProfile(
@@ -75,8 +74,10 @@ class UserProfile extends Equatable {
       if (uid?.isNotEmpty ?? false) "user_id": uid,
       if (momName?.isNotEmpty ?? false) "mother_name": momName,
       if (dadName?.isNotEmpty ?? false) "father_name": dadName,
-      if (dadPhoneNumber?.isNotEmpty ?? false) "father_phone_number": dadPhoneNumber,
-      if (momPhoneNumber?.isNotEmpty ?? false) "mother_phone_number": momPhoneNumber,
+      if (dadPhoneNumber?.isNotEmpty ?? false)
+        "father_phone_number": dadPhoneNumber,
+      if (momPhoneNumber?.isNotEmpty ?? false)
+        "mother_phone_number": momPhoneNumber,
       if (dadBloodType?.isNotEmpty ?? false) "father_blood_type": dadBloodType,
       if (momBloodType?.isNotEmpty ?? false) "mother_blood_type": momBloodType,
       if (dadJob?.isNotEmpty ?? false) "father_job": dadJob,
@@ -84,8 +85,7 @@ class UserProfile extends Equatable {
       if (address?.isNotEmpty ?? false) "address": address,
       if (avatarURL?.isNotEmpty ?? false) "avatar_url": avatarURL,
       if (placeOfBirth?.isNotEmpty ?? false) "place_of_birth": placeOfBirth,
-      if (dateOfBirth != null)
-        "date_of_birth": dateOfBirth?.toIso8601String(),
+      if (dateOfBirth != null) "date_of_birth": dateOfBirth?.toIso8601String(),
       if (noKK?.isNotEmpty ?? false) "no_kartu_keluarga": noKK,
       if (noKTP?.isNotEmpty ?? false) "no_induk_kependudukan": noKTP,
     };

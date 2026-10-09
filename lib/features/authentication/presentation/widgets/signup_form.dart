@@ -1,5 +1,5 @@
-import 'package:eimunisasi/core/utils/constant.dart';
-import 'package:eimunisasi/core/widgets/snackbar_custom.dart';
+import 'package:e_patient/core/utils/constant.dart';
+import 'package:e_patient/core/widgets/snackbar_custom.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/widgets/button_custom.dart';
@@ -20,8 +20,9 @@ class SignUpForm extends StatelessWidget {
           context.pop();
           snackbarCustom('Pendaftaran berhasil, Silahkan login').show(context);
         } else if (state.status.isFailure) {
-          snackbarCustom(state.errorMessage ?? 'Pendaftaran gagal!')
-              .show(context);
+          snackbarCustom(
+            state.errorMessage ?? 'Pendaftaran gagal!',
+          ).show(context);
         }
       },
       child: Align(
@@ -101,7 +102,7 @@ class _SignUpButton extends StatelessWidget {
             '${AppConstant.SIGN_UP} ',
             style: TextStyle(fontSize: 15.0, color: Colors.white),
           ),
-          onPressed: () => context.read<SignUpCubit>().signUpFormSubmitted()
+          onPressed: () => context.read<SignUpCubit>().signUpFormSubmitted(),
         );
       },
     );

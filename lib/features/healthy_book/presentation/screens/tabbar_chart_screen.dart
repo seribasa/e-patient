@@ -1,6 +1,6 @@
-import 'package:eimunisasi/features/healthy_book/data/models/chart/head_circumference_chart.dart';
-import 'package:eimunisasi/features/healthy_book/data/models/chart/weight_chart.dart';
-import 'package:eimunisasi/features/healthy_book/data/models/checkup_model.dart';
+import 'package:e_patient/features/healthy_book/data/models/chart/head_circumference_chart.dart';
+import 'package:e_patient/features/healthy_book/data/models/chart/weight_chart.dart';
+import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../profile/data/models/child_model.dart';
@@ -9,11 +9,8 @@ import '../../data/models/chart/height_chart.dart';
 class TabBarChartScreen extends StatelessWidget {
   final List<CheckupModel>? checkup;
   final ChildModel? child;
-  const TabBarChartScreen({
-    Key? key,
-    this.checkup,
-    required this.child,
-  }) : super(key: key);
+  const TabBarChartScreen({Key? key, this.checkup, required this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +22,7 @@ class TabBarChartScreen extends StatelessWidget {
             margin: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderRadius: BorderRadius.zero,
             ),
             child: const TabBar(
               indicatorColor: Colors.white,

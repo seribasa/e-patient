@@ -30,14 +30,14 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 35
-    namespace 'com.peltops.e_imunisasi'
+    namespace 'com.peltops.e_patient'
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
     defaultConfig {
-        applicationId "com.peltops.e_imunisasi"
+        applicationId "com.peltops.e_patient"
         minSdkVersion 23
         targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()

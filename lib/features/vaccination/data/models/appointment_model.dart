@@ -1,6 +1,6 @@
-import 'package:eimunisasi/features/health_worker/data/models/health_worker_model.dart';
-import 'package:eimunisasi/features/profile/data/models/child_model.dart';
-import 'package:eimunisasi/features/authentication/data/models/user_profile.dart';
+import 'package:e_patient/features/health_worker/data/models/health_worker_model.dart';
+import 'package:e_patient/features/profile/data/models/child_model.dart';
+import 'package:e_patient/features/authentication/data/models/user_profile.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/extension.dart';
@@ -80,9 +80,7 @@ class AppointmentModel extends Equatable {
         endTime,
       ];
 
-  factory AppointmentModel.fromSeribase(
-    Map<String, dynamic> map,
-  ) {
+  factory AppointmentModel.fromSeribase(Map<String, dynamic> map) {
     return AppointmentModel(
       id: map['id'],
       orderId: map['order_id'],

@@ -3,10 +3,7 @@ import 'package:equatable/equatable.dart';
 class RouteModel extends Equatable {
   final String path;
   final RouteModel? parent;
-  const RouteModel({
-    required this.path,
-    this.parent,
-  });
+  const RouteModel({required this.path, this.parent});
 
   @override
   List<Object?> get props => [path, parent];
