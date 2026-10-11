@@ -115,7 +115,7 @@ Baseline menggunakan BLoC/Cubit, GetIt/Injectable, Supabase, Hive, SharedPrefere
 ## GitHub Actions dan APK
 
 - **e-Patient CI:** berjalan pada push seluruh branch, pull request, atau manual. Menjalankan code generation, analysis, test, dan build debug dengan konfigurasi placeholder. Tidak membutuhkan secret. Artifact CI tidak ditujukan untuk login/payment nyata.
-- **e-Patient Development APK:** manual, memakai environment GitHub `development`. Isi `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `PAYMENT_URL`, serta `STRIPE_PUBLISHABLE_KEY` jika Stripe. Variables `PAYMENT_GATEWAY`/`PAYMENT_CURRENCY` dapat mengubah default.
+- **e-Patient Development APK:** manual, memakai environment GitHub `development`. Isi `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `PAYMENT_URL` (atau endpoint override per gateway), serta `STRIPE_PUBLISHABLE_KEY` jika Stripe. Saat Run workflow, pilih `midtrans`, `stripe`, atau `both`, lalu isi currency per gateway; tidak perlu mengubah variable repo. Artifact/APK diberi nama gateway masing-masing.
 - Unduh APK dari artifact run yang berhasil, bukan tautan release e-Imunisasi lama. Workflow release/Play Store lama diarsipkan; deployment produksi belum aktif.
 
 Lihat [petunjuk GitHub Actions](docs/engineering/github-actions-setup.md) untuk setup environment, batas signing debug, dan daftar secret produksi yang belum dipakai.

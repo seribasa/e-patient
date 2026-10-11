@@ -6,7 +6,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 void main() {
-  late CheckupRepository checkupRepository;
   late SupabaseClient supabaseClient;
 
   setUpAll(() {
@@ -15,7 +14,6 @@ void main() {
       'test',
       httpClient: MockSupabaseHttpClient(),
     );
-    checkupRepository = CheckupRepository(supabaseClient);
   });
 
   group('getCheckups', () {

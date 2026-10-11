@@ -14,7 +14,6 @@ import 'package:e_patient/features/authentication/logic/cubit/signup_cubit/signu
 
 @GenerateMocks([AuthRepository])
 @GenerateNiceMocks([
-  MockSpec<UserProfile>(),
   MockSpec<AuthResponse>(),
   MockSpec<User>(),
 ])
@@ -37,7 +36,7 @@ void main() {
 
   setUp(() {
     authRepository = MockAuthRepository();
-    user = MockUserProfile();
+    user = UserProfile();
     userFirebase = MockUser();
     authResponse = MockAuthResponse();
   });

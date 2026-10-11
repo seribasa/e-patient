@@ -6,7 +6,7 @@ import 'package:mockito/annotations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 @GenerateMocks([GoTrueClient, SupabaseStorageClient])
-@GenerateNiceMocks([MockSpec<User>(), MockSpec<ChildModel>()])
+@GenerateNiceMocks([MockSpec<User>()])
 import 'child_repository_test.mocks.dart';
 
 void main() {

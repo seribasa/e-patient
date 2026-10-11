@@ -10,14 +10,13 @@ import 'package:mockito/mockito.dart';
 import 'checkup_bloc_test.mocks.dart';
 
 @GenerateMocks([CheckupRepository])
-@GenerateNiceMocks([MockSpec<CheckupModel>()])
 void main() {
   late CheckupRepository mockCheckupRepository;
   late CheckupModel mockCheckupModel;
 
   setUp(() {
     mockCheckupRepository = MockCheckupRepository();
-    mockCheckupModel = MockCheckupModel();
+    mockCheckupModel = const CheckupModel(id: 'checkup-1', idPasien: 'childId');
   });
 
   blocTest<CheckupBloc, CheckupState>(

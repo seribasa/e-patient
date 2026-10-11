@@ -3,12 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i4;
 
 import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart'
-    as _i3;
+    as _i5;
 import 'package:e_patient/features/healthy_book/data/repositories/checkup_repository.dart'
-    as _i4;
+    as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i2;
 
@@ -27,19 +27,19 @@ import 'package:supabase_flutter/supabase_flutter.dart' as _i2;
 
 class _FakeSupabaseClient_0 extends _i1.SmartFake
     implements _i2.SupabaseClient {
-  _FakeSupabaseClient_0(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
-}
-
-class _FakeCheckupModel_1 extends _i1.SmartFake implements _i3.CheckupModel {
-  _FakeCheckupModel_1(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeSupabaseClient_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 /// A class which mocks [CheckupRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCheckupRepository extends _i1.Mock implements _i4.CheckupRepository {
+class MockCheckupRepository extends _i1.Mock implements _i3.CheckupRepository {
   MockCheckupRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -54,104 +54,13 @@ class MockCheckupRepository extends _i1.Mock implements _i4.CheckupRepository {
       ) as _i2.SupabaseClient);
 
   @override
-  _i5.Future<List<_i3.CheckupModel>> getCheckups(String? childId) =>
+  _i4.Future<List<_i5.CheckupModel>> getCheckups(String? childId) =>
       (super.noSuchMethod(
-        Invocation.method(#getCheckups, [childId]),
-        returnValue: _i5.Future<List<_i3.CheckupModel>>.value(
-          <_i3.CheckupModel>[],
+        Invocation.method(
+          #getCheckups,
+          [childId],
         ),
-      ) as _i5.Future<List<_i3.CheckupModel>>);
-}
-
-/// A class which mocks [CheckupModel].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockCheckupModel extends _i1.Mock implements _i3.CheckupModel {
-  @override
-  List<Object?> get props => (super.noSuchMethod(
-        Invocation.getter(#props),
-        returnValue: <Object?>[],
-        returnValueForMissingStub: <Object?>[],
-      ) as List<Object?>);
-
-  @override
-  Map<String, dynamic> toMap() => (super.noSuchMethod(
-        Invocation.method(#toMap, []),
-        returnValue: <String, dynamic>{},
-        returnValueForMissingStub: <String, dynamic>{},
-      ) as Map<String, dynamic>);
-
-  @override
-  _i3.CheckupModel copyWith({
-    int? beratBadan,
-    int? tinggiBadan,
-    int? lingkarKepala,
-    String? jenisVaksin,
-    String? riwayatKeluhan,
-    String? diagnosa,
-    String? tindakan,
-    String? id,
-    String? idOrangTuaPasien,
-    String? idPasien,
-    String? idDokter,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    DateTime? deletedAt,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(#copyWith, [], {
-          #beratBadan: beratBadan,
-          #tinggiBadan: tinggiBadan,
-          #lingkarKepala: lingkarKepala,
-          #jenisVaksin: jenisVaksin,
-          #riwayatKeluhan: riwayatKeluhan,
-          #diagnosa: diagnosa,
-          #tindakan: tindakan,
-          #id: id,
-          #idOrangTuaPasien: idOrangTuaPasien,
-          #idPasien: idPasien,
-          #idDokter: idDokter,
-          #createdAt: createdAt,
-          #updatedAt: updatedAt,
-          #deletedAt: deletedAt,
-        }),
-        returnValue: _FakeCheckupModel_1(
-          this,
-          Invocation.method(#copyWith, [], {
-            #beratBadan: beratBadan,
-            #tinggiBadan: tinggiBadan,
-            #lingkarKepala: lingkarKepala,
-            #jenisVaksin: jenisVaksin,
-            #riwayatKeluhan: riwayatKeluhan,
-            #diagnosa: diagnosa,
-            #tindakan: tindakan,
-            #id: id,
-            #idOrangTuaPasien: idOrangTuaPasien,
-            #idPasien: idPasien,
-            #idDokter: idDokter,
-            #createdAt: createdAt,
-            #updatedAt: updatedAt,
-            #deletedAt: deletedAt,
-          }),
-        ),
-        returnValueForMissingStub: _FakeCheckupModel_1(
-          this,
-          Invocation.method(#copyWith, [], {
-            #beratBadan: beratBadan,
-            #tinggiBadan: tinggiBadan,
-            #lingkarKepala: lingkarKepala,
-            #jenisVaksin: jenisVaksin,
-            #riwayatKeluhan: riwayatKeluhan,
-            #diagnosa: diagnosa,
-            #tindakan: tindakan,
-            #id: id,
-            #idOrangTuaPasien: idOrangTuaPasien,
-            #idPasien: idPasien,
-            #idDokter: idDokter,
-            #createdAt: createdAt,
-            #updatedAt: updatedAt,
-            #deletedAt: deletedAt,
-          }),
-        ),
-      ) as _i3.CheckupModel);
+        returnValue:
+            _i4.Future<List<_i5.CheckupModel>>.value(<_i5.CheckupModel>[]),
+      ) as _i4.Future<List<_i5.CheckupModel>>);
 }

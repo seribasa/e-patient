@@ -1,0 +1,92 @@
+name: e-Patient Development APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      payment_gateway:
+        description: Payment gateway to build
+        required: true
+        default: midtrans
+        type: choice
+        options:
+          - midtrans
+          - stripe
+          - both
+      midtrans_currency:
+        description: Midtrans currency supported by your backend
+        required: true
+        default: IDR
+        type: string
+      stripe_currency:
+        description: Stripe currency supported by your backend
+        required: true
+        default: IDR
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: development-apk-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  development-apk:
+    name: Development APK (${{ matrix.gateway }})
+    runs-on: ubuntu-latest
+    environment: development
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        gateway: ${{ fromJSON(inputs.payment_gateway == 'both' && '["midtrans","stripe"]' || format('["{0}"]', inputs.payment_gateway)) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: .fvmrc
+          cache: true
+      - name: Test environment generator
+        run: node --test .github/scripts/write-app-env.test.mjs
+      - name: Prepare placeholder environment
+        run: node .github/scripts/write-app-env.mjs --ci
+      - name: Resolve dependencies and generate code
+        run: |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
+      - name: Analyze
+        run: flutter analyze
+      - name: Test
+        run: flutter test --coverage --reporter expanded
+      - name: Create development environment
+        run: node .github/scripts/write-app-env.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          PAYMENT_URL: ${{ matrix.gateway == 'midtrans' && secrets.PAYMENT_URL_MIDTRANS || matrix.gateway == 'stripe' && secrets.PAYMENT_URL_STRIPE || secrets.PAYMENT_URL }}
+          STRIPE_PUBLISHABLE_KEY: ${{ matrix.gateway == 'stripe' && secrets.STRIPE_PUBLISHABLE_KEY || '' }}
+          PAYMENT_GATEWAY: ${{ matrix.gateway }}
+          PAYMENT_CURRENCY: ${{ matrix.gateway == 'midtrans' && inputs.midtrans_currency || inputs.stripe_currency }}
+      - name: Build development APK
+        run: flutter build apk --debug
+      - name: Name gateway APK
+        run: cp build/app/outputs/flutter-apk/app-debug.apk "build/app/outputs/flutter-apk/app-${PAYMENT_GATEWAY}-debug.apk"
+        env:
+          PAYMENT_GATEWAY: ${{ matrix.gateway }}
+      - name: Upload development APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: e-patient-${{ matrix.gateway }}-debug-${{ github.run_id }}
+          path: build/app/outputs/flutter-apk/app-${{ matrix.gateway }}-debug.apk
+          if-no-files-found: error
+          retention-days: 7
+      - name: Remove environment file
+        if: always()
+        run: rm -f .env

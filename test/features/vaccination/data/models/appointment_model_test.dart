@@ -3,14 +3,6 @@ import 'package:e_patient/features/health_worker/data/models/health_worker_model
 import 'package:e_patient/features/profile/data/models/child_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:e_patient/features/vaccination/data/models/appointment_model.dart';
-import 'package:mockito/annotations.dart';
-
-@GenerateNiceMocks([
-  MockSpec<ChildModel>(),
-  MockSpec<UserProfile>(),
-  MockSpec<HealthWorkerModel>(),
-])
-import 'appointment_model_test.mocks.dart';
 
 void main() {
   group('AppointmentModel', () {
@@ -110,9 +102,9 @@ void main() {
     });
 
     test('copyWith no changes returns the same instance', () {
-      final child = MockChildModel();
-      final parent = MockUserProfile();
-      final healthWorker = MockHealthWorkerModel();
+      final child = const ChildModel(id: 'child-1', nama: 'First child');
+      final parent = UserProfile(uid: 'parent-1', momName: 'First parent');
+      final healthWorker = const HealthWorkerModel(id: 'worker-1');
 
       final appointment = AppointmentModel(
         id: '1',
@@ -130,9 +122,9 @@ void main() {
     });
 
     test('copyWith change all attributes creates a copy of the instance', () {
-      final child = MockChildModel();
-      final parent = MockUserProfile();
-      final healthWorker = MockHealthWorkerModel();
+      final child = const ChildModel(id: 'child-1', nama: 'First child');
+      final parent = UserProfile(uid: 'parent-1', momName: 'First parent');
+      final healthWorker = const HealthWorkerModel(id: 'worker-1');
 
       final appointment = AppointmentModel(
         id: '1',
@@ -155,6 +147,10 @@ void main() {
       );
 
       expect(copy.id, '2');
+      expect(copy.child!.nama, 'Second child');
+      expect(copy.parent!.momName, 'Second parent');
+      expect(appointment.child!.nama, 'First child');
+      expect(appointment.parent!.momName, 'First parent');
       expect(copy.date, DateTime.parse('2023-10-11T00:00:00.000Z'));
       expect(copy.note, 'Second appointment');
       expect(copy.purpose, 'Checkup');
