@@ -1,7 +1,6 @@
 import 'package:e_patient/routers/route_paths/profile_route_paths.dart';
 import 'package:e_patient/routers/route_paths/root_route_paths.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,8 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         elevation: 0,
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: SvgPicture.asset(
-                            'assets/images/undraw_baby_ja7a.svg',
+                          child: Image.asset(
+                            'assets/images/e_patient_care.png',
+                            fit: BoxFit.contain,
+                            semanticLabel:
+                                'Pasien dan keluarga mengatur kesehatan bersama',
                           ),
                         ),
                       ),

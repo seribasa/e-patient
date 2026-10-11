@@ -39,7 +39,8 @@ class LoginPhoneForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset('assets/images/logo.png', width: 80),
+              Image.asset('assets/images/e_patient_logo.png',
+                  width: 80, semanticLabel: 'Logo e-Patient'),
               SizedBox(height: 30.0),
               Text(
                 AppConstant.PLEASE_LOGIN,

@@ -36,20 +36,20 @@ List<SliderModel> getSlides() {
 
   //1
   sliderModel.setDesc(
-    "Selamat Datang di Aplikasi e-Patient.Imunisasi menjadi lebih mudah, nyaman dan menyenangkan di rumah",
+    "Selamat datang di e-Patient, pendamping untuk mengatur perjalanan kesehatan Anda dan keluarga.",
   );
   sliderModel.setTitle("Selamat Datang");
-  sliderModel.setImageAssetPath("assets/images/illustrasi1.png");
+  sliderModel.setImageAssetPath("assets/images/e_patient_logo.png");
   slides.add(sliderModel);
 
   sliderModel = new SliderModel();
 
   //2
   sliderModel.setDesc(
-    "Imunisasi Melindungi Melindungi Dari Penyakit, Mencegah Kecacatan Dan Kematian",
+    "Mulai dari kebutuhan kesehatan Anda sendiri, lalu bantu keluarga sesuai akses yang mereka berikan.",
   );
-  sliderModel.setTitle("Imunisasi");
-  sliderModel.setImageAssetPath("assets/images/illustrasi2.png");
+  sliderModel.setTitle("Kesehatan Anda dan Keluarga");
+  sliderModel.setImageAssetPath("assets/images/e_patient_care.png");
   slides.add(sliderModel);
 
   sliderModel = new SliderModel();

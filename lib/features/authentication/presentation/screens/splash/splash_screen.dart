@@ -29,10 +29,13 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text('Welcome to the app!'),
-            SizedBox(height: 20),
-            CircularProgressIndicator(),
+          children: [
+            Image.asset('assets/images/e_patient_logo.png',
+                width: 120, semanticLabel: 'Logo e-Patient'),
+            const SizedBox(height: 20),
+            const Text('e-Patient'),
+            const SizedBox(height: 20),
+            const CircularProgressIndicator(),
           ],
         ),
       ),

@@ -47,11 +47,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [const Color(0xff3C8CE7), const Color(0xff00EAFF)],
-        ),
-      ),
+      decoration: const BoxDecoration(color: Colors.white),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Container(
