@@ -29,6 +29,14 @@ test('Stripe requires a publishable key', () => {
   assert.equal(run({ ...base, PAYMENT_GATEWAY: 'stripe', STRIPE_PUBLISHABLE_KEY: 'pk_test_dummy', PAYMENT_CURRENCY: 'USD' }).status, 0);
 });
 
+test('OAuth callback must match a manifest host and the existing root route', () => {
+  assert.equal(run({ ...base, AUTH_REDIRECT_URL: 'https://e-patient-app.peltops.com/' }).status, 0);
+  for (const url of ['https://other.example/', 'http://eimunisasi-app.peltops.com/',
+    'https://eimunisasi-app.peltops.com/callback', 'https://eimunisasi-app.peltops.com/?next=other']) {
+    assert.notEqual(run({ ...base, AUTH_REDIRECT_URL: url }).status, 0);
+  }
+});
+
 test('missing config, invalid gateway/currency, HTTP URL, and multiline values fail', () => {
   for (const env of [
     {},
@@ -40,16 +48,17 @@ test('missing config, invalid gateway/currency, HTTP URL, and multiline values f
   ]) assert.notEqual(run(env).status, 0);
 });
 
-test('generated CI asset has six fields, restricted permissions, and no real config', () => {
+test('generated CI asset has seven fields, restricted permissions, and no real config', () => {
   const directory = mkdtempSync(join(tmpdir(), 'e-patient-ci-env-'));
   try {
     const result = run({}, ['--ci'], directory);
     assert.equal(result.status, 0);
     const file = join(directory, '.env');
     const content = readFileSync(file, 'utf8');
-    assert.equal(content.trim().split('\n').length, 6);
+    assert.equal(content.trim().split('\n').length, 7);
     assert.ok(content.includes('ci.example.invalid'));
     assert.ok(content.includes('PAYMENT_GATEWAY="midtrans"'));
+    assert.ok(content.includes('AUTH_REDIRECT_URL="https://eimunisasi-app.peltops.com/"'));
     assert.equal(statSync(file).mode & 0o777, 0o600);
   } finally {
     rmSync(directory, { recursive: true });

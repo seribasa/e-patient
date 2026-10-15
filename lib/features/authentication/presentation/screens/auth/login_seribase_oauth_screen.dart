@@ -1,9 +1,13 @@
 import '../../../../../core/widgets/button_custom.dart';
+import '../../../../../core/widgets/snackbar_custom.dart';
 import '../../../../../injection.dart';
+import '../../../logic/bloc/authentication_bloc/authentication_bloc.dart';
 import '../../../logic/cubit/login_cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
+import 'package:formz/formz.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginSeribaseOauthScreen extends StatelessWidget {
   const LoginSeribaseOauthScreen({super.key});
@@ -12,7 +16,27 @@ class LoginSeribaseOauthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<LoginCubit>(),
-      child: const _LoginSeribaseOauthScaffold(),
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<LoginCubit, LoginState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status,
+            listener: (context, state) {
+              if (state.status.isFailure) {
+                snackbarCustom(state.errorMessage ?? 'Gagal membuka login.')
+                    .show(context);
+              }
+            },
+          ),
+          BlocListener<AuthenticationBloc, AuthenticationState>(
+            listener: (context, state) {
+              // Browser launch is not a completed login; wait for the session.
+              if (state is Authenticated) context.go('/');
+            },
+          ),
+        ],
+        child: const _LoginSeribaseOauthScaffold(),
+      ),
     );
   }
 }
@@ -69,13 +93,16 @@ class _LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ButtonCustom(
-      onPressed: () {
-        context.read<LoginCubit>().logInWithSeribaseOauth();
-      },
-      child: const Text(
-        'Masuk dengan Seribase',
-        style: TextStyle(fontSize: 15.0, color: Colors.white),
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder: (context, state) => ButtonCustom(
+        loading: state.status.isInProgress,
+        onPressed: state.status.isInProgress
+            ? null
+            : () => context.read<LoginCubit>().logInWithSeribaseOauth(),
+        child: const Text(
+          'Masuk dengan Seribase',
+          style: TextStyle(fontSize: 15.0, color: Colors.white),
+        ),
       ),
     );
   }

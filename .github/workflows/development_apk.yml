@@ -12,6 +12,15 @@ on:
           - midtrans
           - stripe
           - both
+      build_type:
+        description: Android build type
+        required: true
+        default: both
+        type: choice
+        options:
+          - debug
+          - release
+          - both
       midtrans_currency:
         description: Midtrans currency supported by your backend
         required: true
@@ -32,7 +41,7 @@ concurrency:
 
 jobs:
   development-apk:
-    name: Development APK (${{ matrix.gateway }})
+    name: APK (${{ matrix.gateway }}, ${{ matrix.build_type }})
     runs-on: ubuntu-latest
     environment: development
     timeout-minutes: 45
@@ -40,6 +49,7 @@ jobs:
       fail-fast: false
       matrix:
         gateway: ${{ fromJSON(inputs.payment_gateway == 'both' && '["midtrans","stripe"]' || format('["{0}"]', inputs.payment_gateway)) }}
+        build_type: ${{ fromJSON(inputs.build_type == 'both' && '["debug","release"]' || format('["{0}"]', inputs.build_type)) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -54,7 +64,7 @@ jobs:
           flutter-version-file: .fvmrc
           cache: true
       - name: Test environment generator
-        run: node --test .github/scripts/write-app-env.test.mjs
+        run: node --test .github/scripts/*.test.mjs
       - name: Prepare placeholder environment
         run: node .github/scripts/write-app-env.mjs --ci
       - name: Resolve dependencies and generate code
@@ -74,19 +84,42 @@ jobs:
           STRIPE_PUBLISHABLE_KEY: ${{ matrix.gateway == 'stripe' && secrets.STRIPE_PUBLISHABLE_KEY || '' }}
           PAYMENT_GATEWAY: ${{ matrix.gateway }}
           PAYMENT_CURRENCY: ${{ matrix.gateway == 'midtrans' && inputs.midtrans_currency || inputs.stripe_currency }}
+          AUTH_REDIRECT_URL: ${{ vars.AUTH_REDIRECT_URL || 'https://eimunisasi-app.peltops.com/' }}
+      - name: Configure stable signing for selected build type
+        run: node .github/scripts/configure-signing.mjs
+        env:
+          BUILD_TYPE: ${{ matrix.build_type }}
+          DEBUG_KEYSTORE_BASE64: ${{ matrix.build_type == 'debug' && secrets.DEBUG_KEYSTORE_BASE64 || '' }}
+          DEBUG_KEY_ALIAS: ${{ matrix.build_type == 'debug' && secrets.DEBUG_KEY_ALIAS || '' }}
+          DEBUG_KEY_PASSWORD: ${{ matrix.build_type == 'debug' && secrets.DEBUG_KEY_PASSWORD || '' }}
+          DEBUG_KEYSTORE_PASSWORD: ${{ matrix.build_type == 'debug' && secrets.DEBUG_KEYSTORE_PASSWORD || '' }}
+          RELEASE_KEYSTORE_BASE64: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEYSTORE_BASE64 || '' }}
+          RELEASE_KEY_ALIAS: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEY_ALIAS || '' }}
+          RELEASE_KEY_PASSWORD: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEY_PASSWORD || '' }}
+          RELEASE_KEYSTORE_PASSWORD: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEYSTORE_PASSWORD || '' }}
       - name: Build development APK
-        run: flutter build apk --debug
+        run: flutter build apk "--${BUILD_TYPE}"
+        env:
+          BUILD_TYPE: ${{ matrix.build_type }}
       - name: Name gateway APK
-        run: cp build/app/outputs/flutter-apk/app-debug.apk "build/app/outputs/flutter-apk/app-${PAYMENT_GATEWAY}-debug.apk"
+        run: cp "build/app/outputs/flutter-apk/app-${BUILD_TYPE}.apk" "build/app/outputs/flutter-apk/app-${PAYMENT_GATEWAY}-${BUILD_TYPE}.apk"
         env:
           PAYMENT_GATEWAY: ${{ matrix.gateway }}
+          BUILD_TYPE: ${{ matrix.build_type }}
       - name: Upload development APK
         uses: actions/upload-artifact@v4
         with:
-          name: e-patient-${{ matrix.gateway }}-debug-${{ github.run_id }}
-          path: build/app/outputs/flutter-apk/app-${{ matrix.gateway }}-debug.apk
+          name: e-patient-${{ matrix.gateway }}-${{ matrix.build_type }}-${{ github.run_id }}
+          path: build/app/outputs/flutter-apk/app-${{ matrix.gateway }}-${{ matrix.build_type }}.apk
           if-no-files-found: error
           retention-days: 7
-      - name: Remove environment file
+      - name: Upload public App Link association
+        uses: actions/upload-artifact@v4
+        with:
+          name: e-patient-app-links-${{ matrix.gateway }}-${{ matrix.build_type }}-${{ github.run_id }}
+          path: build/app-links/assetlinks-${{ matrix.build_type }}.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Remove environment and signing files
         if: always()
-        run: rm -f .env
+        run: rm -f .env android/key.properties android/keystore/debug.jks android/keystore/release.jks

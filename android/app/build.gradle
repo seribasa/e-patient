@@ -59,18 +59,37 @@ android {
         release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            def releaseStoreFile = keystoreProperties['storeFile']
+            if (releaseStoreFile) {
+                def releaseKeystore = rootProject.file(releaseStoreFile)
+                if (!releaseKeystore.exists()) {
+                    throw new GradleException("Configured release keystore does not exist")
+                }
+                ['keyAlias', 'keyPassword', 'storePassword'].each { name ->
+                    if (!keystoreProperties[name]) {
+                        throw new GradleException("Missing release signing property: ${name}")
+                    }
+                }
+                storeFile releaseKeystore
+            }
             storePassword keystoreProperties['storePassword']
         }
         debug {
-            def debugKeystorePath = "${rootProject.projectDir}/${keystoreProperties['debugStoreFile']}"
-            if (keystoreProperties['debugStoreFile'] && file(debugKeystorePath).exists()) {
+            def debugStoreFile = keystoreProperties['debugStoreFile']
+            if (debugStoreFile) {
+                def debugKeystore = rootProject.file(debugStoreFile)
+                if (!debugKeystore.exists()) {
+                    throw new GradleException("Configured development keystore does not exist")
+                }
+                ['debugKeyAlias', 'debugKeyPassword', 'debugStorePassword'].each { name ->
+                    if (!keystoreProperties[name]) {
+                        throw new GradleException("Missing development signing property: ${name}")
+                    }
+                }
                 keyAlias keystoreProperties['debugKeyAlias']
                 keyPassword keystoreProperties['debugKeyPassword']
-                storeFile file(debugKeystorePath)
+                storeFile debugKeystore
                 storePassword keystoreProperties['debugStorePassword']
-            } else {
-                println("Debug keystore file not found at ${debugKeystorePath}.")
             }
         }
     }

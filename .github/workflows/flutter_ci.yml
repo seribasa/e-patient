@@ -38,7 +38,7 @@ jobs:
           cache: true
 
       - name: Test environment generator
-        run: node --test .github/scripts/write-app-env.test.mjs
+        run: node --test .github/scripts/*.test.mjs
 
       - name: Create CI environment (no real credentials)
         run: node .github/scripts/write-app-env.mjs --ci

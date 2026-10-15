@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'package:e_patient/core/utils/oauth_redirect.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:injectable/injectable.dart';
@@ -130,6 +133,13 @@ class AuthRepository {
     return await supabaseClient.auth.signInWithOAuth(
       supabase.OAuthProvider.keycloak,
       scopes: 'openid',
+      redirectTo: kIsWeb
+          ? null
+          : oauthRedirectUrl(
+              dotenv.isInitialized ? dotenv.env['AUTH_REDIRECT_URL'] : null,
+            ),
+      authScreenLaunchMode:
+          kIsWeb ? LaunchMode.platformDefault : LaunchMode.externalApplication,
     );
   }
 }

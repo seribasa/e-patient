@@ -42,6 +42,7 @@ STRIPE_PUBLISHABLE_KEY=
 PAYMENT_URL=https://your-payment-backend.example
 PAYMENT_GATEWAY=midtrans
 PAYMENT_CURRENCY=IDR
+AUTH_REDIRECT_URL=https://eimunisasi-app.peltops.com/
 ```
 
 | Konfigurasi | Kebutuhan |
@@ -51,6 +52,7 @@ PAYMENT_CURRENCY=IDR
 | `STRIPE_PUBLISHABLE_KEY` | Diperlukan bila gateway Stripe dipakai |
 | `PAYMENT_GATEWAY` | Default `midtrans`; workflow development mendukung `midtrans` atau `stripe` |
 | `PAYMENT_CURRENCY` | Default `IDR`; sesuaikan dengan backend/gateway |
+| `AUTH_REDIRECT_URL` | Callback native HTTPS root; default `https://eimunisasi-app.peltops.com/` |
 
 `.env` dibaca sebagai **aset Flutter**, bukan otomatis dari environment terminal/VS Code. File ini telah didaftarkan di `pubspec.yaml` dan tidak dilacak Git. Perubahan `.env`/aset memerlukan penghentian dan peluncuran ulang aplikasi.
 
@@ -84,7 +86,7 @@ fvm flutter test --coverage --reporter expanded
 fvm flutter build apk --debug
 ```
 
-APK berada di `build/app/outputs/flutter-apk/app-debug.apk`; coverage di `coverage/lcov.info`. Android memakai application ID `com.peltops.e_patient`, dengan suffix `.debug` untuk build debug. Release signing belum disiapkan oleh pipeline baru.
+APK berada di `build/app/outputs/flutter-apk/app-debug.apk`; coverage di `coverage/lcov.info`. Android memakai application ID `com.peltops.e_patient`, dengan suffix `.debug` untuk build debug. Untuk release, lengkapi konfigurasi key release yang terpisah lalu jalankan `fvm flutter build apk --release`; hasilnya `app-release.apk`. Build release bukan deployment otomatis ke Play Store.
 
 Saat mengubah source yang menghasilkan kode, jalankan build_runner sebelum analysis/test. Untuk format, batasi pada file Dart yang diubah:
 
@@ -115,10 +117,12 @@ Baseline menggunakan BLoC/Cubit, GetIt/Injectable, Supabase, Hive, SharedPrefere
 ## GitHub Actions dan APK
 
 - **e-Patient CI:** berjalan pada push seluruh branch, pull request, atau manual. Menjalankan code generation, analysis, test, dan build debug dengan konfigurasi placeholder. Tidak membutuhkan secret. Artifact CI tidak ditujukan untuk login/payment nyata.
-- **e-Patient Development APK:** manual, memakai environment GitHub `development`. Isi `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `PAYMENT_URL` (atau endpoint override per gateway), serta `STRIPE_PUBLISHABLE_KEY` jika Stripe. Saat Run workflow, pilih `midtrans`, `stripe`, atau `both`, lalu isi currency per gateway; tidak perlu mengubah variable repo. Artifact/APK diberi nama gateway masing-masing.
+- **e-Patient Development APK:** manual, memakai environment GitHub `development`. Isi `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `PAYMENT_URL` (atau endpoint override per gateway), serta `STRIPE_PUBLISHABLE_KEY` jika Stripe. Saat Run workflow, pilih gateway dan build type (`debug`, `release`, atau `both`, default `both`), lalu currency per gateway. Kedua pilihan `both` menghasilkan empat APK; tidak perlu mengubah variable repo. Artifact/APK diberi nama gateway dan build type.
 - Unduh APK dari artifact run yang berhasil, bukan tautan release e-Imunisasi lama. Workflow release/Play Store lama diarsipkan; deployment produksi belum aktif.
 
-Lihat [petunjuk GitHub Actions](docs/engineering/github-actions-setup.md) untuk setup environment, batas signing debug, dan daftar secret produksi yang belum dipakai.
+Debug memerlukan `DEBUG_KEYSTORE_BASE64`, `DEBUG_KEY_ALIAS`, `DEBUG_KEY_PASSWORD`, dan `DEBUG_KEYSTORE_PASSWORD`. Release memerlukan empat secret dengan prefix `RELEASE_` yang sama. Key kedua build type terpisah; CI placeholder tetap tidak memerlukan secret.
+
+Lihat [petunjuk GitHub Actions](docs/engineering/github-actions-setup.md) dan [setup signing/OAuth Android](docs/engineering/android-oauth-signing-setup.md) untuk konfigurasi, fingerprint publik, serta langkah publish assetlinks dan allowlist callback Supabase.
 
 ## Troubleshooting
 
