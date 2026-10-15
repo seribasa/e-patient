@@ -1,0 +1,42 @@
+name: e-Patient Development APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      payment_gateway:
+        description: Payment gateway to build
+        required: true
+        default: midtrans
+        type: choice
+        options: [midtrans, stripe, both]
+      build_type:
+        description: Android build type
+        required: true
+        default: both
+        type: choice
+        options: [debug, release, both]
+      midtrans_currency:
+        description: Midtrans currency supported by your backend
+        required: true
+        default: IDR
+        type: string
+      stripe_currency:
+        description: Stripe currency supported by your backend
+        required: true
+        default: IDR
+        type: string
+
+permissions:
+  contents: read
+
+# main contains product documentation, not the Flutter application.
+# Dispatch against codex/map-e-imunisasi-to-e-patient to use that branch's
+# complete workflow definition and its debug/release build matrix.
+jobs:
+  select-application-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain required source branch
+        run: |
+          echo "::error::Choose codex/map-e-imunisasi-to-e-patient in Run workflow. main only registers this workflow and does not contain the application."
+          exit 1
