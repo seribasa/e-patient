@@ -7,7 +7,13 @@
 - Flutter mengikuti `.fvmrc` (3.29.3 saat setup) dan Java 17. CI memakai signing debug bawaan; Development APK memakai keystore development tetap. Coverage disimpan sebagai artifact. Tidak publish release atau deploy ke Play Store.
 - Workflow release e-Imunisasi lama serta konfigurasi Dependabot yang belum lengkap diarsipkan dalam `.github/legacy-workflows/` dan tidak aktif.
 
+## Workflow iOS APP dan IPA
+
+**e-Patient Development iOS** adalah workflow manual untuk `.app` simulator tanpa signing atau `.ipa` device dengan Apple signing. Mendukung gateway Midtrans/Stripe/both, quality gates sebelum build, artifact 7 hari, dan tidak upload ke TestFlight/App Store. [Panduan lengkap, secrets Apple, dan batas verifikasi](ios-actions-setup.md).
+
 ## Secrets dan variables
+
+Untuk workflow iOS lihat [bagian APP/IPA](#workflow-ios-app-dan-ipa). Konfigurasi Android di bawah tetap terpisah dari Apple signing.
 
 Repository GitHub → **Settings → Environments → New environment → development**. Tambahkan secrets:
 

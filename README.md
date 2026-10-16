@@ -22,7 +22,7 @@ e-Patient adalah aplikasi Flutter untuk pengelolaan perjalanan kesehatan pasien 
 - FVM dan Flutter sesuai [.fvmrc](.fvmrc), saat ini **3.29.3**. Gunakan SDK ini agar local dan CI konsisten.
 - Android SDK dan **JDK 17**, dengan perangkat/emulator yang siap digunakan. Project memakai compile/target SDK 35 dan minimum SDK 23.
 - VS Code dengan ekstensi Dart dan Flutter jika memakai Run & Debug.
-- Untuk iOS: macOS, Xcode, CocoaPods, serta konfigurasi signing yang sesuai. Build/deployment iOS tidak dicakup workflow CI saat ini.
+- Untuk iOS: minimum iOS 15.0, macOS, Xcode, CocoaPods, serta konfigurasi signing yang sesuai. Workflow manual iOS tersedia untuk simulator `.app` dan signed `.ipa`; tidak melakukan deployment store.
 - Node.js untuk script konfigurasi CI; Node.js dan macOS `sips` untuk regenerasi ikon. Bukan dependency runtime aplikasi Flutter.
 
 ## Setup lokal
@@ -88,6 +88,30 @@ fvm flutter build apk --debug
 
 APK berada di `build/app/outputs/flutter-apk/app-debug.apk`; coverage di `coverage/lcov.info`. Android memakai application ID `com.peltops.e_patient`, dengan suffix `.debug` untuk build debug. Untuk release, lengkapi konfigurasi key release yang terpisah lalu jalankan `fvm flutter build apk --release`; hasilnya `app-release.apk`. Build release bukan deployment otomatis ke Play Store.
 
+Untuk kompilasi iOS lokal (minimum iOS 15.0):
+
+```sh
+fvm flutter build ios --release --no-codesign
+fvm flutter build ios --simulator --debug
+```
+
+Pada Flutter 3.29.3 + Xcode 27, build simulator generik dapat gagal pada `debug_unpack_ios` saat `lipo -verify_arch` menerima dua arsitektur sekaligus. Untuk simulator Apple Silicon, gunakan satu arsitektur secara eksplisit:
+
+```sh
+fvm flutter build ios --simulator --debug --config-only
+xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner \
+  -configuration Debug -sdk iphonesimulator \
+  -destination 'generic/platform=iOS Simulator' \
+  ARCHS=arm64 ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO \
+  BUILD_DIR="$PWD/build/ios" build
+```
+
+Verifikasi lokal 16 Oktober 2026: release device tanpa signing dan debug simulator ARM64 berhasil dikompilasi dengan Xcode 27. Simulator Intel/multi-arsitektur belum lolos jalur generik di atas. Compiler masih menampilkan warning dari plugin lama. Bundle identifier iOS saat ini `com.peltops.e_patient` mengandung underscore dan perlu disepakati ulang menjadi identifier Apple yang valid sebelum menyiapkan signing/App Store; identitas Android/backend tidak diubah oleh penyesuaian build ini.
+
+Pembaruan dependency native dibatasi ke versi yang kompatibel dengan Flutter 3.29.3: `shared_preferences` 2.5.3, `url_launcher` 6.3.2, `flutter_local_notifications` 17.2.4, `image_picker` 1.2.1, `permission_handler` 11.4.0, dan `webview_flutter` 4.13.0. Versi implementasi platform dikunci di `pubspec.lock` dan `ios/Podfile.lock`. API Dart yang dipakai aplikasi tetap kompatibel; upgrade mayor Stripe, notification, atau Flutter SDK tidak termasuk pembaruan ini. Masalah simulator multi-arsitektur adalah [issue tooling Flutter/Xcode](https://github.com/flutter/flutter/issues/188461), bukan sesuatu yang diselesaikan oleh upgrade plugin aplikasi.
+
+Build release tanpa signing menghasilkan `build/ios/iphoneos/Runner.app`, bukan IPA siap distribusi. Instalasi ke iPhone/TestFlight memerlukan Apple signing dan provisioning yang sesuai. Buka `ios/Runner.xcworkspace` di Xcode, bukan `.xcodeproj`, agar dependensi CocoaPods ikut dimuat. Simpan `ios/Podfile.lock` untuk mengunci versi dependensi native; jalankan `pod install` melalui build Flutter, bukan `pod update` tanpa kebutuhan. Keberhasilan kompilasi belum memverifikasi login OAuth, payment, permission, atau fitur perangkat di iOS.
+
 Saat mengubah source yang menghasilkan kode, jalankan build_runner sebelum analysis/test. Untuk format, batasi pada file Dart yang diubah:
 
 ```sh
@@ -117,6 +141,7 @@ Baseline menggunakan BLoC/Cubit, GetIt/Injectable, Supabase, Hive, SharedPrefere
 ## GitHub Actions dan APK
 
 - **e-Patient CI:** berjalan pada push seluruh branch, pull request, atau manual. Menjalankan code generation, analysis, test, dan build debug dengan konfigurasi placeholder. Tidak membutuhkan secret. Artifact CI tidak ditujukan untuk login/payment nyata.
+- **e-Patient Development iOS:** manual melalui `.github/workflows/development_ios.yml`. Pilih `app` (simulator debug dalam ZIP, tanpa Apple signing), `ipa` (release device dengan signing), atau `both`, serta gateway/currency. Memakai environment `development`; lihat [konfigurasi iOS](docs/engineering/github-actions-setup.md#workflow-ios-app-dan-ipa) untuk secrets dan variable Apple. Artifact disimpan 7 hari; tidak upload ke TestFlight/App Store.
 - **e-Patient Development APK:** manual, memakai environment GitHub `development`. Isi `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `PAYMENT_URL` (atau endpoint override per gateway), serta `STRIPE_PUBLISHABLE_KEY` jika Stripe. Saat Run workflow, pilih gateway dan build type (`debug`, `release`, atau `both`, default `both`), lalu currency per gateway. Kedua pilihan `both` menghasilkan empat APK; tidak perlu mengubah variable repo. Artifact/APK diberi nama gateway dan build type.
 - Unduh APK dari artifact run yang berhasil, bukan tautan release e-Imunisasi lama. Workflow release/Play Store lama diarsipkan; deployment produksi belum aktif.
 
