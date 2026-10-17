@@ -80,6 +80,8 @@ Code generation menyiapkan dependency injection, adapter, dan mocks dari source/
 
 ## Verifikasi dan build
 
+Untuk menyimpan APK/IPA tanpa retensi artifact Actions, gunakan workflow manual **e-Patient Persistent Release**. Workflow mengambil binary dari build sukses dan menerbitkannya ke GitHub Release beserta checksum. [Panduan persistent releases](docs/engineering/persistent-releases.md).
+
 ```sh
 fvm flutter analyze
 fvm flutter test --coverage --reporter expanded
