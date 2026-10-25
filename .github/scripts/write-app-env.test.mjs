@@ -29,10 +29,10 @@ test('Stripe requires a publishable key', () => {
   assert.equal(run({ ...base, PAYMENT_GATEWAY: 'stripe', STRIPE_PUBLISHABLE_KEY: 'pk_test_dummy', PAYMENT_CURRENCY: 'USD' }).status, 0);
 });
 
-test('OAuth callback must match a manifest host and the existing root route', () => {
-  assert.equal(run({ ...base, AUTH_REDIRECT_URL: 'https://e-patient-app.peltops.com/' }).status, 0);
-  for (const url of ['https://other.example/', 'http://eimunisasi-app.peltops.com/',
-    'https://eimunisasi-app.peltops.com/callback', 'https://eimunisasi-app.peltops.com/?next=other']) {
+test('OAuth callback must match the configured App Link host and root route', () => {
+  assert.equal(run({ ...base, AUTH_REDIRECT_URL: 'https://kasih-app.peltops.com/' }).status, 0);
+  for (const url of ['https://other.example/', 'http://kasih-app.peltops.com/',
+    'https://kasih-app.peltops.com/callback', 'https://kasih-app.peltops.com/?next=other']) {
     assert.notEqual(run({ ...base, AUTH_REDIRECT_URL: url }).status, 0);
   }
 });
@@ -58,7 +58,7 @@ test('generated CI asset has seven fields, restricted permissions, and no real c
     assert.equal(content.trim().split('\n').length, 7);
     assert.ok(content.includes('ci.example.invalid'));
     assert.ok(content.includes('PAYMENT_GATEWAY="midtrans"'));
-    assert.ok(content.includes('AUTH_REDIRECT_URL="https://eimunisasi-app.peltops.com/"'));
+    assert.ok(content.includes('AUTH_REDIRECT_URL="https://kasih-app.peltops.com/"'));
     assert.equal(statSync(file).mode & 0o777, 0o600);
   } finally {
     rmSync(directory, { recursive: true });

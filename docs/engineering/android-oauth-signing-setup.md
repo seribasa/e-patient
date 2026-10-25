@@ -6,8 +6,8 @@
 - Keystore development menggunakan key yang sudah ada pada baseline e-Imunisasi; tidak membuat signing identity baru.
 - Public SHA-256: `24:1B:E5:AE:94:DE:90:63:87:48:63:36:CC:C2:B4:49:5E:4C:0D:C9:42:AF:A1:64:75:D1:1F:BA:45:87:D2:8B`.
 - Package release: `com.peltops.e_patient`, dengan key release lama yang terpisah. SHA-256: `D4:76:0F:61:B3:8A:33:CD:F9:85:06:D7:47:9B:4D:E4:90:C9:68:BF:46:B5:F7:C9:8B:9F:AB:13:6E:9C:58:C1`.
-- Callback native default: `https://eimunisasi-app.peltops.com/`. Root dipilih karena sudah dilayani auth router; bukan route baru `/auth/callback`.
-- Domain alternatif: `https://e-patient-app.peltops.com/`, setelah asosiasi host tersebut diterbitkan dan diverifikasi.
+- Callback native default: `https://kasih-app.peltops.com/`. Root dipilih karena sudah dilayani auth router; bukan route baru `/auth/callback`.
+- Gateway/API staging: `https://kasih-base-staging.peltops.com/`. Nilai ini dipakai melalui `SUPABASE_URL` dan/atau `PAYMENT_URL`, bukan sebagai callback OAuth aplikasi.
 - Flutter handler default dinonaktifkan pada Android agar Supabase/app_links menangani callback. MainActivity tetap exported untuk launcher/App Link, dengan launch mode singleTop; plugin menangani link saat cold start maupun warm intent. Tidak ada pemrosesan nested Intent baru.
 
 ## GitHub Environment development
@@ -49,7 +49,7 @@ Konfigurasi release memakai `storeFile=keystore/release.jks`, `keyAlias`, `keyPa
 
 [Entry debug](../deployment/assetlinks-development.json) dan [entry release](../deployment/assetlinks-release.json) berisi identitas key terverifikasi saat setup. Gabungkan kedua statement ke array yang sudah ada pada:
 
-`https://eimunisasi-app.peltops.com/.well-known/assetlinks.json`
+`https://kasih-app.peltops.com/.well-known/assetlinks.json`
 
 **Jangan mengganti seluruh file dengan entry tunggal ini bila aplikasi e-Imunisasi masih perlu didukung.** Statement untuk package e-Imunisasi release/debug dapat tetap ada. Fingerprint yang sama tidak membuat package baru terdaftar otomatis; `com.peltops.e_patient.debug` tetap memerlukan statement sendiri.
 
@@ -66,16 +66,16 @@ Aplikasi → Supabase authorize → Keycloak/Seribase
          → callback server Supabase → HTTPS callback aplikasi → Android App Link
 ```
 
-1. Pada Auth URL Configuration Supabase, tambahkan redirect URL tepat `https://eimunisasi-app.peltops.com/` ke allowlist. Tambahkan domain alternatif hanya jika akan dipakai. Jangan mengganti Site URL global hanya untuk build Android jika aplikasi web lain masih memakainya.
+1. Pada Auth URL Configuration Supabase, tambahkan redirect URL tepat `https://kasih-app.peltops.com/` ke allowlist. Jangan mengganti Site URL global hanya untuk build Android jika aplikasi web lain masih memakainya.
 2. Keycloak client tetap mengizinkan callback **server Supabase** yang dipakai provider, umumnya URL Auth `/auth/v1/callback`. Jangan menggantinya menjadi URL App Link Android.
 3. App memanggil OAuth Keycloak dengan scopes openid, explicit redirectTo native, dan browser eksternal. Pada web, redirect/launch tetap mengikuti platform web.
-4. Override callback melalui `.env` lokal atau variable environment GitHub `AUTH_REDIRECT_URL`. Hanya HTTPS root dari dua host manifest yang didukung. Jangan memasukkan token, parameter next, fragment, atau kredensial ke konfigurasi callback.
+4. Override callback melalui `.env` lokal atau variable environment GitHub `AUTH_REDIRECT_URL`. Hanya HTTPS root `kasih-app.peltops.com` yang didukung. Jangan memasukkan token, parameter next, fragment, atau kredensial ke konfigurasi callback.
 5. Keberhasilan membuka browser bukan keberhasilan login. Navigasi aplikasi mengikuti session signedIn/Authenticated; failure launch tampil pada layar login.
 
 Untuk local `.env` yang sudah ada, default bekerja tanpa menambah field. Bila ingin eksplisit:
 
 ```dotenv
-AUTH_REDIRECT_URL=https://eimunisasi-app.peltops.com/
+AUTH_REDIRECT_URL=https://kasih-app.peltops.com/
 ```
 
 Jangan memasukkan authorization code atau token asli ke command, log, screenshot, atau issue saat troubleshooting.
@@ -94,10 +94,10 @@ Ulangi pemeriksaan dengan package `com.peltops.e_patient` untuk release. Saat ke
 Tunggu proses verifikasi OS selesai; domain yang dipakai harus berstatus verified. Tes link tanpa memaksa package agar benar-benar menguji resolusi Android:
 
 ```sh
-adb shell am start -W -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d https://eimunisasi-app.peltops.com/
+adb shell am start -W -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d https://kasih-app.peltops.com/
 ```
 
-Lanjutkan uji OAuth dari aplikasi pada cold start dan saat aplikasi masih di background. Jangan memakai URL berisi token untuk uji manual. Jika e-Imunisasi dan e-Patient sama-sama terinstall dan mengklaim domain/root yang sama, cek aplikasi yang benar-benar menerima link; gunakan domain e-Patient tersendiri bila dibutuhkan untuk menghindari benturan.
+Lanjutkan uji OAuth dari aplikasi pada cold start dan saat aplikasi masih di background. Jangan memakai URL berisi token untuk uji manual. Karena domain Kasih hanya diklaim e-Patient, tidak ada benturan App Link dengan e-Imunisasi pada host ini.
 
 Update dari APK yang sebelumnya memakai signing key lain dapat gagal. Jangan menguninstall atau menghapus data aplikasi pengguna otomatis; rencanakan transisi signing/data dengan tester bila terjadi mismatch.
 

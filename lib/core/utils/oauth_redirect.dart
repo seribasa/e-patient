@@ -1,13 +1,12 @@
 /// Keep native OAuth callbacks on a manifest-declared host and the root route.
 String oauthRedirectUrl(String? configuredUrl) {
   final value = configuredUrl?.trim();
-  final uri = Uri.tryParse(value == null || value.isEmpty
-      ? 'https://eimunisasi-app.peltops.com/'
-      : value);
+  final uri = Uri.tryParse(
+    value == null || value.isEmpty ? 'https://kasih-app.peltops.com/' : value,
+  );
   if (uri == null ||
       uri.scheme != 'https' ||
-      !const ['eimunisasi-app.peltops.com', 'e-patient-app.peltops.com']
-          .contains(uri.host) ||
+      uri.host != 'kasih-app.peltops.com' ||
       uri.hasPort ||
       uri.userInfo.isNotEmpty ||
       (uri.path.isNotEmpty && uri.path != '/') ||

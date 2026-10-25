@@ -10,7 +10,7 @@ const values = ci ? {
   STRIPE_PUBLISHABLE_KEY: '',
   PAYMENT_GATEWAY: 'midtrans',
   PAYMENT_CURRENCY: 'IDR',
-  AUTH_REDIRECT_URL: 'https://eimunisasi-app.peltops.com/',
+  AUTH_REDIRECT_URL: 'https://kasih-app.peltops.com/',
 } : Object.fromEntries([
   'SUPABASE_URL', 'SUPABASE_ANON_KEY', 'PAYMENT_URL',
   'STRIPE_PUBLISHABLE_KEY', 'PAYMENT_GATEWAY', 'PAYMENT_CURRENCY',
@@ -19,7 +19,7 @@ const values = ci ? {
 
 values.PAYMENT_GATEWAY ||= 'midtrans';
 values.PAYMENT_CURRENCY ||= 'IDR';
-values.AUTH_REDIRECT_URL ||= 'https://eimunisasi-app.peltops.com/';
+values.AUTH_REDIRECT_URL ||= 'https://kasih-app.peltops.com/';
 let redirect;
 try {
   redirect = new URL(values.AUTH_REDIRECT_URL);
@@ -27,7 +27,7 @@ try {
   throw new Error('AUTH_REDIRECT_URL must be a valid HTTPS App Link URL');
 }
 if (redirect.protocol !== 'https:' ||
-    !['eimunisasi-app.peltops.com', 'e-patient-app.peltops.com'].includes(redirect.host) ||
+    redirect.host !== 'kasih-app.peltops.com' ||
     redirect.pathname !== '/' || redirect.search || redirect.hash || redirect.username || redirect.password) {
   throw new Error('AUTH_REDIRECT_URL must be the HTTPS root of a configured Android App Link domain');
 }

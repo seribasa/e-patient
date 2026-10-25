@@ -42,7 +42,7 @@ STRIPE_PUBLISHABLE_KEY=
 PAYMENT_URL=https://your-payment-backend.example
 PAYMENT_GATEWAY=midtrans
 PAYMENT_CURRENCY=IDR
-AUTH_REDIRECT_URL=https://eimunisasi-app.peltops.com/
+AUTH_REDIRECT_URL=https://kasih-app.peltops.com/
 ```
 
 | Konfigurasi | Kebutuhan |
@@ -52,7 +52,7 @@ AUTH_REDIRECT_URL=https://eimunisasi-app.peltops.com/
 | `STRIPE_PUBLISHABLE_KEY` | Diperlukan bila gateway Stripe dipakai |
 | `PAYMENT_GATEWAY` | Default `midtrans`; workflow development mendukung `midtrans` atau `stripe` |
 | `PAYMENT_CURRENCY` | Default `IDR`; sesuaikan dengan backend/gateway |
-| `AUTH_REDIRECT_URL` | Callback native HTTPS root; default `https://eimunisasi-app.peltops.com/` |
+| `AUTH_REDIRECT_URL` | Callback native HTTPS root; default `https://kasih-app.peltops.com/` |
 
 `.env` dibaca sebagai **aset Flutter**, bukan otomatis dari environment terminal/VS Code. File ini telah didaftarkan di `pubspec.yaml` dan tidak dilacak Git. Perubahan `.env`/aset memerlukan penghentian dan peluncuran ulang aplikasi.
 

@@ -106,12 +106,14 @@ void main() {
 
       // Verify the result is true, assuming that the repository checks for a successful response
       expect(result, true);
-      verify(() => mockGoTrue.getOAuthSignInUrl(
-            provider: supabase.OAuthProvider.keycloak,
-            redirectTo: 'https://eimunisasi-app.peltops.com/',
-            scopes: 'openid',
-            queryParams: any(named: 'queryParams'),
-          )).called(1);
+      verify(
+        () => mockGoTrue.getOAuthSignInUrl(
+          provider: supabase.OAuthProvider.keycloak,
+          redirectTo: 'https://kasih-app.peltops.com/',
+          scopes: 'openid',
+          queryParams: any(named: 'queryParams'),
+        ),
+      ).called(1);
     });
 
     test(

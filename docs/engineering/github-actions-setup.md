@@ -47,7 +47,7 @@ Repository secrets bernama sama dapat digunakan jika environment tidak mengoverr
 
 Gateway `both` dan build type `both` menghasilkan empat job independen: Midtrans debug/release dan Stripe debug/release. Currency valid secara format belum berarti didukung akun/backend; gunakan konfigurasi sandbox yang telah disepakati. Key publishable Stripe tidak dimasukkan ke APK Midtrans. Tiap job hanya menerima signing secrets untuk build type yang dipilih.
 
-Pipeline baru tidak memerlukan `ENV_MIDTRANS_DEV`, `ENV_STRIPE_DEV`, `ENV_PAYPAL_DEV`, atau `CODECOV_TOKEN`. `GITHUB_TOKEN` disediakan otomatis oleh GitHub. Variable opsional `AUTH_REDIRECT_URL` memilih HTTPS root host App Link; default `https://eimunisasi-app.peltops.com/`. Gateway/currency tetap dipilih lewat input, bukan variable repo.
+Pipeline baru tidak memerlukan `ENV_MIDTRANS_DEV`, `ENV_STRIPE_DEV`, `ENV_PAYPAL_DEV`, atau `CODECOV_TOKEN`. `GITHUB_TOKEN` disediakan otomatis oleh GitHub. Variable opsional `AUTH_REDIRECT_URL` memilih HTTPS root host App Link; default `https://kasih-app.peltops.com/`. Gateway/currency tetap dipilih lewat input, bukan variable repo.
 
 Lihat [setup signing dan OAuth](android-oauth-signing-setup.md) untuk fingerprint key yang dipakai, statement assetlinks, allowlist Supabase, dan pengujian perangkat. Workflow mengupload `assetlinks-debug.json` / `assetlinks-release.json` sebagai artifact publik terpisah; file keystore dan password tidak ikut diupload.
 

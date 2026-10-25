@@ -24,13 +24,15 @@ class VaccinationConfirmationScreen extends StatelessWidget {
   final String appointmentId;
 
   const VaccinationConfirmationScreen({Key? key, required this.appointmentId})
-      : super(key: key);
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          getIt<AppointmentBloc>()..add(LoadAppointmentEvent(appointmentId)),
+      create:
+          (context) =>
+              getIt<AppointmentBloc>()
+                ..add(LoadAppointmentEvent(appointmentId)),
       child: _VaccinationConfirmationScaffold(appointmentId),
     );
   }
@@ -65,8 +67,8 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
               message: state.errorMessage,
               onRefresh: () {
                 context.read<AppointmentBloc>().add(
-                      LoadAppointmentEvent(appointmentId),
-                    );
+                  LoadAppointmentEvent(appointmentId),
+                );
               },
             );
           }
@@ -301,24 +303,27 @@ class _PaymentButtonsRow extends StatelessWidget {
                       builder: (context) {
                         return Dialog.fullscreen(
                           child: WebViewWidget(
-                            controller: WebViewController()
-                              ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                              ..setNavigationDelegate(
-                                NavigationDelegate(
-                                  onNavigationRequest: (request) {
-                                    if (request.url.startsWith(
-                                      'https://e-patient-app.peltops.com/payment/midtrans',
-                                    )) {
-                                      context.pop();
+                            controller:
+                                WebViewController()
+                                  ..setJavaScriptMode(
+                                    JavaScriptMode.unrestricted,
+                                  )
+                                  ..setNavigationDelegate(
+                                    NavigationDelegate(
+                                      onNavigationRequest: (request) {
+                                        if (request.url.startsWith(
+                                          'https://kasih-app.peltops.com/payment/midtrans',
+                                        )) {
+                                          context.pop();
 
-                                      return NavigationDecision.prevent;
-                                    }
-                                    return NavigationDecision.navigate;
-                                  },
-                                ),
-                              )
-                              ..setBackgroundColor(Colors.transparent)
-                              ..loadRequest(paymentUri),
+                                          return NavigationDecision.prevent;
+                                        }
+                                        return NavigationDecision.navigate;
+                                      },
+                                    ),
+                                  )
+                                  ..setBackgroundColor(Colors.transparent)
+                                  ..loadRequest(paymentUri),
                           ),
                         );
                       },
@@ -340,8 +345,8 @@ class _PaymentButtonsRow extends StatelessWidget {
                   await stripe.Stripe.instance.presentPaymentSheet();
                 }
                 context.read<AppointmentBloc>().add(
-                      LoadAppointmentEvent(appointmentId),
-                    );
+                  LoadAppointmentEvent(appointmentId),
+                );
               } catch (e) {
                 log('Error launching payment: $e');
                 snackbarCustom(
@@ -358,8 +363,8 @@ class _PaymentButtonsRow extends StatelessWidget {
             child: Text('Check Status', style: TextStyle(color: Colors.white)),
             onPressed: () {
               context.read<AppointmentBloc>().add(
-                    LoadAppointmentEvent(appointmentId),
-                  );
+                LoadAppointmentEvent(appointmentId),
+              );
             },
           ),
         ),

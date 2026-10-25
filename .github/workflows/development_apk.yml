@@ -84,7 +84,7 @@ jobs:
           STRIPE_PUBLISHABLE_KEY: ${{ matrix.gateway == 'stripe' && secrets.STRIPE_PUBLISHABLE_KEY || '' }}
           PAYMENT_GATEWAY: ${{ matrix.gateway }}
           PAYMENT_CURRENCY: ${{ matrix.gateway == 'midtrans' && inputs.midtrans_currency || inputs.stripe_currency }}
-          AUTH_REDIRECT_URL: ${{ vars.AUTH_REDIRECT_URL || 'https://eimunisasi-app.peltops.com/' }}
+          AUTH_REDIRECT_URL: ${{ vars.AUTH_REDIRECT_URL || 'https://kasih-app.peltops.com/' }}
       - name: Configure stable signing for selected build type
         run: node .github/scripts/configure-signing.mjs
         env:
