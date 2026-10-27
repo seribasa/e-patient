@@ -36,7 +36,7 @@ List<SliderModel> getSlides() {
 
   //1
   sliderModel.setDesc(
-    "Selamat datang di e-Patient, pendamping untuk mengatur perjalanan kesehatan Anda dan keluarga.",
+    "Selamat datang di Kasih, pendamping untuk mengatur perjalanan kesehatan Anda dan keluarga.",
   );
   sliderModel.setTitle("Selamat Datang");
   sliderModel.setImageAssetPath("assets/images/e_patient_logo.png");

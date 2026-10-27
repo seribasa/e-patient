@@ -1,6 +1,6 @@
 # Workflow iOS — APP dan IPA
 
-Workflow: `.github/workflows/development_ios.yml`, nama **e-Patient Development iOS**. Manual saja, environment GitHub `development`, minimum iOS 15. Flutter mengikuti `.fvmrc`; runner `macos-15` memakai Xcode 16.4 yang dipilih eksplisit agar build tidak bergantung pada default image/Xcode 27. Ini workflow build development, bukan deployment.
+Workflow: `.github/workflows/development_ios.yml`, nama **Kasih Development iOS**. Manual saja, environment GitHub `development`, minimum iOS 15. Flutter mengikuti `.fvmrc`; runner `macos-15` memakai Xcode 16.4 yang dipilih eksplisit agar build tidak bergantung pada default image/Xcode 27. Ini workflow build development, bukan deployment.
 
 ## Output dan input
 
@@ -42,7 +42,7 @@ Jangan commit `.p12`, private key, profile, password, atau base64 credential. Bu
 
 1. Commit/push workflow **bersama source Flutter dan perubahan iOS/dependency yang dibutuhkan** ke branch kerja. Jangan menjalankan dari branch docs-only.
 2. `workflow_dispatch` baru harus terdaftar pada default branch agar muncul di menu Actions. Jika default branch masih docs-only, registrasi workflow perlu dilakukan secara terpisah dan terotorisasi; menambah file lokal ini belum mendaftarkan workflow remote.
-3. Buka Actions → **e-Patient Development iOS** → Run workflow, pilih branch source, output, gateway, currency, dan metode export.
+3. Buka Actions → **Kasih Development iOS** → Run workflow, pilih branch source, output, gateway, currency, dan metode export.
 4. Unduh artifact setelah job berhasil. Bila `both` dipilih, APP diunggah sebelum signing sehingga tetap tersedia jika jalur IPA gagal.
 
 Hanya jalankan branch/source yang dipercaya: workflow manual yang diberi environment secrets tetap menjalankan kode branch terpilih. Gunakan required reviewers/branch restrictions pada environment jika diperlukan. Tidak memakai `pull_request_target`.

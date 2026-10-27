@@ -1,4 +1,4 @@
-name: e-Patient Development APK
+name: Kasih Development APK
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: e-Patient Development iOS
+name: Kasih Development iOS
 
 on:
   workflow_dispatch:

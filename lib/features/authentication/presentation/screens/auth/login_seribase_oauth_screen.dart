@@ -19,12 +19,13 @@ class LoginSeribaseOauthScreen extends StatelessWidget {
       child: MultiBlocListener(
         listeners: [
           BlocListener<LoginCubit, LoginState>(
-            listenWhen: (previous, current) =>
-                previous.status != current.status,
+            listenWhen:
+                (previous, current) => previous.status != current.status,
             listener: (context, state) {
               if (state.status.isFailure) {
-                snackbarCustom(state.errorMessage ?? 'Gagal membuka login.')
-                    .show(context);
+                snackbarCustom(
+                  state.errorMessage ?? 'Gagal membuka login.',
+                ).show(context);
               }
             },
           ),
@@ -63,7 +64,7 @@ class _LoginSeribaseOauthScaffold extends StatelessWidget {
                 Image.asset(
                   'assets/images/e_patient_logo.png',
                   width: 100,
-                  semanticLabel: 'Logo e-Patient',
+                  semanticLabel: 'Logo Kasih',
                 ),
                 const SizedBox(height: 30.0),
                 const Text(
@@ -94,16 +95,18 @@ class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) => ButtonCustom(
-        loading: state.status.isInProgress,
-        onPressed: state.status.isInProgress
-            ? null
-            : () => context.read<LoginCubit>().logInWithSeribaseOauth(),
-        child: const Text(
-          'Masuk dengan Seribase',
-          style: TextStyle(fontSize: 15.0, color: Colors.white),
-        ),
-      ),
+      builder:
+          (context, state) => ButtonCustom(
+            loading: state.status.isInProgress,
+            onPressed:
+                state.status.isInProgress
+                    ? null
+                    : () => context.read<LoginCubit>().logInWithSeribaseOauth(),
+            child: const Text(
+              'Masuk dengan Seribase',
+              style: TextStyle(fontSize: 15.0, color: Colors.white),
+            ),
+          ),
     );
   }
 }

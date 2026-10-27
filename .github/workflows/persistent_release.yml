@@ -1,4 +1,4 @@
-name: e-Patient Persistent Release
+name: Kasih Persistent Release
 
 on:
   workflow_dispatch:
@@ -104,7 +104,7 @@ jobs:
         run: |
           flags=(--draft)
           if [[ "$PRERELEASE" == true ]]; then flags+=(--prerelease); fi
-          gh release create "$RELEASE_TAG" --target "$SOURCE_SHA" --title "e-Patient $RELEASE_TAG" --notes-file release-assets/RELEASE-NOTES.md "${flags[@]}"
+          gh release create "$RELEASE_TAG" --target "$SOURCE_SHA" --title "Kasih $RELEASE_TAG" --notes-file release-assets/RELEASE-NOTES.md "${flags[@]}"
           shopt -s nullglob
           assets=(release-assets/*.apk release-assets/*.ipa release-assets/SHA256SUMS)
           gh release upload "$RELEASE_TAG" "${assets[@]}"

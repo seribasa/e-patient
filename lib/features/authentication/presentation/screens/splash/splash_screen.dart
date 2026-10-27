@@ -30,10 +30,13 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/e_patient_logo.png',
-                width: 120, semanticLabel: 'Logo e-Patient'),
+            Image.asset(
+              'assets/images/e_patient_logo.png',
+              width: 120,
+              semanticLabel: 'Logo Kasih',
+            ),
             const SizedBox(height: 20),
-            const Text('e-Patient'),
+            const Text('Kasih'),
             const SizedBox(height: 20),
             const CircularProgressIndicator(),
           ],

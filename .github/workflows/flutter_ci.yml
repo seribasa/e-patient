@@ -1,4 +1,4 @@
-name: e-Patient CI
+name: Kasih CI
 
 on:
   push:

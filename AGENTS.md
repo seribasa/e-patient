@@ -1,10 +1,10 @@
-# Panduan kerja agent — e-Patient
+# Panduan kerja agent — Kasih
 
 Panduan ini berlaku untuk seluruh repository. Ikuti instruksi pengguna dan panduan yang lebih spesifik pada subdirektori bila tersedia. Jangan menganggap dokumen produk sebagai izin melakukan deploy, mengubah data produksi, atau memublikasikan aplikasi.
 
 ## Konteks dan sumber requirement
 
-e-Patient sedang dimigrasikan dari baseline Flutter e-Imunisasi menjadi aplikasi pasien segala usia. Rename dan branding sudah dilakukan; banyak alur parent/child, vaksin, dan buku sehat masih merupakan implementasi baseline. Jangan mengklaim fitur target sudah tersedia tanpa inspeksi source dan verifikasi.
+Kasih sedang dimigrasikan dari baseline Flutter e-Imunisasi menjadi aplikasi pasien segala usia. Rename dan branding sudah dilakukan; banyak alur parent/child, vaksin, dan buku sehat masih merupakan implementasi baseline. Jangan mengklaim fitur target sudah tersedia tanpa inspeksi source dan verifikasi.
 
 Baca dokumen sesuai scope pekerjaan:
 
@@ -57,7 +57,7 @@ Jangan menimpa `.env` pengguna. Script `.github/scripts/write-app-env.mjs` menul
 
 ## UI dan identitas produk
 
-- Nama produk user-facing: **e-Patient**; nama package Dart: `e_patient`.
+- Nama produk user-facing: **Kasih**; nama package Dart tetap `e_patient` untuk kompatibilitas.
 - Theme utama: Material 3, hitam-putih/grayscale, **border radius 0** untuk komponen UI. Status tidak boleh disampaikan hanya melalui warna.
 - Dukung font scaling, label screen reader, feedback loading/error, dan konteks pasien yang jelas pada alur sensitif.
 - Gunakan `assets/images/e_patient_logo.png` dan `assets/images/e_patient_care.png` sesuai pemakaiannya. Jangan mengembalikan bayi/imunisasi sebagai representasi default semua pasien.

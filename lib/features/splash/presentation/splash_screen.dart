@@ -13,8 +13,11 @@ class SplashScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/images/e_patient_logo.png',
-                  width: 80, semanticLabel: 'Logo e-Patient')
+              Image.asset(
+                'assets/images/e_patient_logo.png',
+                width: 80,
+                semanticLabel: 'Logo Kasih',
+              ),
             ],
           ),
         ),

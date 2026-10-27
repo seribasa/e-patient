@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "e-Patient (Debug)",
+      "name": "Kasih (Debug)",
       "request": "launch",
       "type": "dart",
       "cwd": "${workspaceFolder}",
@@ -10,7 +10,7 @@
       "flutterMode": "debug"
     },
     {
-      "name": "e-Patient (Profile)",
+      "name": "Kasih (Profile)",
       "request": "launch",
       "type": "dart",
       "cwd": "${workspaceFolder}",
@@ -18,7 +18,7 @@
       "flutterMode": "profile"
     },
     {
-      "name": "e-Patient (Release)",
+      "name": "Kasih (Release)",
       "request": "launch",
       "type": "dart",
       "cwd": "${workspaceFolder}",

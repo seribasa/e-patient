@@ -1,6 +1,6 @@
-# e-Patient
+# Kasih
 
-e-Patient adalah aplikasi Flutter untuk pengelolaan perjalanan kesehatan pasien dan keluarga lintas usia. Repository ini berkembang dari baseline e-Imunisasi, dengan migrasi fitur secara bertahap berdasarkan kebutuhan bisnis dan produk.
+Kasih adalah aplikasi Flutter untuk pengelolaan perjalanan kesehatan pasien dan keluarga lintas usia. Repository ini berkembang dari baseline e-Imunisasi, dengan migrasi fitur secara bertahap berdasarkan kebutuhan bisnis dan produk.
 
 **Status:** dalam pengembangan. Branding, setup Flutter/FVM, konfigurasi VS Code, dan build Android telah disesuaikan. Source masih memiliki alur orang tua/anak, booking vaksin, dan buku sehat dari baseline. Household berizin, booking lintas layanan, serta timeline longitudinal adalah target migrasi; belum semuanya tersedia.
 
@@ -10,7 +10,7 @@ e-Patient adalah aplikasi Flutter untuk pengelolaan perjalanan kesehatan pasien 
 |---|---|
 | [Business requirements](docs/plans/2026-09-30-e-patient-business-requirements.md) | Tujuan bisnis, model akun/pasien/keluarga, scope MVP/P1 |
 | [Product requirements](docs/product/2026-10-02-e-patient-prd.md) | Journey, requirement, state, acceptance criteria |
-| [Detail pemetaan e-Imunisasi → e-Patient](docs/product/2026-10-11-e-imunisasi-to-e-patient-capability-mapping.md) | Elaborasi 15 kapabilitas dan urutan adaptasi |
+| [Detail pemetaan e-Imunisasi → Kasih](docs/product/2026-10-11-e-imunisasi-to-e-patient-capability-mapping.md) | Elaborasi 15 kapabilitas dan urutan adaptasi |
 | [Build timeline](docs/plans/2026-10-04-e-patient-build-timeline.md) | Rencana delivery dan dependensi |
 | [Migration tracker](docs/engineering/2026-10-09-e-imunisasi-to-e-patient-migration.md) | Catatan awal copy baseline; metadata historis perlu dicek terhadap Git sebelum digunakan |
 | [GitHub Actions setup](docs/engineering/github-actions-setup.md) | Workflow, secrets, artifact, dan troubleshooting CI |
@@ -74,13 +74,13 @@ Code generation menyiapkan dependency injection, adapter, dan mocks dari source/
 1. Buka root repository, bukan hanya folder `lib` atau `android`.
 2. Setelah `fvm install`, pastikan `.fvm/flutter_sdk` tersedia; [settings.json](.vscode/settings.json) mengarah ke SDK tersebut.
 3. Pilih perangkat lewat status bar atau **Flutter: Select Device**.
-4. Pilih **e-Patient (Debug)** pada Run & Debug, kemudian tekan **F5**.
+4. Pilih **Kasih (Debug)** pada Run & Debug, kemudian tekan **F5**.
 
 [launch.json](.vscode/launch.json) menyediakan Debug, Profile, dan Release dengan entrypoint `lib/main.dart`. Profile/release bukan alternatif signing produksi; konfigurasi release Android memerlukan keystore tersendiri.
 
 ## Verifikasi dan build
 
-Untuk menyimpan APK/IPA tanpa retensi artifact Actions, gunakan workflow manual **e-Patient Persistent Release**. Workflow mengambil binary dari build sukses dan menerbitkannya ke GitHub Release beserta checksum. [Panduan persistent releases](docs/engineering/persistent-releases.md).
+Untuk menyimpan APK/IPA tanpa retensi artifact Actions, gunakan workflow manual **Kasih Persistent Release**. Workflow mengambil binary dari build sukses dan menerbitkannya ke GitHub Release beserta checksum. [Panduan persistent releases](docs/engineering/persistent-releases.md).
 
 ```sh
 fvm flutter analyze
@@ -142,9 +142,9 @@ Baseline menggunakan BLoC/Cubit, GetIt/Injectable, Supabase, Hive, SharedPrefere
 
 ## GitHub Actions dan APK
 
-- **e-Patient CI:** berjalan pada push seluruh branch, pull request, atau manual. Menjalankan code generation, analysis, test, dan build debug dengan konfigurasi placeholder. Tidak membutuhkan secret. Artifact CI tidak ditujukan untuk login/payment nyata.
-- **e-Patient Development iOS:** manual melalui `.github/workflows/development_ios.yml`. Pilih `app` (simulator debug dalam ZIP, tanpa Apple signing), `ipa` (release device dengan signing), atau `both`, serta gateway/currency. Memakai environment `development`; lihat [konfigurasi iOS](docs/engineering/github-actions-setup.md#workflow-ios-app-dan-ipa) untuk secrets dan variable Apple. Artifact disimpan 7 hari; tidak upload ke TestFlight/App Store.
-- **e-Patient Development APK:** manual, memakai environment GitHub `development`. Isi `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `PAYMENT_URL` (atau endpoint override per gateway), serta `STRIPE_PUBLISHABLE_KEY` jika Stripe. Saat Run workflow, pilih gateway dan build type (`debug`, `release`, atau `both`, default `both`), lalu currency per gateway. Kedua pilihan `both` menghasilkan empat APK; tidak perlu mengubah variable repo. Artifact/APK diberi nama gateway dan build type.
+- **Kasih CI:** berjalan pada push seluruh branch, pull request, atau manual. Menjalankan code generation, analysis, test, dan build debug dengan konfigurasi placeholder. Tidak membutuhkan secret. Artifact CI tidak ditujukan untuk login/payment nyata.
+- **Kasih Development iOS:** manual melalui `.github/workflows/development_ios.yml`. Pilih `app` (simulator debug dalam ZIP, tanpa Apple signing), `ipa` (release device dengan signing), atau `both`, serta gateway/currency. Memakai environment `development`; lihat [konfigurasi iOS](docs/engineering/github-actions-setup.md#workflow-ios-app-dan-ipa) untuk secrets dan variable Apple. Artifact disimpan 7 hari; tidak upload ke TestFlight/App Store.
+- **Kasih Development APK:** manual, memakai environment GitHub `development`. Isi `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `PAYMENT_URL` (atau endpoint override per gateway), serta `STRIPE_PUBLISHABLE_KEY` jika Stripe. Saat Run workflow, pilih gateway dan build type (`debug`, `release`, atau `both`, default `both`), lalu currency per gateway. Kedua pilihan `both` menghasilkan empat APK; tidak perlu mengubah variable repo. Artifact/APK diberi nama gateway dan build type.
 - Unduh APK dari artifact run yang berhasil, bukan tautan release e-Imunisasi lama. Workflow release/Play Store lama diarsipkan; deployment produksi belum aktif.
 
 Debug memerlukan `DEBUG_KEYSTORE_BASE64`, `DEBUG_KEY_ALIAS`, `DEBUG_KEY_PASSWORD`, dan `DEBUG_KEYSTORE_PASSWORD`. Release memerlukan empat secret dengan prefix `RELEASE_` yang sama. Key kedua build type terpisah; CI placeholder tetap tidak memerlukan secret.

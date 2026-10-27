@@ -97,7 +97,7 @@ Tunggu proses verifikasi OS selesai; domain yang dipakai harus berstatus verifie
 adb shell am start -W -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d https://kasih-app.peltops.com/
 ```
 
-Lanjutkan uji OAuth dari aplikasi pada cold start dan saat aplikasi masih di background. Jangan memakai URL berisi token untuk uji manual. Karena domain Kasih hanya diklaim e-Patient, tidak ada benturan App Link dengan e-Imunisasi pada host ini.
+Lanjutkan uji OAuth dari aplikasi pada cold start dan saat aplikasi masih di background. Jangan memakai URL berisi token untuk uji manual. Karena domain Kasih hanya diklaim Kasih, tidak ada benturan App Link dengan e-Imunisasi pada host ini.
 
 Update dari APK yang sebelumnya memakai signing key lain dapat gagal. Jangan menguninstall atau menghapus data aplikasi pengguna otomatis; rencanakan transisi signing/data dengan tester bila terjadi mismatch.
 

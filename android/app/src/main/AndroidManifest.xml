@@ -20,7 +20,7 @@
 
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true"
-        android:label="e-Patient">
+        android:label="Kasih">
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

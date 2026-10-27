@@ -1,11 +1,11 @@
 {
-    "name": "e-Patient",
-    "short_name": "e-Patient",
+    "name": "Kasih",
+    "short_name": "Kasih",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FFFFFF",
     "theme_color": "#000000",
-    "description": "Aplikasi e-Patient untuk manajemen kesehatan pasien dan keluarga.",
+    "description": "Aplikasi Kasih untuk manajemen kesehatan pasien dan keluarga.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

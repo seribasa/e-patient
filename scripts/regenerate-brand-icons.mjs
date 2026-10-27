@@ -1,4 +1,4 @@
-// Resize the generated e-Patient master into the existing platform icon slots.
+// Resize the generated Kasih master into the existing platform icon slots.
 // Run on macOS: node scripts/regenerate-brand-icons.mjs
 import { readFileSync, copyFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -7,7 +7,7 @@ import { dirname, resolve } from 'node:path';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const master = resolve(root, 'assets/images/e_patient_logo.png');
-if (!existsSync(master)) throw new Error('e-Patient logo master is missing');
+if (!existsSync(master)) throw new Error('Kasih logo master is missing');
 
 function resize(relativePath, size) {
   const target = resolve(root, relativePath);

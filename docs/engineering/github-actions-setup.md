@@ -1,17 +1,17 @@
-# GitHub Actions — e-Patient
+# GitHub Actions — Kasih
 
 ## Pipeline
 
-- **e-Patient Persistent Release:** manual, mengambil APK/IPA dari run Development yang sukses dan menerbitkan GitHub Release (default prerelease), tanpa rebuild atau deployment store. [Panduan input, retensi, dan akses](persistent-releases.md).
+- **Kasih Persistent Release:** manual, mengambil APK/IPA dari run Development yang sukses dan menerbitkan GitHub Release (default prerelease), tanpa rebuild atau deployment store. [Panduan input, retensi, dan akses](persistent-releases.md).
 
-- **e-Patient CI:** push seluruh branch, pull request, atau manual. Memakai konfigurasi dummy; code generation → analysis → seluruh test → APK debug. Tidak membutuhkan secret. APK CI hanya untuk verifikasi build, bukan uji login/payment dengan backend nyata.
-- **e-Patient Development APK:** manual, dengan GitHub Environment `development`. Pilih gateway `midtrans`, `stripe`, atau `both`, dan build type `debug`, `release`, atau `both`. Default build type adalah `both`. Quality gates memakai dummy; konfigurasi development ditulis sebelum build. Setiap kombinasi menghasilkan APK/artifact terpisah. Build release tetap memakai backend development; tidak mengaktifkan payment production atau deployment store.
+- **Kasih CI:** push seluruh branch, pull request, atau manual. Memakai konfigurasi dummy; code generation → analysis → seluruh test → APK debug. Tidak membutuhkan secret. APK CI hanya untuk verifikasi build, bukan uji login/payment dengan backend nyata.
+- **Kasih Development APK:** manual, dengan GitHub Environment `development`. Pilih gateway `midtrans`, `stripe`, atau `both`, dan build type `debug`, `release`, atau `both`. Default build type adalah `both`. Quality gates memakai dummy; konfigurasi development ditulis sebelum build. Setiap kombinasi menghasilkan APK/artifact terpisah. Build release tetap memakai backend development; tidak mengaktifkan payment production atau deployment store.
 - Flutter mengikuti `.fvmrc` (3.29.3 saat setup) dan Java 17. CI memakai signing debug bawaan; Development APK memakai keystore development tetap. Coverage disimpan sebagai artifact. Tidak publish release atau deploy ke Play Store.
 - Workflow release e-Imunisasi lama serta konfigurasi Dependabot yang belum lengkap diarsipkan dalam `.github/legacy-workflows/` dan tidak aktif.
 
 ## Workflow iOS APP dan IPA
 
-**e-Patient Development iOS** adalah workflow manual untuk `.app` simulator tanpa signing atau `.ipa` device dengan Apple signing. Mendukung gateway Midtrans/Stripe/both, quality gates sebelum build, artifact 7 hari, dan tidak upload ke TestFlight/App Store. [Panduan lengkap, secrets Apple, dan batas verifikasi](ios-actions-setup.md).
+**Kasih Development iOS** adalah workflow manual untuk `.app` simulator tanpa signing atau `.ipa` device dengan Apple signing. Mendukung gateway Midtrans/Stripe/both, quality gates sebelum build, artifact 7 hari, dan tidak upload ke TestFlight/App Store. [Panduan lengkap, secrets Apple, dan batas verifikasi](ios-actions-setup.md).
 
 ## Secrets dan variables
 
@@ -57,7 +57,7 @@ File `.env` masuk ke APK sebagai aset Flutter. GitHub Secrets menghindari penyim
 
 1. Push/merge workflow; file workflow manual harus tersedia di default branch agar dapat ditemukan melalui Actions.
 2. Buat environment `development` dan isi konfigurasi di atas.
-3. Actions → **e-Patient Development APK** → **Run workflow** → pilih branch, gateway, build type, serta currency per gateway.
+3. Actions → **Kasih Development APK** → **Run workflow** → pilih branch, gateway, build type, serta currency per gateway.
 4. Unduh artifact `e-patient-<gateway>-<build type>-<run id>`. File di dalamnya bernama `app-<gateway>-<build type>.apk`, misalnya `app-midtrans-release.apk`.
 5. Debug application ID memakai suffix `.debug` dari Gradle. Callback OAuth/App Link perlu cocok dengan package, certificate signing, domain, serta allowlist Supabase; build sukses belum membuktikan login berfungsi.
 

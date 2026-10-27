@@ -339,7 +339,7 @@ class _PaymentButtonsRow extends StatelessWidget {
                       paymentIntentClientSecret: payment?.token,
                       customFlow: false,
                       style: ThemeMode.light,
-                      merchantDisplayName: 'e-Patient',
+                      merchantDisplayName: 'Kasih',
                     ),
                   );
                   await stripe.Stripe.instance.presentPaymentSheet();

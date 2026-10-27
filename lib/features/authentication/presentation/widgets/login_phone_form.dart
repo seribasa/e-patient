@@ -39,8 +39,11 @@ class LoginPhoneForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset('assets/images/e_patient_logo.png',
-                  width: 80, semanticLabel: 'Logo e-Patient'),
+              Image.asset(
+                'assets/images/e_patient_logo.png',
+                width: 80,
+                semanticLabel: 'Logo Kasih',
+              ),
               SizedBox(height: 30.0),
               Text(
                 AppConstant.PLEASE_LOGIN,
@@ -104,12 +107,14 @@ class _PhoneInput extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 CountryCodePicker(
-                  onInit: (countryCode) => context
-                      .read<LoginPhoneCubit>()
-                      .countryCodeChanged(countryCode?.dialCode ?? '+62'),
-                  onChanged: (countryCode) => context
-                      .read<LoginPhoneCubit>()
-                      .countryCodeChanged(countryCode.dialCode.orEmpty),
+                  onInit:
+                      (countryCode) => context
+                          .read<LoginPhoneCubit>()
+                          .countryCodeChanged(countryCode?.dialCode ?? '+62'),
+                  onChanged:
+                      (countryCode) => context
+                          .read<LoginPhoneCubit>()
+                          .countryCodeChanged(countryCode.dialCode.orEmpty),
                   initialSelection: 'ID',
                   showCountryOnly: false,
                   showOnlyCountryWhenClosed: false,
@@ -120,8 +125,9 @@ class _PhoneInput extends StatelessWidget {
                     label: AppConstant.PHONE_NUMBER_LABEL,
                     keyboardType: TextInputType.phone,
                     hintText: 'Contoh: 876543210',
-                    onChanged: (phone) =>
-                        context.read<LoginPhoneCubit>().phoneChanged(phone),
+                    onChanged:
+                        (phone) =>
+                            context.read<LoginPhoneCubit>().phoneChanged(phone),
                   ),
                 ),
               ],
@@ -154,11 +160,12 @@ class _LoginButton extends StatelessWidget {
             style: TextStyle(fontSize: 15.0, color: Colors.white),
           ),
           loading: state.status.isInProgress,
-          onPressed: state.phone.isValid && state.countryCode.isValid
-              ? () {
-                  dismissKeyboard(context);
-                }
-              : null,
+          onPressed:
+              state.phone.isValid && state.countryCode.isValid
+                  ? () {
+                    dismissKeyboard(context);
+                  }
+                  : null,
         );
       },
     );
@@ -175,9 +182,10 @@ class _LoginWithEmailButton extends StatelessWidget {
             AppConstant.LOGIN_WITH_EMAIL,
             style: TextStyle(fontSize: 15.0, color: Colors.white),
           ),
-          onPressed: state.status.isInProgress
-              ? null
-              : () => context.push(AuthRoutePaths.login.fullPath),
+          onPressed:
+              state.status.isInProgress
+                  ? null
+                  : () => context.push(AuthRoutePaths.login.fullPath),
         );
       },
     );
