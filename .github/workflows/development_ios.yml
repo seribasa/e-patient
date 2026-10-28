@@ -1,0 +1,136 @@
+name: Kasih Development iOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      artifact_type:
+        description: Simulator APP, signed device IPA, or both
+        type: choice
+        default: app
+        options: [app, ipa, both]
+      payment_gateway:
+        description: Payment gateway
+        type: choice
+        default: midtrans
+        options: [midtrans, stripe, both]
+      midtrans_currency:
+        description: Midtrans currency supported by backend
+        type: string
+        default: IDR
+      stripe_currency:
+        description: Stripe currency supported by backend
+        type: string
+        default: IDR
+      export_method:
+        description: IPA profile type (must match supplied profile)
+        type: choice
+        default: debugging
+        options: [debugging, release-testing, app-store-connect]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: development-ios-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ios:
+    name: iOS (${{ matrix.gateway }}, ${{ inputs.artifact_type }})
+    runs-on: macos-15
+    environment: development
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        gateway: ${{ fromJSON(inputs.payment_gateway == 'both' && '["midtrans","stripe"]' || format('["{0}"]', inputs.payment_gateway)) }}
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: .fvmrc
+          cache: true
+      - name: Check toolchain and test build helpers
+        run: |
+          xcodebuild -version
+          pod --version
+          node --test .github/scripts/*.test.mjs
+      - name: Prepare placeholder configuration
+        run: node .github/scripts/write-app-env.mjs --ci
+      - name: Resolve dependencies and generate code
+        run: |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
+      - name: Analyze
+        run: flutter analyze
+      - name: Test
+        run: flutter test --coverage --reporter expanded
+      - name: Create development configuration
+        run: node .github/scripts/write-app-env.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          PAYMENT_URL: ${{ matrix.gateway == 'midtrans' && secrets.PAYMENT_URL_MIDTRANS || matrix.gateway == 'stripe' && secrets.PAYMENT_URL_STRIPE || secrets.PAYMENT_URL }}
+          STRIPE_PUBLISHABLE_KEY: ${{ matrix.gateway == 'stripe' && secrets.STRIPE_PUBLISHABLE_KEY || '' }}
+          PAYMENT_GATEWAY: ${{ matrix.gateway }}
+          PAYMENT_CURRENCY: ${{ matrix.gateway == 'midtrans' && inputs.midtrans_currency || inputs.stripe_currency }}
+          AUTH_REDIRECT_URL: ${{ vars.AUTH_REDIRECT_URL || 'https://kasih-app.peltops.com/' }}
+      - name: Build and package simulator APP
+        if: inputs.artifact_type != 'ipa'
+        run: |
+          flutter build ios --simulator --debug
+          mkdir -p build/ios/artifacts
+          ditto -c -k --sequesterRsrc --keepParent build/ios/iphonesimulator/Runner.app "build/ios/artifacts/e-patient-${GATEWAY}-simulator.app.zip"
+        env:
+          GATEWAY: ${{ matrix.gateway }}
+      - name: Upload simulator APP
+        if: inputs.artifact_type != 'ipa'
+        uses: actions/upload-artifact@v4
+        with:
+          name: e-patient-${{ matrix.gateway }}-simulator-app-${{ github.run_id }}
+          path: build/ios/artifacts/*.app.zip
+          if-no-files-found: error
+          retention-days: 7
+      - name: Install Apple signing material
+        if: inputs.artifact_type != 'app'
+        env:
+          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_PROVISION_PROFILE_BASE64: ${{ secrets.IOS_PROVISION_PROFILE_BASE64 }}
+          IOS_TEAM_ID: ${{ vars.IOS_TEAM_ID }}
+          IOS_BUNDLE_ID: ${{ vars.IOS_BUNDLE_ID }}
+          IOS_EXPORT_METHOD: ${{ inputs.export_method }}
+        run: node .github/scripts/ios-signing.mjs install
+      - name: Archive and export signed IPA
+        if: inputs.artifact_type != 'app'
+        run: |
+          flutter build ios --release --config-only
+          ruby .github/scripts/configure-ios-project.rb
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/e-patient.xcarchive" \
+            archive
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/e-patient.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/e-patient-ios-signing/ExportOptions.plist" \
+            -exportPath build/ios/ipa
+      - name: Upload signed IPA
+        if: inputs.artifact_type != 'app'
+        uses: actions/upload-artifact@v4
+        with:
+          name: e-patient-${{ matrix.gateway }}-signed-ipa-${{ github.run_id }}
+          path: build/ios/ipa/*.ipa
+          if-no-files-found: error
+          retention-days: 7
+      - name: Remove Apple signing material
+        if: always() && inputs.artifact_type != 'app'
+        run: node .github/scripts/ios-signing.mjs cleanup
+      - name: Remove bundled configuration
+        if: always()
+        run: rm -f .env
