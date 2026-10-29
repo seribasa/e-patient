@@ -19,31 +19,31 @@ Untuk workflow iOS lihat [bagian APP/IPA](#workflow-ios-app-dan-ipa). Konfiguras
 
 Repository GitHub → **Settings → Environments → New environment → development**. Tambahkan secrets:
 
-| Secret | Wajib | Isi |
-|---|---|---|
-| `SUPABASE_URL` | Ya | URL project Supabase development |
-| `SUPABASE_ANON_KEY` | Ya | Anon/publishable client key project yang sama; bukan service-role key |
-| `PAYMENT_URL` | Ya bila override gateway tidak tersedia | Endpoint backend payment development bersama, sebagai fallback |
-| `PAYMENT_URL_MIDTRANS` | Opsional | Endpoint khusus Midtrans; mengoverride PAYMENT_URL pada build Midtrans |
-| `PAYMENT_URL_STRIPE` | Opsional | Endpoint khusus Stripe; mengoverride PAYMENT_URL pada build Stripe |
-| `STRIPE_PUBLISHABLE_KEY` | Jika Stripe | Publishable key sandbox; boleh kosong untuk Midtrans |
-| `DEBUG_KEYSTORE_BASE64` | Jika build type debug/both | File keystore debug dalam base64 |
-| `DEBUG_KEY_ALIAS` | Jika build type debug/both | Alias private key debug |
-| `DEBUG_KEY_PASSWORD` | Jika build type debug/both | Password private key debug |
-| `DEBUG_KEYSTORE_PASSWORD` | Jika build type debug/both | Password keystore debug |
-| `RELEASE_KEYSTORE_BASE64` | Jika build type release/both | Keystore release dalam base64, terpisah dari debug |
-| `RELEASE_KEY_ALIAS` | Jika build type release/both | Alias private key release |
-| `RELEASE_KEY_PASSWORD` | Jika build type release/both | Password private key release |
-| `RELEASE_KEYSTORE_PASSWORD` | Jika build type release/both | Password keystore release |
+| Secret                      | Wajib                                   | Isi                                                                    |
+| --------------------------- | --------------------------------------- | ---------------------------------------------------------------------- |
+| `SUPABASE_URL`              | Ya                                      | URL project Supabase development                                       |
+| `SUPABASE_ANON_KEY`         | Ya                                      | Anon/publishable client key project yang sama; bukan service-role key  |
+| `PAYMENT_URL`               | Ya bila override gateway tidak tersedia | Endpoint backend payment development bersama, sebagai fallback         |
+| `PAYMENT_URL_MIDTRANS`      | Opsional                                | Endpoint khusus Midtrans; mengoverride PAYMENT_URL pada build Midtrans |
+| `PAYMENT_URL_STRIPE`        | Opsional                                | Endpoint khusus Stripe; mengoverride PAYMENT_URL pada build Stripe     |
+| `STRIPE_PUBLISHABLE_KEY`    | Jika Stripe                             | Publishable key sandbox; boleh kosong untuk Midtrans                   |
+| `DEBUG_KEYSTORE_BASE64`     | Jika build type debug/both              | File keystore debug dalam base64                                       |
+| `DEBUG_KEY_ALIAS`           | Jika build type debug/both              | Alias private key debug                                                |
+| `DEBUG_KEY_PASSWORD`        | Jika build type debug/both              | Password private key debug                                             |
+| `DEBUG_KEYSTORE_PASSWORD`   | Jika build type debug/both              | Password keystore debug                                                |
+| `RELEASE_KEYSTORE_BASE64`   | Jika build type release/both            | Keystore release dalam base64, terpisah dari debug                     |
+| `RELEASE_KEY_ALIAS`         | Jika build type release/both            | Alias private key release                                              |
+| `RELEASE_KEY_PASSWORD`      | Jika build type release/both            | Password private key release                                           |
+| `RELEASE_KEYSTORE_PASSWORD` | Jika build type release/both            | Password keystore release                                              |
 
 Repository secrets bernama sama dapat digunakan jika environment tidak mengoverride nilainya. Tidak perlu mengubah repository/environment Variables untuk memilih gateway atau currency. Pilihan berasal dari **Run workflow inputs**:
 
-| Input | Default | Pilihan |
-|---|---|---|
-| `payment_gateway` | `midtrans` | `midtrans`, `stripe`, atau `both` |
-| `build_type` | `both` | `debug`, `release`, atau `both` |
-| `midtrans_currency` | `IDR` | Kode currency tiga huruf uppercase yang didukung backend Midtrans |
-| `stripe_currency` | `IDR` | Kode currency tiga huruf uppercase yang didukung backend Stripe |
+| Input               | Default    | Pilihan                                                           |
+| ------------------- | ---------- | ----------------------------------------------------------------- |
+| `payment_gateway`   | `midtrans` | `midtrans`, `stripe`, atau `both`                                 |
+| `build_type`        | `both`     | `debug`, `release`, atau `both`                                   |
+| `midtrans_currency` | `IDR`      | Kode currency tiga huruf uppercase yang didukung backend Midtrans |
+| `stripe_currency`   | `IDR`      | Kode currency tiga huruf uppercase yang didukung backend Stripe   |
 
 Gateway `both` dan build type `both` menghasilkan empat job independen: Midtrans debug/release dan Stripe debug/release. Currency valid secara format belum berarti didukung akun/backend; gunakan konfigurasi sandbox yang telah disepakati. Key publishable Stripe tidak dimasukkan ke APK Midtrans. Tiap job hanya menerima signing secrets untuk build type yang dipilih.
 
@@ -63,18 +63,18 @@ File `.env` masuk ke APK sebagai aset Flutter. GitHub Secrets menghindari penyim
 
 PR fork tidak memperoleh secrets; CI tetap bekerja dengan placeholder. Workflow tidak menggunakan pull_request_target. Atur proteksi environment/branch development sesuai proses tim.
 
-Pilihan gateway belum berupa Android product flavors: dua gateway pada build type yang sama memakai application ID yang sama dan tidak dapat diinstall berdampingan. Debug (`com.peltops.e_patient.debug`) dan release (`com.peltops.e_patient`) memiliki ID berbeda. Fingerprint setiap tipe tetap antarrun selama key tidak diganti. Update dari APK lama yang memakai key lain tetap perlu penanganan transisi.
+Pilihan gateway belum berupa Android product flavors: dua gateway pada build type yang sama memakai application ID yang sama dan tidak dapat diinstall berdampingan. Debug (`com.peltops.kasih.debug`) dan release (`com.peltops.kasih`) memiliki ID berbeda. Fingerprint setiap tipe tetap antarrun selama key tidak diganti. Update dari APK lama yang memakai key lain tetap perlu penanganan transisi.
 
 ## Play Store nanti
 
 Build APK release tersedia, tetapi deployment ke Play Store belum diaktifkan. Secret legacy berikut bukan nama secret yang dibaca workflow baru; saat menyiapkan deployment, nilai kembali kebutuhan signing/Play Console:
 
-| Secret | Kegunaan |
-|---|---|
-| `KEYSTORE_FILE` | Upload keystore Android dalam base64 |
-| `KEY_ALIAS` | Alias upload key |
-| `KEY_PASSWORD` | Password key |
-| `KEYSTORE_PASSWORD` | Password keystore |
+| Secret                           | Kegunaan                                    |
+| -------------------------------- | ------------------------------------------- |
+| `KEYSTORE_FILE`                  | Upload keystore Android dalam base64        |
+| `KEY_ALIAS`                      | Alias upload key                            |
+| `KEY_PASSWORD`                   | Password key                                |
+| `KEYSTORE_PASSWORD`              | Password keystore                           |
 | `GPLAY_SERVICE_ACCOUNT_KEY_JSON` | Credential Play Console dengan izin minimum |
 
 Secret signing/deployment tidak masuk `.env` aplikasi. Perlu review application ID, listing Play Console, Fastlane metadata, version code, track, dan konfigurasi produksi sebelum mengaktifkan deployment. Jangan langsung mengaktifkan workflow legacy hanya dengan mengisi secrets.

@@ -6,16 +6,16 @@ Kasih adalah aplikasi Flutter untuk pengelolaan perjalanan kesehatan pasien dan 
 
 ## Dokumen produk
 
-| Dokumen | Kegunaan |
-|---|---|
-| [Business requirements](docs/plans/2026-09-30-e-patient-business-requirements.md) | Tujuan bisnis, model akun/pasien/keluarga, scope MVP/P1 |
-| [Product requirements](docs/product/2026-10-02-e-patient-prd.md) | Journey, requirement, state, acceptance criteria |
-| [Detail pemetaan e-Imunisasi → Kasih](docs/product/2026-10-11-e-imunisasi-to-e-patient-capability-mapping.md) | Elaborasi 15 kapabilitas dan urutan adaptasi |
-| [Build timeline](docs/plans/2026-10-04-e-patient-build-timeline.md) | Rencana delivery dan dependensi |
-| [Migration tracker](docs/engineering/2026-10-09-e-imunisasi-to-e-patient-migration.md) | Catatan awal copy baseline; metadata historis perlu dicek terhadap Git sebelum digunakan |
-| [GitHub Actions setup](docs/engineering/github-actions-setup.md) | Workflow, secrets, artifact, dan troubleshooting CI |
-| [Brand assets](docs/product/2026-10-11-e-patient-brand-assets.md) | Logo, ilustrasi, prompt, dan regenerasi ikon |
-| [AGENTS.md](AGENTS.md) | Panduan kerja bagi coding agent dan contributor |
+| Dokumen                                                                                                       | Kegunaan                                                                                 |
+| ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [Business requirements](docs/plans/2026-09-30-e-patient-business-requirements.md)                             | Tujuan bisnis, model akun/pasien/keluarga, scope MVP/P1                                  |
+| [Product requirements](docs/product/2026-10-02-e-patient-prd.md)                                              | Journey, requirement, state, acceptance criteria                                         |
+| [Detail pemetaan e-Imunisasi → Kasih](docs/product/2026-10-11-e-imunisasi-to-e-patient-capability-mapping.md) | Elaborasi 15 kapabilitas dan urutan adaptasi                                             |
+| [Build timeline](docs/plans/2026-10-04-e-patient-build-timeline.md)                                           | Rencana delivery dan dependensi                                                          |
+| [Migration tracker](docs/engineering/2026-10-09-e-imunisasi-to-e-patient-migration.md)                        | Catatan awal copy baseline; metadata historis perlu dicek terhadap Git sebelum digunakan |
+| [GitHub Actions setup](docs/engineering/github-actions-setup.md)                                              | Workflow, secrets, artifact, dan troubleshooting CI                                      |
+| [Brand assets](docs/product/2026-10-11-e-patient-brand-assets.md)                                             | Logo, ilustrasi, prompt, dan regenerasi ikon                                             |
+| [AGENTS.md](AGENTS.md)                                                                                        | Panduan kerja bagi coding agent dan contributor                                          |
 
 ## Prasyarat
 
@@ -45,14 +45,14 @@ PAYMENT_CURRENCY=IDR
 AUTH_REDIRECT_URL=https://kasih-app.peltops.com/
 ```
 
-| Konfigurasi | Kebutuhan |
-|---|---|
-| `SUPABASE_URL` dan `SUPABASE_ANON_KEY` | Wajib untuk startup; harus menunjuk project yang sama |
-| `PAYMENT_URL` | Diperlukan saat repository payment diinisialisasi; wajib pada build development CI |
-| `STRIPE_PUBLISHABLE_KEY` | Diperlukan bila gateway Stripe dipakai |
-| `PAYMENT_GATEWAY` | Default `midtrans`; workflow development mendukung `midtrans` atau `stripe` |
-| `PAYMENT_CURRENCY` | Default `IDR`; sesuaikan dengan backend/gateway |
-| `AUTH_REDIRECT_URL` | Callback native HTTPS root; default `https://kasih-app.peltops.com/` |
+| Konfigurasi                            | Kebutuhan                                                                          |
+| -------------------------------------- | ---------------------------------------------------------------------------------- |
+| `SUPABASE_URL` dan `SUPABASE_ANON_KEY` | Wajib untuk startup; harus menunjuk project yang sama                              |
+| `PAYMENT_URL`                          | Diperlukan saat repository payment diinisialisasi; wajib pada build development CI |
+| `STRIPE_PUBLISHABLE_KEY`               | Diperlukan bila gateway Stripe dipakai                                             |
+| `PAYMENT_GATEWAY`                      | Default `midtrans`; workflow development mendukung `midtrans` atau `stripe`        |
+| `PAYMENT_CURRENCY`                     | Default `IDR`; sesuaikan dengan backend/gateway                                    |
+| `AUTH_REDIRECT_URL`                    | Callback native HTTPS root; default `https://kasih-app.peltops.com/`               |
 
 `.env` dibaca sebagai **aset Flutter**, bukan otomatis dari environment terminal/VS Code. File ini telah didaftarkan di `pubspec.yaml` dan tidak dilacak Git. Perubahan `.env`/aset memerlukan penghentian dan peluncuran ulang aplikasi.
 
@@ -88,7 +88,7 @@ fvm flutter test --coverage --reporter expanded
 fvm flutter build apk --debug
 ```
 
-APK berada di `build/app/outputs/flutter-apk/app-debug.apk`; coverage di `coverage/lcov.info`. Android memakai application ID `com.peltops.e_patient`, dengan suffix `.debug` untuk build debug. Untuk release, lengkapi konfigurasi key release yang terpisah lalu jalankan `fvm flutter build apk --release`; hasilnya `app-release.apk`. Build release bukan deployment otomatis ke Play Store.
+APK berada di `build/app/outputs/flutter-apk/app-debug.apk`; coverage di `coverage/lcov.info`. Android memakai application ID `com.peltops.kasih`, dengan suffix `.debug` untuk build debug. Untuk release, lengkapi konfigurasi key release yang terpisah lalu jalankan `fvm flutter build apk --release`; hasilnya `app-release.apk`. Build release bukan deployment otomatis ke Play Store.
 
 Untuk kompilasi iOS lokal (minimum iOS 15.0):
 
@@ -108,7 +108,7 @@ xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner \
   BUILD_DIR="$PWD/build/ios" build
 ```
 
-Verifikasi lokal 16 Oktober 2026: release device tanpa signing dan debug simulator ARM64 berhasil dikompilasi dengan Xcode 27. Simulator Intel/multi-arsitektur belum lolos jalur generik di atas. Compiler masih menampilkan warning dari plugin lama. Bundle identifier iOS saat ini `com.peltops.e_patient` mengandung underscore dan perlu disepakati ulang menjadi identifier Apple yang valid sebelum menyiapkan signing/App Store; identitas Android/backend tidak diubah oleh penyesuaian build ini.
+Verifikasi lokal 16 Oktober 2026: release device tanpa signing dan debug simulator ARM64 berhasil dikompilasi dengan Xcode 27. Simulator Intel/multi-arsitektur belum lolos jalur generik di atas. Compiler masih menampilkan warning dari plugin lama. Bundle identifier iOS saat ini `com.peltops.kasih` mengandung underscore dan perlu disepakati ulang menjadi identifier Apple yang valid sebelum menyiapkan signing/App Store; identitas Android/backend tidak diubah oleh penyesuaian build ini.
 
 Pembaruan dependency native dibatasi ke versi yang kompatibel dengan Flutter 3.29.3: `shared_preferences` 2.5.3, `url_launcher` 6.3.2, `flutter_local_notifications` 17.2.4, `image_picker` 1.2.1, `permission_handler` 11.4.0, dan `webview_flutter` 4.13.0. Versi implementasi platform dikunci di `pubspec.lock` dan `ios/Podfile.lock`. API Dart yang dipakai aplikasi tetap kompatibel; upgrade mayor Stripe, notification, atau Flutter SDK tidak termasuk pembaruan ini. Masalah simulator multi-arsitektur adalah [issue tooling Flutter/Xcode](https://github.com/flutter/flutter/issues/188461), bukan sesuatu yang diselesaikan oleh upgrade plugin aplikasi.
 
@@ -153,15 +153,15 @@ Lihat [petunjuk GitHub Actions](docs/engineering/github-actions-setup.md) dan [s
 
 ## Troubleshooting
 
-| Gejala | Pemeriksaan |
-|---|---|
-| `.env` tidak terbaca atau konfigurasi Supabase kosong | Pastikan file ada di root, key terisi, terdaftar sebagai aset, lalu Stop dan Run ulang |
-| VS Code memakai Flutter berbeda | Jalankan `fvm install`, cek `.fvm/flutter_sdk`, lalu Reload Window |
-| Import `.g.dart`, `.config.dart`, atau `.mocks.dart` hilang | Jalankan build_runner sebelum analysis/test/build |
-| OAuth tidak membuka browser | Periksa error Cubit/launcher dan konfigurasi URL; jangan menganggap perubahan callback saja menyelesaikan launch |
-| OAuth berhasil tetapi tidak kembali | Cocokkan redirect URL, allowlist Supabase, konfigurasi Keycloak, App Link, package, dan signing certificate |
-| Sudah login tetapi profil tidak ditemukan | Periksa provisioning/link profil backend; login berhasil tidak otomatis membuat row profil |
-| APK CI tidak bisa login | Gunakan Development APK karena CI memakai konfigurasi dummy |
+| Gejala                                                      | Pemeriksaan                                                                                                      |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `.env` tidak terbaca atau konfigurasi Supabase kosong       | Pastikan file ada di root, key terisi, terdaftar sebagai aset, lalu Stop dan Run ulang                           |
+| VS Code memakai Flutter berbeda                             | Jalankan `fvm install`, cek `.fvm/flutter_sdk`, lalu Reload Window                                               |
+| Import `.g.dart`, `.config.dart`, atau `.mocks.dart` hilang | Jalankan build_runner sebelum analysis/test/build                                                                |
+| OAuth tidak membuka browser                                 | Periksa error Cubit/launcher dan konfigurasi URL; jangan menganggap perubahan callback saja menyelesaikan launch |
+| OAuth berhasil tetapi tidak kembali                         | Cocokkan redirect URL, allowlist Supabase, konfigurasi Keycloak, App Link, package, dan signing certificate      |
+| Sudah login tetapi profil tidak ditemukan                   | Periksa provisioning/link profil backend; login berhasil tidak otomatis membuat row profil                       |
+| APK CI tidak bisa login                                     | Gunakan Development APK karena CI memakai konfigurasi dummy                                                      |
 
 ## Kontribusi
 

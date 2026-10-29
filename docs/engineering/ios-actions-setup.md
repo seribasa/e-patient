@@ -4,13 +4,13 @@ Workflow: `.github/workflows/development_ios.yml`, nama **Kasih Development iOS*
 
 ## Output dan input
 
-| Input | Pilihan/default | Output/perilaku |
-|---|---|---|
-| `artifact_type` | `app` (default), `ipa`, `both` | APP adalah debug simulator, IPA adalah release device signed |
-| `payment_gateway` | `midtrans` (default), `stripe`, `both` | Job/artifact terpisah per gateway |
-| `midtrans_currency` | `IDR` | Currency backend Midtrans |
-| `stripe_currency` | `IDR` | Currency backend Stripe |
-| `export_method` | `debugging` (default), `release-testing`, `app-store-connect` | Harus sesuai certificate dan provisioning profile; diabaikan untuk APP |
+| Input               | Pilihan/default                                               | Output/perilaku                                                        |
+| ------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `artifact_type`     | `app` (default), `ipa`, `both`                                | APP adalah debug simulator, IPA adalah release device signed           |
+| `payment_gateway`   | `midtrans` (default), `stripe`, `both`                        | Job/artifact terpisah per gateway                                      |
+| `midtrans_currency` | `IDR`                                                         | Currency backend Midtrans                                              |
+| `stripe_currency`   | `IDR`                                                         | Currency backend Stripe                                                |
+| `export_method`     | `debugging` (default), `release-testing`, `app-store-connect` | Harus sesuai certificate dan provisioning profile; diabaikan untuk APP |
 
 Quality gate: test helper Node → konfigurasi dummy → pub get → code generation → analysis → seluruh test Flutter. Konfigurasi backend development baru ditulis setelah test. Artifact disimpan 7 hari dan tidak memuat file signing mentah/keychain/`.env` terpisah. Konfigurasi client tetap bisa dibaca dari app yang dibundel, jadi jangan memasukkan server secret ke `.env`.
 
@@ -24,17 +24,17 @@ APP dan IPA memakai secrets backend yang sama dengan Development APK: `SUPABASE_
 
 Tambahan untuk IPA:
 
-| Jenis | Nama | Isi |
-|---|---|---|
-| Secret | `IOS_CERTIFICATE_BASE64` | Base64 export certificate **beserta private key** dalam `.p12` |
-| Secret | `IOS_CERTIFICATE_PASSWORD` | Password file `.p12` |
-| Secret | `IOS_PROVISION_PROFILE_BASE64` | Base64 file `.mobileprovision` eksplisit untuk aplikasi dan metode export yang dipilih |
-| Variable | `IOS_TEAM_ID` | Apple Developer team ID 10 karakter |
-| Variable | `IOS_BUNDLE_ID` | Bundle ID Apple yang terdaftar, sama persis dengan profile; contoh format `com.company.epatient` |
+| Jenis    | Nama                           | Isi                                                                                              |
+| -------- | ------------------------------ | ------------------------------------------------------------------------------------------------ |
+| Secret   | `IOS_CERTIFICATE_BASE64`       | Base64 export certificate **beserta private key** dalam `.p12`                                   |
+| Secret   | `IOS_CERTIFICATE_PASSWORD`     | Password file `.p12`                                                                             |
+| Secret   | `IOS_PROVISION_PROFILE_BASE64` | Base64 file `.mobileprovision` eksplisit untuk aplikasi dan metode export yang dipilih           |
+| Variable | `IOS_TEAM_ID`                  | Apple Developer team ID 10 karakter                                                              |
+| Variable | `IOS_BUNDLE_ID`                | Bundle ID Apple yang terdaftar, sama persis dengan profile; contoh format `com.company.epatient` |
 
 Sediakan tepat satu identity valid pada `.p12`, belum kedaluwarsa, serta profile belum kedaluwarsa. Helper memvalidasi team, UUID, explicit application identifier, masa berlaku profile, dan kecocokan jenis export. Xcode memvalidasi kecocokan certificate/profile dan entitlement saat archive/export. Wildcard profile, enterprise profile, app extension/multiple-profile archive belum didukung. Jika metode export berubah, profile dan certificate environment mungkin perlu diganti agar sesuai.
 
-Source iOS lama masih menggunakan `com.peltops.e_patient` (underscore tidak valid untuk Apple signing). Workflow IPA mengoverride identifier **hanya saat archive** memakai `IOS_BUNDLE_ID` yang Anda tentukan; tidak menetapkan identitas Apple baru atau mengubah application ID Android/backend. Pastikan layanan OAuth/entitlement menggunakan identifier Apple yang benar sebelum uji perangkat.
+Source iOS lama masih menggunakan `com.peltops.kasih` (underscore tidak valid untuk Apple signing). Workflow IPA mengoverride identifier **hanya saat archive** memakai `IOS_BUNDLE_ID` yang Anda tentukan; tidak menetapkan identitas Apple baru atau mengubah application ID Android/backend. Pastikan layanan OAuth/entitlement menggunakan identifier Apple yang benar sebelum uji perangkat.
 
 Jangan commit `.p12`, private key, profile, password, atau base64 credential. Buat base64 lokal lalu masukkan langsung ke GitHub Secrets; jangan tempel nilainya ke chat/log. Keychain sementara dan profile hasil install dibersihkan dengan langkah `always()`, termasuk ketika archive gagal. Helper dibatasi untuk konteks GitHub Actions dan tidak boleh dipakai untuk mengubah keychain workstation lokal.
 
